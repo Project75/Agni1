@@ -73,7 +73,7 @@ public class MappingController extends AbstractRestHandler {
     List<MappingList> getMapping(@ApiParam(value = "The name of the mapping.", required = true)
                              @PathVariable("name") String name,
                              HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<MappingList> mapping = this.mappingService.getMapping(name);
+        List<MappingList> mapping = this.mappingService.findByMapname(name);
         checkResourceFound(mapping);
         //todo: http://goo.gl/6iNAkz
         return mapping;

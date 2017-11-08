@@ -17,6 +17,7 @@ import org.hl7.fhir.dstu3.model.Observation.ObservationStatus;
 import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.dstu3.model.Patient.ContactComponent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.nttdata.agni.dao.jpa.MappingListRepository;
 import com.nttdata.agni.domain.MappingList;
@@ -46,6 +47,7 @@ import java.util.Properties;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+@Component
 public class TransformUtils
 {
 	
@@ -57,7 +59,7 @@ public class TransformUtils
      */
 	
 	@Autowired
-    private static MappingService mappingService; 
+    private MappingService mappingService; 
  
     public static void main(String[] args) throws Exception {
     	
@@ -78,7 +80,7 @@ public class TransformUtils
     
 
     
-    public static String convertHL72FHIR(String hl7,String mapname) {
+    public  String convertHL72FHIR(String hl7,String mapname) {
     	String fhir=null;
     	TransformVO trVO = null;
     	//String mapname = "dh_map_hl7_2_fhir";
@@ -93,12 +95,14 @@ public class TransformUtils
     	return fhir;
     }
 
-    public static String convertHL72FHIR(TransformRequest transformRequest) {
+    public  String convertHL72FHIR(TransformRequest transformRequest) {
     	String fhir=null;
     	TransformVO trVO = null;
     	//String mapname = "dh_map_hl7_2_fhir";
         
         try {
+        	//System.out.println("mapname="+transformRequest.getMapname());
+        	//System.out.println("mapname="+transformRequest.getValue());
         	trVO = HL7Parser(transformRequest.getValue(),transformRequest.getMapname());
 		} catch (HL7Exception e) {
 			// TODO Auto-generated catch block
@@ -109,7 +113,7 @@ public class TransformUtils
     }
 
     
-    public static TransformVO HL7Parser(String msg, String mapname) throws HL7Exception{ 
+    public  TransformVO HL7Parser(String msg, String mapname) throws HL7Exception{ 
     	TransformVO trVO = new TransformVO();
         HapiContext context = new DefaultHapiContext();
         Parser p = context.getGenericParser();
@@ -120,54 +124,59 @@ public class TransformUtils
         HashMap<String, String> tempMap =new HashMap<String, String>();
         
         List<MappingList> mappingItems = mappingService.findByMapname(mapname);
-    	for (MappingList entity : mappingItems) {
-    		
-    		tempMap.put(entity.getFHIR(), entity.getHL7());
-        }
-    	List<MappingList> mappingItems2 = mappingService.findByMapname("default");
-    	for (MappingList entity : mappingItems) {
-    		
-    		defaultMap.put(entity.getFHIR(), entity.getHL7());
-        }
+        List<MappingList> mappingItems2 = mappingService.findByMapname("default");
+        if (mappingItems2.size() > 0) {
+	    	for (MappingList entity : mappingItems) {	    		
+	    		tempMap.put(entity.getFHIR(), entity.getHL7());
+	        }
+    	}
+        if (mappingItems.size() > 0) {
+        	for (MappingList entity : mappingItems) {	    		
+	    		tempMap.put(entity.getFHIR(), entity.getHL7());
+	        }
+        } 
+        
         //String var = null;
         //map.put("givenName_HL7Field",Optional.ofNullable( tempMap.get("patient.name.given") ).orElse( "" ));
         
-        String givenName_HL7Field = Optional.ofNullable( tempMap.get("patient.name.given") ).orElse(defaultMap.get("patient.name.given"));
-        String familyName_HL7Field = Optional.ofNullable( tempMap.get("patient.name.family") ).orElse(defaultMap.get("patient.name.family"));
-        String ID_HL7Field = Optional.ofNullable( tempMap.get("patient.id") ).orElse(defaultMap.get("patient.id"));
-        String Gender_HL7Field = Optional.ofNullable( tempMap.get("patient.gender") ).orElse(defaultMap.get("patient.gender"));
-        String DOB_HL7Field = Optional.ofNullable( tempMap.get("patient.birthDate") ).orElse(defaultMap.get("patient.birthDate"));
-        String AddressLine_HL7Field = Optional.ofNullable( tempMap.get("patient.address.line") ).orElse(defaultMap.get("patient.address.line"));
-        String AddressCity_HL7Field = Optional.ofNullable( tempMap.get("patient.address.city") ).orElse(defaultMap.get("patient.address.city"));
-        String AddressState_HL7Field = Optional.ofNullable( tempMap.get("patient.address.state") ).orElse(defaultMap.get("patient.address.state"));
-        String AddressPostalCode_HL7Field = Optional.ofNullable( tempMap.get("patient.address.postalCode") ).orElse(defaultMap.get("patient.address.postalCode"));
-        String AddressCountry_HL7Field = Optional.ofNullable( tempMap.get("patient.address.country") ).orElse(defaultMap.get("patient.address.country"));
-        String Telecom_HL7Field = Optional.ofNullable( tempMap.get("patient.telecom.value") ).orElse(defaultMap.get("patient.telecom.value"));
-        String MaritalStatus_HL7Field = Optional.ofNullable( tempMap.get("patient.maritalStatus") ).orElse(defaultMap.get("patient.maritalStatus"));
-        String Deceased_HL7Field = Optional.ofNullable( tempMap.get("patient.deceased") ).orElse(defaultMap.get("patient.deceased"));
-        String Birth_HL7Field = Optional.ofNullable( tempMap.get("patient.multipleBirth") ).orElse(defaultMap.get("patient.multipleBirth"));
-        String ContactRel_HL7Field = Optional.ofNullable( tempMap.get("patient.contact.relationship") ).orElse(defaultMap.get("patient.contact.relationship"));
-        String ContactName_HL7Field = Optional.ofNullable( tempMap.get("patient.contact.name") ).orElse(defaultMap.get("patient.contact.name"));
-        String ContactTel_HL7Field = Optional.ofNullable( tempMap.get("patient.contact.telecom") ).orElse(defaultMap.get("patient.contact.telecom"));
-        String ContactAddress_HL7Field = Optional.ofNullable( tempMap.get("patient.contact.address") ).orElse(defaultMap.get("patient.contact.address"));
-        String ContactGender_HL7Field = Optional.ofNullable( tempMap.get("patient.contact.gender") ).orElse(defaultMap.get("patient.contact.gender"));
-        String ContactOrg_HL7Field = Optional.ofNullable( tempMap.get("patient.contact.organization") ).orElse(defaultMap.get("patient.contact.organization"));
-        String GeneralPractitioner_HL7Field = Optional.ofNullable( tempMap.get("patient.generalPractitioner") ).orElse(defaultMap.get("patient.generalPractitioner"));
-        String Link_HL7Field = Optional.ofNullable( tempMap.get("patient.link.other") ).orElse(defaultMap.get("patient.link.other"));
+        String givenName_HL7Field = Optional.ofNullable( tempMap.get("patient.name.given") ).orElse("PID-5-2");
+        String familyName_HL7Field = Optional.ofNullable( tempMap.get("patient.name.family") ).orElse("PID-5-1");
+        String ID_HL7Field = Optional.ofNullable( tempMap.get("patient.id") ).orElse("PID-3-1");
+        String Gender_HL7Field = Optional.ofNullable( tempMap.get("patient.gender") ).orElse("PID-8-1");
+        String DOB_HL7Field = Optional.ofNullable( tempMap.get("patient.birthDate") ).orElse("PID-7-1");
+        String AddressLine_HL7Field = Optional.ofNullable( tempMap.get("patient.address.line") ).orElse("PID-11-1");
+        String AddressCity_HL7Field = Optional.ofNullable( tempMap.get("patient.address.city") ).orElse("PID-11-3");
+        String AddressState_HL7Field = Optional.ofNullable( tempMap.get("patient.address.state") ).orElse("PID-11-4");
+        String AddressPostalCode_HL7Field = Optional.ofNullable( tempMap.get("patient.address.postalCode") ).orElse("PID-11-5");
+        String AddressCountry_HL7Field = Optional.ofNullable( tempMap.get("patient.address.country") ).orElse("PID-11-6");
+        String Telecom_HL7Field = Optional.ofNullable( tempMap.get("patient.telecom.value") ).orElse("PID-13-1");
+        String MaritalStatus_HL7Field = Optional.ofNullable( tempMap.get("patient.maritalStatus") ).orElse("PID-16-1");
+        String Deceased_HL7Field = Optional.ofNullable( tempMap.get("patient.deceased") ).orElse("PID-30");
+        String Birth_HL7Field = Optional.ofNullable( tempMap.get("patient.multipleBirth") ).orElse("PID-24");
+        String ContactRel_HL7Field = Optional.ofNullable( tempMap.get("patient.contact.relationship") ).orElse("PID-1");
+        String ContactName_HL7Field = Optional.ofNullable( tempMap.get("patient.contact.name") ).orElse("PID-1");
+        String ContactTel_HL7Field = Optional.ofNullable( tempMap.get("patient.contact.telecom") ).orElse("PID-1");
+        String ContactAddress_HL7Field = Optional.ofNullable( tempMap.get("patient.contact.address") ).orElse("PID-1");
+        String ContactGender_HL7Field = Optional.ofNullable( tempMap.get("patient.contact.gender") ).orElse("PID-8-1");
+        String ContactOrg_HL7Field = Optional.ofNullable( tempMap.get("patient.contact.organization") ).orElse("PID-1");
+        String GeneralPractitioner_HL7Field = Optional.ofNullable( tempMap.get("patient.generalPractitioner") ).orElse("PID-1");
+        String Link_HL7Field = Optional.ofNullable( tempMap.get("patient.link.other") ).orElse("PID-1");
         
-        String ObservationID_HL7Field = Optional.ofNullable( tempMap.get("patient") ).orElse(defaultMap.get("observation.identifier"));
-        String ObservationStatus_HL7Field = Optional.ofNullable( tempMap.get("patient") ).orElse(defaultMap.get("observation.status"));
-        String ObservationCode_HL7Field = Optional.ofNullable( tempMap.get("patient") ).orElse(defaultMap.get("observation.code"));
-        String ObservationSubject_HL7Field = Optional.ofNullable( tempMap.get("patient") ).orElse(defaultMap.get("observation.subject"));
-        String ObservationEffective_HL7Field = Optional.ofNullable( tempMap.get("patient") ).orElse(defaultMap.get("observation.effective"));
-        String ObservationIssued_HL7Field = Optional.ofNullable( tempMap.get("patient") ).orElse(defaultMap.get("observation.issued"));
-        String ObservationPerformer_HL7Field = Optional.ofNullable( tempMap.get("patient") ).orElse(defaultMap.get("observation.performer"));
-        String ObservationValue_HL7Field = Optional.ofNullable( tempMap.get("patient") ).orElse(defaultMap.get("observation.value"));
-        String ObservationInterpretation_HL7Field = Optional.ofNullable( tempMap.get("patient") ).orElse(defaultMap.get("observation.interpretation"));
-        String ObservationComment_HL7Field = Optional.ofNullable( tempMap.get("patient") ).orElse(defaultMap.get("observation.comment"));
-        String ObservationBodySite_HL7Field = Optional.ofNullable( tempMap.get("patient") ).orElse(defaultMap.get("observation.bodySite"));
-        String ObservationMethod_HL7Field = Optional.ofNullable( tempMap.get("patient") ).orElse(defaultMap.get("observation.method"));
-        String ObservationDevice_HL7Field = Optional.ofNullable( tempMap.get("patient") ).orElse(defaultMap.get("observation.device"));             
+        String ObservationID_HL7Field = Optional.ofNullable( tempMap.get("observation.identifier") ).orElse("OBX-21-1");
+        String ObservationStatus_HL7Field = Optional.ofNullable( tempMap.get("observation.status") ).orElse("OBX-11");
+        String ObservationCode_HL7Field = Optional.ofNullable( tempMap.get("observation.code") ).orElse("OBX-3-1");
+        String ObservationSubject_HL7Field = Optional.ofNullable( tempMap.get("observation.subject") ).orElse("PID-3-1");
+        String ObservationEffective_HL7Field = Optional.ofNullable( tempMap.get("observation.effective") ).orElse("OBX-14-1");
+        String ObservationIssued_HL7Field = Optional.ofNullable( tempMap.get("observation.issued") ).orElse("OBR-22-1");
+        String ObservationPerformer_HL7Field = Optional.ofNullable( tempMap.get("observation.performer") ).orElse("OBR-15-1");
+        String ObservationValue_HL7Field = Optional.ofNullable( tempMap.get("observation.value") ).orElse("OBR-2");
+        String ObservationInterpretation_HL7Field = Optional.ofNullable( tempMap.get("observation.interpretation") ).orElse("OBR-8");
+        String ObservationComment_HL7Field = Optional.ofNullable( tempMap.get("observation.comment") ).orElse("NTE-3");
+        String ObservationBodySite_HL7Field = Optional.ofNullable( tempMap.get("observation.bodySite") ).orElse("OBR-20-1");
+        String ObservationMethod_HL7Field = Optional.ofNullable( tempMap.get("observation.method") ).orElse("OBR-17-1");
+        String ObservationDevice_HL7Field = Optional.ofNullable( tempMap.get("observation.device") ).orElse("OBR-17-1");   
+        
+                 
         
         
         trVO.setFamilyName(terser.get(familyName_HL7Field));
@@ -210,7 +219,7 @@ public class TransformUtils
         return trVO;    
     }
         
-    public static String createFHIR(TransformVO trVO)  {    
+    public  String createFHIR(TransformVO trVO)  {    
         FhirContext ctx = FhirContext.forDstu3();
         
         Patient patient = new Patient();
