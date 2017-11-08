@@ -51,6 +51,11 @@ public class MappingService {
     public List<MappingList> getMapping(String mapname) {
         return mappingListRepository.findByMapname(mapname);
     }
+    
+	public List<MappingList> findByMapname(String mapname) {
+		// TODO Auto-generated method stub
+		return mappingListRepository.findByMapname(mapname);
+	}
 
     public void updateMapping(List<MappingList> mappingList) {
         mappingListRepository.save(mappingList);
@@ -77,10 +82,7 @@ public class MappingService {
 
 
 
-	public List<MappingList> findByMapname(String mapname) {
-		// TODO Auto-generated method stub
-		return mappingListRepository.findByMapname(mapname);
-	}
+
     
 }
 
