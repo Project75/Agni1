@@ -9,7 +9,7 @@ spring.jmx:
 spring.jpa:
    database: MYSQL
    hibernate:
-     ddl-auto: create
+     ddl-auto: update
 spring.datasource:
    url: jdbc:mysql://localhost:3306/db_example
    username: springuser
