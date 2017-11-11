@@ -6,19 +6,19 @@ spring.jmx:
    enabled: false
 
 
-spring.jpa:
-   database: MYSQL
-   hibernate:
-     ddl-auto: update
-spring.datasource:
-   url: jdbc:mysql://localhost:3306/db_example
-   username: springuser
-   password: ThePassword
+# spring.jpa:
+   # database: MYSQL
+   # hibernate:
+     # ddl-auto: update
+# spring.datasource:
+   # url: jdbc:mysql://localhost:3306/db_example
+   # username: springuser
+   # password: ThePassword
   
 
-#spring.datasource:
-#    driverClassName: org.h2.Driver
-#    url: jdbc:h2:mem:bootexample;MODE=MySQL
+spring.datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:bootexample;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE
 #url: jdbc:h2:file:~/test;DB_CLOSE_ON_EXIT=FALSE
 
 
@@ -29,7 +29,7 @@ spring.datasource:
    # username: sa
 
 server:
-  port: 8890
+  port: 8090
 
 #todo: make sure to always enable security in production
 security:
@@ -38,7 +38,7 @@ security:
 
 #management endpoints on a separate port
 management:
-  port: 8891
+  port: 8091
   security:
     enabled: false # management port is internal only. no need to secure it.
 

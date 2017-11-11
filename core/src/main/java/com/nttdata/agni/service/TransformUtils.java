@@ -16,12 +16,16 @@ import org.hl7.fhir.dstu3.model.SimpleQuantity;
 import org.hl7.fhir.dstu3.model.Observation.ObservationStatus;
 import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.dstu3.model.Patient.ContactComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.nttdata.agni.dao.jpa.MappingListRepository;
 import com.nttdata.agni.domain.MappingList;
 import com.nttdata.agni.domain.TransformRequest;
+import com.nttdata.agni.exception.ResourceNotFoundException;
 
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.dstu3.model.Type;
@@ -47,11 +51,22 @@ import java.util.Properties;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-@Component
+@Service
 public class TransformUtils
 {
 	
     /**
+	 * 
+	 */
+	
+	private static final Logger log = LoggerFactory.getLogger(TransformUtils.class);
+	
+	public TransformUtils() {
+		
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
      * A simple example to convert hl7 to fhir
      * 
      * @throws HL7Exception
@@ -125,14 +140,16 @@ public class TransformUtils
         
         List<MappingList> mappingItems = mappingService.findByMapname(mapname);
         List<MappingList> mappingItems2 = mappingService.findByMapname("default");
-        if (mappingItems2.size() > 0) {
+        //checkResourceFound(mappingItems);
+        if (mappingItems2.size() > 0) {        	
 	    	for (MappingList entity : mappingItems) {	    		
 	    		tempMap.put(entity.getFHIR(), entity.getHL7());
 	        }
     	}
         if (mappingItems.size() > 0) {
+        	System.out.println("MappingList size is "+mappingItems2.size());
         	for (MappingList entity : mappingItems) {	    		
-	    		tempMap.put(entity.getFHIR(), entity.getHL7());
+	    		tempMap.put(entity.getFHIR(), entity.getHL7());	    		
 	        }
         } 
         
@@ -140,7 +157,7 @@ public class TransformUtils
         //map.put("givenName_HL7Field",Optional.ofNullable( tempMap.get("patient.name.given") ).orElse( "" ));
         
         String givenName_HL7Field = Optional.ofNullable( tempMap.get("patient.name.given") ).orElse("PID-5-2");
-        String familyName_HL7Field = Optional.ofNullable( tempMap.get("patient.name.family") ).orElse("PID-5-1");
+        String familyName_HL7Field = Optional.ofNullable( tempMap.get("patient.name.family") ).orElse("PID-8-1");
         String ID_HL7Field = Optional.ofNullable( tempMap.get("patient.id") ).orElse("PID-3-1");
         String Gender_HL7Field = Optional.ofNullable( tempMap.get("patient.gender") ).orElse("PID-8-1");
         String DOB_HL7Field = Optional.ofNullable( tempMap.get("patient.birthDate") ).orElse("PID-7-1");
@@ -179,8 +196,8 @@ public class TransformUtils
                  
         
         
-        trVO.setFamilyName(terser.get(familyName_HL7Field));
-        trVO.setGivenName(terser.get(givenName_HL7Field));
+        trVO.setFamilyName(Optional.ofNullable(terser.get("/PID-1")).orElse(""));
+        trVO.setGivenName(terser.get("PID-1"));
         trVO.setId(terser.get(ID_HL7Field));
         trVO.setgender(terser.get(Gender_HL7Field));
         trVO.setDOB(terser.get(DOB_HL7Field));
@@ -297,10 +314,18 @@ public class TransformUtils
 		   .setResource(observation).getRequest().setUrl("Observation").setMethod(HTTPVerb.POST);
 		
         // create a new XML parser and serialize our Patient object with it
-        String encoded = ctx.newXmlParser().setPrettyPrint(true)
+        String encoded = ctx.newJsonParser().setPrettyPrint(true)
+        		//.newXmlParser().setPrettyPrint(true)
                 .encodeResourceToString(bundle);
 
         System.out.println(encoded);
         return encoded;
         }
+    
+    public static <T> T checkResourceFound(final T resource) {
+        if (resource == null) {
+            throw new ResourceNotFoundException("resource not found");
+        }
+        return resource;
+    }
 }

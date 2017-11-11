@@ -48,7 +48,6 @@ public abstract class AbstractRestHandler implements ApplicationEventPublisherAw
         return new RestErrorInfo(ex, "Sorry I couldn't find it.");
     }
 
-    @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.eventPublisher = applicationEventPublisher;
     }

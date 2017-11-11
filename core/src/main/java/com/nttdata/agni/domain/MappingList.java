@@ -34,13 +34,13 @@ public class MappingList {
     public MappingList() {
     }
 
-    public MappingList(String hl7, String fhir) {
+    public MappingList( String fhir,String hl7) {
         this.hl7 = hl7;
         this.fhir = fhir;
         this.mapname = "default";
                 
     }
-    public MappingList(String hl7, String fhir,String mapname) {
+    public MappingList( String fhir,String hl7,String mapname) {
         this.hl7 = hl7;
         this.fhir = fhir;
         this.mapname = mapname;

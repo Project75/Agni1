@@ -69,14 +69,14 @@ public class MappingControllerTest {
         mapName = "test1";
     }
 /*
-    //@Test
+    @Test
     public void shouldHaveEmptyDB() throws Exception {
         mvc.perform(get("/fhirtranslator/v1/mappings")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
-    }*/
-
+    }
+*/
     @Test
     public void shouldCreateRetrieveDelete() throws Exception {
     	 mapping = mockMappings(mapName);
