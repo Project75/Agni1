@@ -133,10 +133,13 @@ public class HL7Transformer extends AbstractTransformer {
         		resource = ResourceFactory.getResource("patient");        		
         	}*/
     		String resourceName = propertyUtil.getHl7SegToFhirResources().get(segmentList.get(i));
+    		log.info("Creating resource from factory : "+ resourceName);
     		if (!((resourceName == null)|| (resourceName.isEmpty())) ){
 	        	resource = ResourceFactory.getResource(resourceName);
-	        	resource.setResourceDataFromMap(map);
-	        	resourceList.add(resource);
+	        	if (resource !=null){
+	        		resource.setResourceDataFromMap(map);
+	        		resourceList.add(resource);
+	        	}
     		}
     	}
     	AbstractResource bundle = (BundleImpl)ResourceFactory.getResource("bundle");

@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.nttdata</groupId>
-	<artifactId>Agni1</artifactId>
+	<artifactId>Agni</artifactId>
 	<version>1.0</version>
 	<packaging>pom</packaging>
 	<description>FHIR Implementation</description>
@@ -17,12 +17,13 @@
 	
     <modules>
         <module>core</module>
+        <module>Agni-application</module>
     </modules>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>com.nttdata</groupId>
-				<artifactId>Agni1-core</artifactId>
+				<artifactId>Agni-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>

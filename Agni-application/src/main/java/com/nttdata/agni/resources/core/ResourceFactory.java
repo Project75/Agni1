@@ -18,6 +18,8 @@ public class ResourceFactory {
 	        return new PatientImpl();
 	      case "observation":
 		        return new ObservationImpl();
+	      case "encounter":
+		        return null;
 	      case "bundle":
 		        return new BundleImpl();
 	        
