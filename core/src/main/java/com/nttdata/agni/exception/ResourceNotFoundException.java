@@ -4,7 +4,12 @@ package com.nttdata.agni.exception;
  * For HTTP 404 errros
  */
 public class ResourceNotFoundException extends RuntimeException {
-    public ResourceNotFoundException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public ResourceNotFoundException() {
         super();
     }
 

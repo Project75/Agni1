@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiParam;
 import com.nttdata.agni.domain.TransformRequest;
 import com.nttdata.agni.service.MappingService;
 import com.nttdata.agni.service.TransformUtils;
+import com.nttdata.agni.transfomer.HL7Transformer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,17 +25,17 @@ import javax.servlet.http.HttpServletResponse;
 public class HL72FHIRController extends AbstractRestHandler {
 
     @Autowired
-    private TransformUtils transformUtils;
+    private HL7Transformer transformer;
 
     @RequestMapping(value = "",
             method = RequestMethod.POST,
             consumes = {"application/json", "application/xml"},
             produces = {"application/json", "application/xml"})
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "HL7 to FHIR.", notes = "Returns FHIR resource.")
+    @ApiOperation(value = "HL7 to FHIR.", notes = "Returns FHIR resource bundle.")
     public String hl72fhir(@RequestBody TransformRequest transformRequest,
                                  HttpServletRequest request, HttpServletResponse response) {
-        return transformUtils.convertHL72FHIR(transformRequest);
+        return transformer.transform(transformRequest);
         
     }
 

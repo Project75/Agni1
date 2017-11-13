@@ -2,12 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+<!-- 	<parent> -->
+<!-- 		<groupId>com.nttdata</groupId> -->
+<!-- 		<artifactId>Agni1</artifactId> -->
+<!-- 		<version>1.0</version>	 -->
+<!-- 	</parent> -->
 	<parent>
-		<groupId>com.nttdata</groupId>
-		<artifactId>Agni1</artifactId>
-		<version>1.0</version>	
-	</parent>
-	
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.6.RELEASE</version>
+	</parent>	
 	<artifactId>Agni1-core</artifactId>
 	<packaging>war</packaging>
 	<description>Agni Core classes</description>
@@ -22,6 +26,19 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok-maven -->
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <scope>provided</scope>
+</dependency>
+
+        
+        <dependency>
+		   <groupId>com.fasterxml.jackson.datatype</groupId>
+		   <artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/ca.uhn.hapi.fhir/hapi-fhir-base -->
 		<dependency>
 		    <groupId>ca.uhn.hapi.fhir</groupId>

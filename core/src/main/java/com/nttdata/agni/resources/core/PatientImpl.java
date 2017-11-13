@@ -5,15 +5,19 @@ package com.nttdata.agni.resources.core;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Optional;
 
 import org.hl7.fhir.dstu3.model.BooleanType;
 import org.hl7.fhir.dstu3.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.ContactPoint;
 import org.hl7.fhir.dstu3.model.Enumerations;
+import org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender;
 import org.hl7.fhir.dstu3.model.HumanName;
 import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.dstu3.model.Patient.ContactComponent;
+import org.hl7.fhir.dstu3.model.Resource;
 
 import ca.uhn.fhir.model.primitive.IdDt;
 
@@ -22,11 +26,23 @@ import ca.uhn.fhir.model.primitive.IdDt;
  * @author Harendra Pandey
  */
 public class PatientImpl extends AbstractResource{
+	/**
+	 * 
+	 */
+	public PatientImpl() {
+		super();
+		this.patient = new Patient();
+		// TODO Auto-generated constructor stub
+	}
+
 	String familyName, givenName, id, gender, DOB, AddressLine, AddressCity, AddressState, AddressPostalCode, AddressCountry, 
 	Telecom, MaritalStatus, Deceased, Birth, ContactRel, ContactName, ContactTel, ContactAddress, ContactGender, ContactOrg,
 	GeneralPractitioner, Link;
 
 	Patient patient;
+	
+	String resourceName;
+	
 	/**
 	 * @return the patient
 	 */
@@ -40,6 +56,39 @@ public class PatientImpl extends AbstractResource{
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
+	
+	@Override
+	public void setResourceDataFromMap(HashMap<String, String> data) {
+		
+		setValuesFromMap(data);
+		setResourceData();
+
+	}
+	
+	public void setValuesFromMap(HashMap<String,String> map) {
+		this.familyName = map.get("patient.name.family");
+		this.givenName = map.get("patient.name.given");
+		this.id = map.get("patient.identifier");
+		this.gender = map.get("patient.gender");
+		this.DOB = map.get("patient.birthdate");
+		this.AddressLine = map.get("patient.address.line");
+		this.AddressCity = map.get("patient.address.city");
+		this.AddressState = map.get("patient.address.state");
+		this.AddressPostalCode = map.get("patient.address.postalCode");
+		this.AddressCountry = map.get("patient.address.country");
+		this.Telecom = map.get("patient.telecom.value");
+		this.MaritalStatus = map.get("patient.maritalStatus");
+		this.Deceased = map.get("patient.deceased");
+		this.Birth = map.get("patient.multipleBirth");
+		this.ContactRel = map.get("patient.contact.relationship");
+		this.ContactName = map.get("patient.contact.name");
+		this.ContactTel = map.get("patient.contact.telecom");
+		this.ContactAddress = map.get("patient.contact.address");
+		this.ContactGender = map.get("patient.contact.gender");
+		this.ContactOrg = map.get("patient.contact.organization");
+		this.GeneralPractitioner = map.get("patient.generalPractitioner");
+		this.Link= map.get("patient.link.other");;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.nttdata.agni.resources.core.AbstractResource#setResourceData()
@@ -47,7 +96,7 @@ public class PatientImpl extends AbstractResource{
 	@Override
 	public void setResourceData() {
 		// TODO Auto-generated method stub
-		super.setResourceData();
+		//super.setResourceData();
 		
 		patient.addName().setUse(HumanName.NameUse.OFFICIAL)
 		        .addPrefix("Mr").setFamily(getFamilyName()).addGiven(givenName);
@@ -58,9 +107,12 @@ public class PatientImpl extends AbstractResource{
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");	
 		try {
-			patient.setBirthDate(formatter.parse(getDOB()));
+			if (getDOB() != null){
+				patient.setBirthDate(formatter.parse(getDOB()));
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
+			//patient.setBirthDate(null);
 		}       
 		patient.addAddress().addLine(getAddressLine()).setCity(getAddressCity()).setState(getAddressState())
 				.setPostalCode(getAddressPostalCode()).setCountry(getAddressCountry());
@@ -76,9 +128,15 @@ public class PatientImpl extends AbstractResource{
 		BooleanType Birth = new BooleanType(Boolean.valueOf(getBirth()));
 		patient.setMultipleBirth(Birth);
 		
+		AdministrativeGender gender = null;
+		if (getContactGender()!=null){	
+		 gender = //Optional.ofNullable().orElse();
+			Enumerations.AdministrativeGender.valueOf(getContactGender().toUpperCase());					
+		}else {gender = Enumerations.AdministrativeGender.NULL;}
 		patient.addContact().addRelationship(new CodeableConcept().setText(getContactRel())).setName(new HumanName().addGiven(getContactName()))
 		       .addTelecom(new ContactPoint().setValue(getContactTel())).setAddress(new ContactComponent().getAddress().addLine(getContactAddress()))
-		       .setGender(Enumerations.AdministrativeGender.valueOf(getContactGender().toUpperCase())).setOrganization(new Reference().setReference(getContactOrg()));
+		       .setGender(gender)
+		       .setOrganization(new Reference().setReference(getContactOrg()));
 		       
 		patient.addGeneralPractitioner().setReference(getGeneralPractitioner());
 		patient.addLink().setId(getLink());
@@ -86,7 +144,8 @@ public class PatientImpl extends AbstractResource{
 		patient.setId(IdDt.newRandomUuid());
 
 	}
-
+	
+	
 	/* (non-Javadoc)
 	 * @see com.nttdata.agni.resources.core.AbstractResource#getResourcedata()
 	 */
@@ -97,12 +156,50 @@ public class PatientImpl extends AbstractResource{
 	}
 
 	/* (non-Javadoc)
+	 * @see com.nttdata.agni.resources.core.AbstractResource#getResource()
+	 */
+	@Override
+	public Resource getResource() {
+		// TODO Auto-generated method stub
+		return this.patient;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.nttdata.agni.resources.core.AbstractResource#setResource(org.hl7.fhir.dstu3.model.Resource)
+	 */
+	@Override
+	public void setResource(Resource resource) {
+		// TODO Auto-generated method stub
+		this.setPatient((Patient) resource);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.nttdata.agni.resources.core.AbstractResource#getResourceName()
+	 */
+	@Override
+	public String getResourceName() {
+		// TODO Auto-generated method stub
+		return this.resourceName;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.nttdata.agni.resources.core.AbstractResource#setResourceName(java.lang.String)
+	 */
+	@Override
+	public void setResourceName(String resourceName) {
+		// TODO Auto-generated method stub
+		this.resourceName=resourceName;
+	}
+
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return super.toString();
+		return familyName+" "+ givenName+" "+ id+" "+ gender+" "+ DOB+" "+ AddressLine+" "+ AddressCity+" "+ AddressState+" "+ AddressPostalCode+" "+ AddressCountry+" "+ 
+		Telecom+" "+ MaritalStatus+" "+ Deceased+" "+ Birth+" "+ ContactRel+" "+ ContactName+" "+ ContactTel+" "+ ContactAddress+" "+ ContactGender+" "+ ContactOrg+" "+
+		GeneralPractitioner+" "+ Link;
 	}
 	
 	
@@ -150,7 +247,10 @@ public class PatientImpl extends AbstractResource{
 	public void setId(String id) {
 		this.id = id;
 	}
-
+	
+	public void setId() {
+		this.id = java.util.UUID.randomUUID().toString();
+	}
 	/**
 	 * @return the gender
 	 */
@@ -416,6 +516,7 @@ public class PatientImpl extends AbstractResource{
 	public void setLink(String link) {
 		Link = link;
 	}
+	
 
 
 	

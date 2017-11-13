@@ -43,6 +43,7 @@ import ca.uhn.hl7v2.util.Terser;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -133,6 +134,15 @@ public class TransformUtils
         HapiContext context = new DefaultHapiContext();
         Parser p = context.getGenericParser();
         Message hapiMsg = p.parse(msg);
+        String strucHL7Segments[]=hapiMsg.getNames();
+        ArrayList<String> segmentList = new ArrayList<String>();
+        for (int i=0;i<strucHL7Segments.length;i++){
+        	if (!(hapiMsg.get(strucHL7Segments[i]).isEmpty())){
+        		segmentList.add(strucHL7Segments[i]);
+        	}
+        }
+        
+        System.out.println("harenp"+strucHL7Segments[4]+" "+hapiMsg.get("EVN").isEmpty());
         
         Terser terser = new Terser(hapiMsg);
         HashMap<String, String> defaultMap =new HashMap(); 
