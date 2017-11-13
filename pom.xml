@@ -16,7 +16,7 @@
 	</parent>
 	
     <modules>
-        <module>core</module>
+        <module>Agni-core</module>
         <module>Agni-application</module>
     </modules>
 	<dependencyManagement>
