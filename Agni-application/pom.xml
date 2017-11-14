@@ -25,6 +25,7 @@
         <dependency>
 		   <groupId>com.nttdata</groupId>
 		   <artifactId>Agni-core</artifactId>
+		   <version>${project.version}</version>
 		</dependency>
         <dependency>
 		   <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -171,4 +172,5 @@
 		</plugins>
 	</build>
   
+	<packaging>war</packaging>
 </project>

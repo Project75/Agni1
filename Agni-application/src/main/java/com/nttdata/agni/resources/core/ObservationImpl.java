@@ -5,11 +5,14 @@ package com.nttdata.agni.resources.core;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 
 import org.hl7.fhir.dstu3.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.DateTimeType;
 import org.hl7.fhir.dstu3.model.Observation;
+import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.dstu3.model.Reference;
+import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.model.Observation.ObservationStatus;
 
 /**
@@ -22,7 +25,43 @@ public class ObservationImpl extends AbstractResource {
 	observationMethod, observationDevice, ReferenceRangeLow, ReferenceRangeHigh, ReferenceRangeType, ReferenceRangeAppliesTo, ReferenceRangeText;
 	
 	Observation observation;
+	String resourceName="observation";
 	
+	public ObservationImpl() {
+		super();
+		this.observation = new Observation();
+		// TODO Auto-generated constructor stub
+	}
+	
+	@Override
+	public void setResourceDataFromMap(HashMap<String, String> data) {
+		
+		setValuesFromMap(data);
+		setResourceData();
+
+	}
+	
+	public void setValuesFromMap(HashMap<String,String> map) {
+		 this.observationStatus= map.get("observation.status");
+		 this.observationCode= map.get("observation.code");
+		 this.observationSubject= map.get("observation.subject");
+		 this.observationEffective= map.get("observation.effective");
+		 this.observationIssued= map.get("observation.issued");
+		 this.observationPerformer= map.get("observation.performer");
+		 this.observationValue= map.get("observation.value");
+		 this.observationInterpretation= map.get("observation.interpretation");
+		 this.observationComment= map.get("observation.comment");
+		 
+			
+		 this.observationBodySite = map.get("observation.bodysite");
+		 this.observationMethod= map.get("observation.method");
+		 this.observationDevice= map.get("observation.device");
+		 this.ReferenceRangeLow= map.get("observation.referenceRange.low");
+		 this.ReferenceRangeHigh= map.get("observation.referenceRange.high");
+		 this.ReferenceRangeType= map.get("observation.referenceRange.type");
+		 this.ReferenceRangeAppliesTo= map.get("observation.referenceRange.appliesto");
+		 this.ReferenceRangeText = map.get("observation.referenceRange.text");
+	}
 	
 	/* (non-Javadoc)
 	 * @see com.nttdata.agni.resources.core.AbstractResource#setResourceData()
@@ -30,28 +69,38 @@ public class ObservationImpl extends AbstractResource {
 	@Override
 	public void setResourceData() {
 		// TODO Auto-generated method stub
-		super.setResourceData();
-		
-		observation.addIdentifier().setValue(getObservationID());
-		observation.setStatus(ObservationStatus.valueOf(getObservationStatus()));
+		//super.setResourceData();
+		if (getObservationID() != null){
+			observation.addIdentifier().setValue(getObservationID());
+		}
+		if (getObservationStatus() != null){
+		//observation.setStatus(ObservationStatus.FINAL);
+				//.valueOf(getObservationStatus()));
+		}
+		if (getObservationCode() != null){
 		observation.setCode(new CodeableConcept().setText(getObservationCode()));
+		}
+		if (getObservationSubject() != null){
 		observation.setSubject(new Reference().setReference(getObservationSubject()));
-		
-		SimpleDateFormat formatter1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
-		try {
-			observation.setEffective(new DateTimeType(formatter1.parse(getObservationEffective())));
-		} catch (ParseException e) {
-			e.printStackTrace();
 		}
-		try {
-			observation.setIssued(formatter1.parse(getObservationIssued()));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		observation.addPerformer().setReference(getObservationPerformer());
-		observation.setValue(new CodeableConcept().setText(getObservationValue()));
-		observation.setInterpretation(new CodeableConcept().setText(getObservationInterpretation()));
-		observation.setComment(getObservationComment());
+//		SimpleDateFormat formatter1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+//		try {
+//			if (getObservationEffective() != null){
+//			observation.setEffective(new DateTimeType(formatter1.parse(getObservationEffective())));
+//			}
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+//		try {
+//			if (getObservationIssued() != null){
+//			observation.setIssued(formatter1.parse(getObservationIssued()));}
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+		//observation.addPerformer().setReference(getObservationPerformer());
+		//observation.setValue(new CodeableConcept().setText(getObservationValue()));
+		//observation.setInterpretation(new CodeableConcept().setText(getObservationInterpretation()));
+		//observation.setComment(getObservationComment());
 		observation.setBodySite(new CodeableConcept().setText(getObservationBodySite()));
 		observation.setMethod(new CodeableConcept().setText(getObservationMethod()));
 		observation.setDevice(new Reference().setReference(getObservationDevice()));
@@ -64,6 +113,12 @@ public class ObservationImpl extends AbstractResource {
 	public void getResourcedata() {
 		// TODO Auto-generated method stub
 		super.getResourcedata();
+	}
+	
+	@Override
+	public Resource getResource() {
+		// TODO Auto-generated method stub
+		return this.observation;
 	}
 	/**
 	 * @return the observation
@@ -188,6 +243,14 @@ public class ObservationImpl extends AbstractResource {
 	}
 	public void setReferenceRangeText(String ReferenceRangeText) {
 		this.ReferenceRangeText = ReferenceRangeText;
+	}
+
+	public String getResourceName() {
+		return resourceName;
+	}
+
+	public void setResourceName(String resourceName) {
+		this.resourceName = resourceName;
 	}
 
 }

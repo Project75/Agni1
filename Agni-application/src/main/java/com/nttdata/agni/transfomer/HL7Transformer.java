@@ -51,6 +51,16 @@ public class HL7Transformer extends AbstractTransformer {
 		
 		// TODO Auto-generated constructor stub
 	}
+	
+	public  String transform(String mapname, String value) {
+		System.out.println("ZZZZ"+mapname);
+		TransformRequest transformRequest = new TransformRequest(mapname);
+		//transformRequest.setMapname(mapname);
+		//transformRequest.setValue(value);
+		String response = transform(transformRequest);
+		return response;
+	}
+	
 	@Override
     public  String transform(TransformRequest transformRequest) {
     	String fhir=null;
@@ -133,17 +143,19 @@ public class HL7Transformer extends AbstractTransformer {
         		resource = ResourceFactory.getResource("patient");        		
         	}*/
     		String resourceName = propertyUtil.getHl7SegToFhirResources().get(segmentList.get(i));
-    		log.info("Creating resource from factory : "+ resourceName);
+    		log.info("Creating resource from factory : "+ resourceName+" for segment "+segmentList.get(i));
+    		if (segmentList.get(i).equalsIgnoreCase("MSH")){ resourceName ="messageheader";}
     		if (!((resourceName == null)|| (resourceName.isEmpty())) ){
 	        	resource = ResourceFactory.getResource(resourceName);
 	        	if (resource !=null){
+	        		log.info("Creating resource from factory : "+ resourceName+" for segment "+segmentList.get(i));
 	        		resource.setResourceDataFromMap(map);
 	        		resourceList.add(resource);
 	        	}
     		}
     	}
     	AbstractResource bundle = (BundleImpl)ResourceFactory.getResource("bundle");
-		
+    	log.info("Creating Bundle : ");
     	bundle.addResourcesFromList(resourceList);
 		String json = bundle.toJson();
 		return json;
@@ -154,7 +166,7 @@ public class HL7Transformer extends AbstractTransformer {
     	for (Map.Entry<String, String> entry : tempMap.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            System.out.println("haren--"+key+"--"+value);
+            System.out.println("Map:key:"+key+":value:"+value);
         }
     }
         

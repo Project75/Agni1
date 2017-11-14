@@ -124,15 +124,35 @@ JSONAssert.assertEquals(
         //User r1 = mockUser("shouldCreateRetrieveDelete");
         TransformRequest transformRequest =  new TransformRequest("test1");
         byte[] r1Json = toJson(transformRequest);
-
+        MvcResult result=null;String resultString =null;
         //CREATE
-        MvcResult result = mvc.perform(post("/fhirtranslator/v1/hl72fhir")
+/*        MvcResult result = mvc.perform(post("/fhirtranslator/v1/hl72fhir")
                 .content(r1Json)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())          
                 .andReturn();
-        String resultString = result.getResponse().getContentAsString();
+        String resultString = result.getResponse().getContentAsString();*/
+        //	System.out.println(resultString);
+        	
+        	//CREATE2
+        result = mvc.perform(post("/fhirtranslator/v1/hl72fhir/3/test1")
+                    .content(transformRequest.getValue())
+                    .contentType(MediaType.TEXT_PLAIN_VALUE)
+                    .accept(MediaType.ALL))
+       //             .andExpect(status().is2xxSuccessful())          
+                    .andReturn();
+         resultString = result.getResponse().getContentAsString();
+            System.out.println("************REQ2");
+            	System.out.println(resultString);
+            	
+             result = mvc.perform(post("/fhirtranslator/v1/hl72fhir/2")
+                .content("test1")
+                //.contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL))
+                //.andExpect(status().is2xxSuccessful())          
+                .andReturn();
+         resultString = result.getResponse().getContentAsString();
         	System.out.println(resultString);
         
       
@@ -176,6 +196,25 @@ JSONAssert.assertEquals(
     	mapping.add(new MappingList("messageheader.destination.name","MSH-5-1"));
     	mapping.add(new MappingList("messageheader.source.name","MSH-3-1"));
     	mapping.add(new MappingList("messageheader.timestamp","MSH-7-1"));
+    	mapping.add(new MappingList("observation.bodySite","OBX-20-1"));
+    	mapping.add(new MappingList("observation.method","OBX-17-1"));
+    	mapping.add(new MappingList("observation.device","OBX-17-1"));
+    	mapping.add(new MappingList("observation.referenceRange.low","OBX-7"));
+    	mapping.add(new MappingList("observation.referenceRange.high","OBX-7"));
+    	mapping.add(new MappingList("observation.referenceRange.type","OBX-10"));
+    	mapping.add(new MappingList("observation.referenceRange.appliesTo","OBX-10"));
+    	mapping.add(new MappingList("observation.referenceRange.text","OBX-7"));
+    	mapping.add(new MappingList("observation.component.code","OBX-3-1"));
+    	mapping.add(new MappingList("observation.component.value","OBX-2"));
+    	mapping.add(new MappingList("observation.component.interpretation","OBX-8"));
+    	mapping.add(new MappingList("observation.component.referenceRange","OBX-7"));
+    	mapping.add(new MappingList("observation.effective","OBX-14"));
+    	mapping.add(new MappingList("observation.status","OBX-11"));
+    	mapping.add(new MappingList("observation.code","OBX-13"));
+    	mapping.add(new MappingList("observation.performer","OBX-15"));
+    	mapping.add(new MappingList("observation.identifier","OBX-21"));
+    	mapping.add(new MappingList("observation.interpretation","OBX-8"));
+    	mapping.add(new MappingList("observation.code","OBX-3"));
     		return mapping;
     }
 
