@@ -10,6 +10,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import org.hl7.fhir.dstu3.model.Coding;
 import org.hl7.fhir.dstu3.model.MessageHeader;
 import org.hl7.fhir.dstu3.model.Resource;
@@ -23,6 +28,9 @@ import org.hl7.fhir.dstu3.model.Reference;
  * @author Harendra Pandey
  *
  */
+//@ToString
+@Getter 
+@Setter 
 public class MessageHeaderImpl extends AbstractResource{
 
 	MessageHeader messageheader;
@@ -67,7 +75,8 @@ public class MessageHeaderImpl extends AbstractResource{
 		messageSourceComponent.setEndpoint(source);
 		//messageheader.setReceiver(value);
 		messageheader.setSource(messageSourceComponent);
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");	
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
 		if (getDate() != null){
 			messageheader.setTimestamp(new java.util.Date());
 					//formatter.parse(getDate()));
@@ -79,7 +88,7 @@ public class MessageHeaderImpl extends AbstractResource{
 		// TODO Auto-generated method stub
 		return this.messageheader;
 	}
-	public MessageHeader getMessageheader() {
+	/*public MessageHeader getMessageheader() {
 		return messageheader;
 	}
 
@@ -118,7 +127,7 @@ public class MessageHeaderImpl extends AbstractResource{
 	public void setResourceName(String resourceName) {
 		this.resourceName = resourceName;
 	}
-	
+	*/
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
