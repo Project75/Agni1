@@ -26,6 +26,11 @@
 				<artifactId>Agni-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.nttdata</groupId>
+				<artifactId>Agni-application</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>

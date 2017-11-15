@@ -37,13 +37,14 @@ public class BundleImpl extends AbstractResource {
 	@Override	
 	public void addResourcesFromList(ArrayList<AbstractResource> resourceList) {
 		if (resourceList.size() > 0) {        	
-	    	for (AbstractResource res : resourceList) {	    		
+	    	for (AbstractResource res : resourceList) {	  
+	    		System.out.println("Harendra"+res);
 	    		bundle.addEntry()
-	 		   //.setFullUrl(res.getResource().getId())
 	 		   .setResource(res.getResource())
 	 		   .getRequest().setUrl(res.getResourceName()).setMethod(HTTPVerb.POST);
-	 		
+		 		   //.setFullUrl(res.getResource().getId())		
 	        }
+	    	//System.out.println("ZZZ"+this.toJson());
     	}
 		
 		

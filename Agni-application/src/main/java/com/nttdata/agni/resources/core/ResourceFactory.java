@@ -22,7 +22,8 @@ public class ResourceFactory {
 		        return null;
 	      case "bundle":
 		        return new BundleImpl();
-	        
+	      case "messageheader":
+		        return new MessageHeaderImpl();  
 	      default:
 	          // Error
 	          return null;
