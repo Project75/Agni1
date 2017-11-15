@@ -40,7 +40,7 @@ public class ResourceTest extends GenericResourceTest{
     public void testObservation() throws Exception {
     	String out=transform("Observation");
     	System.out.println("Observation:"+out);
-        assertEquals(out, "FINAL 3 null 2006-02-21 06:18:09 2006-02-21 06:18:09 15 null 8 null null 17 17 7 7 10 null 7");
+        assertEquals(out, "null FINAL 3 null 2006-02-21 06:18:09 2006-02-21 06:18:09 15 null 8 null null 17 17 7 7 10 null 7");
 
     }
 

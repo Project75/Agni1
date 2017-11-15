@@ -60,8 +60,11 @@ public class GenericResourceTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        return getResourceAsString(createFHIRResource(dataMap,resourceName));
-    	
+        AbstractResource res = createFHIRResource(dataMap,resourceName);
+        //print json 
+        System.out.println(getResourceAsJson(res));
+        return getResourceAsString(res);
+        
     }
 	private AbstractResource createFHIRResource(HashMap<String, String> dataMap,String resourceName) {
 		// TODO Auto-generated method stub
