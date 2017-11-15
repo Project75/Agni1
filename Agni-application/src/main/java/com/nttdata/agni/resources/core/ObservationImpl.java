@@ -45,8 +45,8 @@ public class ObservationImpl extends AbstractResource {
 		 this.observationStatus= map.get("observation.status");
 		 this.observationCode= map.get("observation.code");
 		 this.observationSubject= map.get("observation.subject");
-		 this.observationEffective= map.get("observation.effective");
-		 this.observationIssued= map.get("observation.issued");
+		 setObservationEffective(map.get("observation.effective"));
+		 setObservationIssued(map.get("observation.issued"));
 		 this.observationPerformer= map.get("observation.performer");
 		 this.observationValue= map.get("observation.value");
 		 this.observationInterpretation= map.get("observation.interpretation");
@@ -83,20 +83,20 @@ public class ObservationImpl extends AbstractResource {
 		if (getObservationSubject() != null){
 		observation.setSubject(new Reference().setReference(getObservationSubject()));
 		}
-//		SimpleDateFormat formatter1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
-//		try {
-//			if (getObservationEffective() != null){
-//			observation.setEffective(new DateTimeType(formatter1.parse(getObservationEffective())));
-//			}
-//		} catch (ParseException e) {
-//			e.printStackTrace();
-//		}
-//		try {
-//			if (getObservationIssued() != null){
-//			observation.setIssued(formatter1.parse(getObservationIssued()));}
-//		} catch (ParseException e) {
-//			e.printStackTrace();
-//		}
+		SimpleDateFormat formatter1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+		try {
+			if (getObservationEffective() != null){
+			observation.setEffective(new DateTimeType(formatter1.parse(getObservationEffective())));
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		try {
+			if (getObservationIssued() != null){
+			observation.setIssued(formatter1.parse(getObservationIssued()));}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		//observation.addPerformer().setReference(getObservationPerformer());
 		//observation.setValue(new CodeableConcept().setText(getObservationValue()));
 		//observation.setInterpretation(new CodeableConcept().setText(getObservationInterpretation()));
@@ -252,5 +252,11 @@ public class ObservationImpl extends AbstractResource {
 	public void setResourceName(String resourceName) {
 		this.resourceName = resourceName;
 	}
-
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return observationID+" "+ observationStatus+" "+ observationCode+" "+ observationSubject+" "+ observationEffective+" "+
+		observationIssued+" "+ observationPerformer+" "+ observationValue+" "+ observationInterpretation+" "+ observationComment+" "+ observationBodySite+" "+ 
+		observationMethod+" "+ observationDevice+" "+ ReferenceRangeLow+" "+ ReferenceRangeHigh+" "+ ReferenceRangeType+" "+ ReferenceRangeAppliesTo+" "+ ReferenceRangeText;
+	}
 }

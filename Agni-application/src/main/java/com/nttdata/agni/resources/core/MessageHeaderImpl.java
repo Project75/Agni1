@@ -48,9 +48,9 @@ public class MessageHeaderImpl extends AbstractResource{
 	}
 	
 	public void setValuesFromMap(HashMap<String,String> map) {
-		this.source = map.get("messageheader.source");
+		this.source = map.get("messageheader.source.name");
 		this.destination = map.get("messageheader.destination.name");
-		this.triggerevent = "Observation";
+		this.triggerevent = map.get("messageheader.event.code");
 		this.date=map.get("messageheader.timestamp");
 	}
 	
@@ -118,4 +118,11 @@ public class MessageHeaderImpl extends AbstractResource{
 	public void setResourceName(String resourceName) {
 		this.resourceName = resourceName;
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return source+" "+destination+" "+date +" "+triggerevent;
+	}
+	
 }

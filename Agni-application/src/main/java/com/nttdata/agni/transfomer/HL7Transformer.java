@@ -53,10 +53,8 @@ public class HL7Transformer extends AbstractTransformer {
 	}
 	
 	public  String transform(String mapname, String value) {
-		System.out.println("ZZZZ"+mapname);
+		log.debug("Mapname: "+mapname);
 		TransformRequest transformRequest = new TransformRequest(mapname);
-		//transformRequest.setMapname(mapname);
-		//transformRequest.setValue(value);
 		String response = transform(transformRequest);
 		return response;
 	}
@@ -73,8 +71,8 @@ public class HL7Transformer extends AbstractTransformer {
         	HL7SegmentList = getHL7SegmentList(hapiMsg);
         	HashMap<String, String> tempMap = getMappingsFromDB(mappingService, transformRequest.getMapname());
         	dataMap = getHL7ValuesMap(hapiMsg, tempMap);
-        	printmap(tempMap);
-        	printmap(dataMap);
+        	//printmap(tempMap);
+        	//printmap(dataMap);
 		} catch (HL7Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
