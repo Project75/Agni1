@@ -3,18 +3,44 @@ package com.nttdata.agni.test;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
+
+
+
+
+
+
+
+
+
+
+
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.Message;
 
+
+
+
+
 import com.nttdata.agni.domain.MappingList;
 import com.nttdata.agni.resources.core.*;
+import com.nttdata.agni.resources.utils.TransformUtils;
 import com.nttdata.agni.transfomer.*;
 
 import org.junit.Before;
+
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+
+import org.slf4j.LoggerFactory;
+
+
+
 
 
 
@@ -25,6 +51,12 @@ public class GenericResourceTest {
     @Before
     public void setUp() {
     	  	hl7Transformer = new HL7Transformer();
+    	  	
+    	  	Logger Logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger("ca.uhn.fhir");
+    	  			//("ca.uhn.fhir.context.ModelScanner");
+    	    Logger.setLevel(Level.WARN);
+    	     Logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger("ca.uhn.hl7v2");
+    	    Logger.setLevel(Level.WARN); 
     }
 
     public String testResource(String resource) {
@@ -46,7 +78,8 @@ public class GenericResourceTest {
     	
     }
     public  String transform(String resourceName,String payload) {
-    	
+    	System.out.println("***************************");
+    	System.out.println("Processing for "+resourceName);
     	HashMap<String, String> dataMap = null;
     	    	  
         try {        	        	
@@ -60,8 +93,11 @@ public class GenericResourceTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        return getResourceAsString(createFHIRResource(dataMap,resourceName));
-    	
+        AbstractResource res = createFHIRResource(dataMap,resourceName);
+        //print json 
+        System.out.println(getResourceAsJson(res));
+        return getResourceAsString(res);
+        
     }
 	private AbstractResource createFHIRResource(HashMap<String, String> dataMap,String resourceName) {
 		// TODO Auto-generated method stub
@@ -79,10 +115,7 @@ public class GenericResourceTest {
 
 	}
 	private String getResourceAsJson(AbstractResource resource) {
-		FhirContext ctx = FhirContext.forDstu3();
-		String encoded = ctx.newJsonParser().setPrettyPrint(true)
-        		.encodeResourceToString(resource.getResource());
-		return encoded;
+		return TransformUtils.resourceToJson(resource);
 	}
 	private String getResourceAsString(AbstractResource resource) {
 		return resource.toString();
@@ -94,7 +127,7 @@ public class GenericResourceTest {
         
         
         if (mappingList.size() > 0) {
-        	System.out.println("MappingList size is "+mappingList.size());
+        	//System.out.println("MappingList size is "+mappingList.size());
         	for (MappingList entity : mappingList) {	    		
         		mappingMap.put(entity.getFHIR(), entity.getHL7());	    		
 	        }

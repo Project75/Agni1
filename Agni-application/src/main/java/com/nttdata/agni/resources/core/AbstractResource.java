@@ -20,21 +20,9 @@ public class AbstractResource {
 	String id;
 	String resourceName;
 	
-	public String toJson() {
-		FhirContext ctx = FhirContext.forDstu3();
-		String encoded = ctx.newJsonParser().setPrettyPrint(true)
-        		//.newXmlParser().setPrettyPrint(true)
-                .encodeResourceToString(resource);
-		return encoded;
-	}
 	
-	public String toXML(Resource resource) {
-		FhirContext ctx = FhirContext.forDstu3();
-		String encoded = ctx.newXmlParser().setPrettyPrint(true)
-        		//.newXmlParser().setPrettyPrint(true)
-                .encodeResourceToString(resource);
-		return encoded;
-	}
+	
+	
 	
 	/**
 	 * @return the resource

@@ -44,13 +44,13 @@ public class BundleImpl extends AbstractResource {
 	 		   .getRequest().setUrl(res.getResourceName()).setMethod(HTTPVerb.POST);
 		 		   //.setFullUrl(res.getResource().getId())		
 	        }
-	    	//System.out.println("ZZZ"+this.toJson());
+	    	//System.out.println("bundle:"+this.toJson());
     	}
 		
 		
 	}
 	
-	@Override
+	
 	public String toJson() {
 		FhirContext ctx = FhirContext.forDstu3();
 		String encoded = ctx.newJsonParser().setPrettyPrint(true)
