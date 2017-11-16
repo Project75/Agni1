@@ -28,7 +28,7 @@ import org.hl7.fhir.dstu3.model.Reference;
  * @author Harendra Pandey
  *
  */
-//@ToString
+@ToString
 @Getter 
 @Setter 
 public class MessageHeaderImpl extends AbstractResource{
@@ -128,8 +128,8 @@ public class MessageHeaderImpl extends AbstractResource{
 		this.resourceName = resourceName;
 	}
 	*/
-	@Override
-	public String toString() {
+	
+	public String toString(String test) {
 		// TODO Auto-generated method stub
 		return source+" "+destination+" "+date +" "+triggerevent;
 	}

@@ -70,7 +70,9 @@ user.service:
   name: 'test profile:'
   
 logging:
-  file: boot_example.log
+  file: boot_agni.log
   org.hibernate: INFO
+  root:INFO
+  org.springframework.web=DEBUG
 
  
