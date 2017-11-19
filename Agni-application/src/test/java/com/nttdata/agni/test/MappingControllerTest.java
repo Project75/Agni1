@@ -79,7 +79,7 @@ public class MappingControllerTest {
 */
     @Test
     public void shouldCreateRetrieveDelete() throws Exception {
-    	 mapping = mockMappings(mapName);
+    	 mapping = GenericResourceTest.mockMappings(mapName);
         byte[] r1Json = toJson(mapping);
 
         //CREATE
@@ -92,6 +92,14 @@ public class MappingControllerTest {
                 .andReturn();
        // long id = getResourceIdFromUrl(result.getResponse().getRedirectedUrl());
 
+      //RETRIEVE
+        mvc.perform(get("/fhirtranslator/v1/mappings/default" )
+                .accept(MediaType.APPLICATION_JSON))
+       // .andExpect(jsonPath("$", hasSize(mapping.size())))
+       // .andExpect(jsonPath("$.[*].mapname", hasItems("default")))
+                .andExpect(status().isOk());
+           
+        
         //RETRIEVE
         mvc.perform(get("/fhirtranslator/v1/mappings/" + mapName)
                 .accept(MediaType.APPLICATION_JSON))
@@ -122,7 +130,7 @@ JSONAssert.assertEquals(
     @Test
     public void shouldPostHL7() throws Exception {
         //User r1 = mockUser("shouldCreateRetrieveDelete");
-        TransformRequest transformRequest =  new TransformRequest("test1");
+        TransformRequest transformRequest =  new TransformRequest("test1",GenericResourceTest.getTestPayload());
         byte[] r1Json = toJson(transformRequest);
         MvcResult result=null;String resultString =null;
         //CREATE
@@ -169,7 +177,7 @@ JSONAssert.assertEquals(
     }
 
 
-    private List<MappingList> mockMappings(String mapname) {
+    private List<MappingList> mockMappings2(String mapname) {
     	List<MappingList> mapping =  new ArrayList<MappingList>();
     	
     	mapping.add(new MappingList("patient.identifier","PID-3-1"));

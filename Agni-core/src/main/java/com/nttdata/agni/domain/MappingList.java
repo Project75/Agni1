@@ -6,7 +6,7 @@ import javax.persistence.*;
  * a simple domain entity doubling as a DTO
  */
 @Entity
-@Table(name = "mappingitem2")
+@Table(name = "mappingitem")
 public class MappingList {
 
     @Id

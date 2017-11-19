@@ -137,6 +137,7 @@ public class HL7Transformer extends AbstractTransformer {
     public  String createFHIRFromMap(HashMap<String, String> map,ArrayList<String> segmentList)  { 
     	//PropertyUtil propertyUtil =new PropertyUtil();
     	AbstractResource resource =  null;
+    	String json = null;
     	ArrayList<AbstractResource> resourceList = new ArrayList<AbstractResource>();
     	for (int i=0;i<segmentList.size();i++){
 /*        	if (segmentList.get(i)=="PID"){
@@ -149,15 +150,19 @@ public class HL7Transformer extends AbstractTransformer {
 	        	resource = ResourceFactory.getResource(resourceName);
 	        	if (resource !=null){
 	        		log.info("Creating resource from factory : "+ resourceName+" for segment "+segmentList.get(i));
+	        		map.put(resourceName.toLowerCase()+".guid",resource.getResource().getId());
+	        		System.out.println(resourceName.toLowerCase()+".guid="+resource.getResource().getId());
 	        		resource.setResourceDataFromMap(map);
 	        		resourceList.add(resource);
 	        	}
     		}
     	}
     	AbstractResource bundle = (BundleImpl)ResourceFactory.getResource("bundle");
-    	log.info("Creating Bundle : ");
+    	log.info("Creating Bundle : ");System.out.println("create bundle");
+    	if (bundle !=null){
     	bundle.addResourcesFromList(resourceList);
-		String json = TransformUtils.resourceToJson(bundle);
+		 json = ((BundleImpl) bundle).toJson();
+    	}
 		return json;
 		
     }

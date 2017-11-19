@@ -11,6 +11,7 @@ import org.hl7.fhir.dstu3.model.Bundle.BundleType;
 import org.hl7.fhir.dstu3.model.Bundle.HTTPVerb;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.model.primitive.IdDt;
 
 
 /**
@@ -23,7 +24,8 @@ public class BundleImpl extends AbstractResource {
 	Bundle bundle;
 	BundleImpl(){
 		bundle = new Bundle();
-		bundle.setType(BundleType.TRANSACTION);
+		bundle.setType(BundleType.MESSAGE);
+		bundle.setId(IdDt.newRandomUuid());
 	}
 	void addResourceToBundle(AbstractResource res){
 				
@@ -38,11 +40,12 @@ public class BundleImpl extends AbstractResource {
 	public void addResourcesFromList(ArrayList<AbstractResource> resourceList) {
 		if (resourceList.size() > 0) {        	
 	    	for (AbstractResource res : resourceList) {	  
-	    		System.out.println("Harendra"+res);
+	    		
 	    		bundle.addEntry()
+	    		.setFullUrl(res.getResource().getId())
 	 		   .setResource(res.getResource())
 	 		   .getRequest().setUrl(res.getResourceName()).setMethod(HTTPVerb.POST);
-		 		   //.setFullUrl(res.getResource().getId())		
+		 		
 	        }
 	    	//System.out.println("bundle:"+this.toJson());
     	}

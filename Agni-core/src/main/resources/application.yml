@@ -19,6 +19,10 @@ spring.jmx:
 spring.datasource:
     driverClassName: org.h2.Driver
     url: jdbc:h2:mem:bootexample;MODE=MySQL;DB_CLOSE_ON_EXIT=FALSE
+#    data: data.sql
+#    continue-on-error: true
+#    initialize: true
+#   schema: schema.sql
 #url: jdbc:h2:file:~/test;DB_CLOSE_ON_EXIT=FALSE
 
 
@@ -63,16 +67,14 @@ spring:
     console:
       enabled: true
 
-#spring.jpa:
-#    hibernate.ddl-auto: create-drop
+spring.jpa:
+    hibernate.ddl-auto: create-drop
 
 user.service:
   name: 'test profile:'
   
 logging:
   file: boot_agni.log
-  org.hibernate: INFO
-  root:INFO
-  org.springframework.web=DEBUG
+
 
  

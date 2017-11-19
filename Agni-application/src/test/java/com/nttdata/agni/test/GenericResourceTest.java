@@ -19,9 +19,15 @@ import java.util.List;
 
 
 
+
+
+
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.Message;
+
+
+
 
 
 
@@ -38,10 +44,6 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 
 import org.slf4j.LoggerFactory;
-
-
-
-
 
 
 
@@ -64,8 +66,7 @@ public class GenericResourceTest {
     	System.out.println(resource+" "+toStringResource);        
         return toStringResource;
     }
-
-    public  String transform(String resourceName) {
+    public static String getTestPayload() {
     	String payload = "MSH|^~\\&|HIS|RIH|EKG|EKG|199904140038||ADT^A01||P|2.2\r"
                 + "PID||001|199||JOHN^DOE||19751027|Female|||street 53^^PHOENIX^AZ^85013^US||(111)222-3333||N|W|||001|||||false||||||false|||||PID.35\r"
                 + "NK1|0222555|NOTREAL^JAMES^R|FA|STREET^OTHER STREET^CITY^ST^55566|(222)111-3333|(888)999-0000|Father||||||ORGANIZATION||Male\r"
@@ -74,7 +75,10 @@ public class GenericResourceTest {
                 +"OBX|1|TX|3|4|5|6|7|8|9|10|FINAL||13|20060221061809|15|16|17|18|19|20|21|22|23|24|25|26\r"
                 +"OBR|1|2156286|A140875|MRSHLR-C^MR Shoulder right wo/contrast|5||||9|10|11|12|13||15|16||18|19|20|21|20060221061809|23|24|25|26\r"
                 +"NTE|1|2|3|4\r";  
-    	return transform(resourceName, payload);
+    	return payload;
+    }
+    public  String transform(String resourceName) {
+    	return transform(resourceName, getTestPayload());
     	
     }
     public  String transform(String resourceName,String payload) {
@@ -96,7 +100,39 @@ public class GenericResourceTest {
         AbstractResource res = createFHIRResource(dataMap,resourceName);
         //print json 
         System.out.println(getResourceAsJson(res));
+        //testFHIR.convert(getResourceAsJson(res));
         return getResourceAsString(res);
+        
+    }
+    public  String transform() {
+    	String payload = "MSH|^~\\&|HIS|RIH|EKG|EKG|199904140038||ADT^A01||P|2.2\r"
+                + "PID||001|199||JOHN^DOE||19751027|Female|||street 53^^PHOENIX^AZ^85013^US||(111)222-3333||N|W|||001|||||false||||||false|||||PID.35\r"
+                + "NK1|0222555|NOTREAL^JAMES^R|FA|STREET^OTHER STREET^CITY^ST^55566|(222)111-3333|(888)999-0000|Father||||||ORGANIZATION||Male\r"
+                +"PV1||O|5501^0113^02|U|00060292||00276^DELBARE^POL^^DR.|00276^DELBARE^POL^^DR.||1901|||N|01|||||0161782703\r"
+                +"PD1|1|2|3|4|5|6|7|8|9|10\r"
+                +"OBX|1|TX|3|4|5|6|7|8|9|10|FINAL||13|20060221061809|15|16|17|18|19|20|21|22|23|24|25|26\r"
+                +"OBR|1|2156286|A140875|MRSHLR-C^MR Shoulder right wo/contrast|5||||9|10|11|12|13||15|16||18|19|20|21|20060221061809|23|24|25|26\r"
+                +"NTE|1|2|3|4\r";  
+    	System.out.println("***************************");
+    	System.out.println("Processing for bundle ");
+    	HashMap<String, String> dataMap = null;
+    	ArrayList<String> HL7SegmentList= null;
+        try {        	        	
+        	
+			Message hapiMsg = hl7Transformer.getHL7FromPayload(payload);
+ 
+        	HashMap<String, String> tempMap = getMappings();
+        	dataMap = hl7Transformer.getHL7ValuesMap(hapiMsg, tempMap);
+        	HL7SegmentList = hl7Transformer.getHL7SegmentList(hapiMsg);
+		} catch (HL7Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        String jsonBundle = hl7Transformer.createFHIRFromMap(dataMap, HL7SegmentList);
+        //print json 
+        System.out.println(jsonBundle);
+        //testFHIR.convert(getResourceAsJson(res));
+        return jsonBundle;
         
     }
 	private AbstractResource createFHIRResource(HashMap<String, String> dataMap,String resourceName) {
@@ -135,7 +171,7 @@ public class GenericResourceTest {
     	return mappingMap;
 		
 	}
-	private List<MappingList> mockMappings() {
+	private static List<MappingList> mockMappings() {
     	List<MappingList> mapping =  new ArrayList<MappingList>();
     	
     	mapping.add(new MappingList("patient.identifier","PID-3-1"));
@@ -153,9 +189,18 @@ public class GenericResourceTest {
     	mapping.add(new MappingList("patient.deceased","PID-30"));
     	mapping.add(new MappingList("patient.multipleBirth","PID-24"));
     	mapping.add(new MappingList("patient.photo","OBX-5"));
+		mapping.add(new MappingList("patient.contact.relationship","NK1-3"));
+		mapping.add(new MappingList("patient.contact.name","NK1-2"));
+		mapping.add(new MappingList("patient.contact.telecom","NK1-5"));
+		mapping.add(new MappingList("patient.contact.address","NK1-4"));
+		mapping.add(new MappingList("patient.contact.gender","NK1-15"));
+		mapping.add(new MappingList("patient.contact.organization","NK1-13"));
+		mapping.add(new MappingList("patient.generalPractitioner","PD1-4"));
+		mapping.add(new MappingList("patient.link.other","PID-3"));
     	mapping.add(new MappingList("encounter.identifier","PV1-19-1"));
     	mapping.add(new MappingList("encounter.status","PV1-2-1"));
     	mapping.add(new MappingList("encounter.location.display","PV1-3-1"));
+    	
     	mapping.add(new MappingList("encounter.participant.individual.display","PV1-7-2"));
     	mapping.add(new MappingList("encounter.participant.individual.reference","PV1-7-1"));
     	mapping.add(new MappingList("messageheader.event.code","MSH-9-2"));
@@ -184,4 +229,9 @@ public class GenericResourceTest {
     	mapping.add(new MappingList("observation.code","OBX-3"));
     		return mapping;
     }
+
+	public static List<MappingList> mockMappings(String mapName) {
+		// TODO Auto-generated method stub
+		return GenericResourceTest.mockMappings();
+	}
 }

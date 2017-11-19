@@ -21,6 +21,7 @@ import com.nttdata.agni.resources.core.AbstractResource;
 public final class TransformUtils {
 	public static String resourceToJson(AbstractResource resource){		
 		FhirContext ctx = FhirContext.forDstu3();
+		System.out.println();
 		String json = ctx.newJsonParser().setPrettyPrint(true)
         		.encodeResourceToString(resource.getResource());	
 		
