@@ -43,7 +43,18 @@ public class ResourceTest extends GenericResourceTest{
         assertEquals(out, "FINAL 3 null 2006-02-21 06:18:09 2006-02-21 06:18:09 15 null 8 null null 17 17 7 7 10 null 7");
 
     }
-
-    	
+    
+    @Test //Neha
+    public void testPractitioner() throws Exception {
+    	String out=transform("Practitioner");
+    	System.out.println("Practitioner:"+out);
+        //assertEquals(out, "1 null Adam (222)222-3333 street 3 PHOENIX AZ 85013 US Male 1976-02-21 null null English");
+    }	
+    
+    public void testPractitionerRole() throws Exception {
+    	String out=transform("PractitionerRole");
+    	System.out.println("PractitionerRole:"+out);
+        //assertEquals(out, "1 null Adam (222)222-3333 street 3 PHOENIX AZ 85013 US Male 1976-02-21 null null English");
+    }
     
 }

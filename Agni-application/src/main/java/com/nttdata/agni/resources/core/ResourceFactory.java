@@ -23,7 +23,11 @@ public class ResourceFactory {
 	      case "bundle":
 		        return new BundleImpl();
 	      case "messageheader":
-		        return new MessageHeaderImpl();  
+		        return new MessageHeaderImpl(); 
+	      case "practitioner":
+		        return new PractitionerImpl(); 
+	      case "practitionerrole":
+		        return new PractitionerRoleImpl();
 	      default:
 	          // Error
 	          return null;

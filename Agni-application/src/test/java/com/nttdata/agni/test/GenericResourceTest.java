@@ -37,11 +37,15 @@ public class GenericResourceTest {
     	String payload = "MSH|^~\\&|HIS|RIH|EKG|EKG|199904140038||ADT^A01||P|2.2\r"
                 + "PID||001|199||JOHN^DOE||19751027|Female|||street 53^^PHOENIX^AZ^85013^US||(111)222-3333||N|W|||001|||||false||||||false|||||PID.35\r"
                 + "NK1|0222555|NOTREAL^JAMES^R|FA|STREET^OTHER STREET^CITY^ST^55566|(222)111-3333|(888)999-0000|Father||||||ORGANIZATION||Male\r"
-                +"PV1||O|5501^0113^02|U|00060292||00276^DELBARE^POL^^DR.|00276^DELBARE^POL^^DR.||1901|||N|01|||||0161782703\r"
-                +"PD1|1|2|3|4|5|6|7|8|9|10\r"
-                +"OBX|1|TX|3|4|5|6|7|8|9|10|FINAL||13|20060221061809|15|16|17|18|19|20|21|22|23|24|25|26\r"
-                +"OBR|1|2156286|A140875|MRSHLR-C^MR Shoulder right wo/contrast|5||||9|10|11|12|13||15|16||18|19|20|21|20060221061809|23|24|25|26\r"
-                +"NTE|1|2|3|4\r";  
+                + "PV1||O|5501^0113^02|U|00060292||00276^DELBARE^POL^^DR.|00276^DELBARE^POL^^DR.||1901|||N|01|||||0161782703\r"
+                + "PD1|1|2|3|4|5|6|7|8|9|10\r"
+                + "OBX|1|TX|3|4|5|6|7|8|9|10|FINAL||13|20060221061809|15|16|17|18|19|20|21|22|23|24|25|26\r"
+                + "OBR|1|2156286|A140875|MRSHLR-C^MR Shoulder right wo/contrast|5||||9|10|11|12|13||15|16||18|19|20|21|20060221061809|23|24|25|26\r"
+                + "NTE|1|2|3|4\r"
+                + "PRD|1|2|3|4|5|6|7|8|9\r"
+                + "PRT|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15\r"
+                + "ORC|1|2|3|4|5|6|7|8|20170221061809|10|11|12|13|(333)111-3333|20170221061810|16|17|18|19|20|21|22|23|24|25\r"
+                + "STF|1|2|3|4|5|20170221061820|7\r";  
     	return transform(resourceName, payload);
     	
     }
@@ -149,6 +153,34 @@ public class GenericResourceTest {
     	mapping.add(new MappingList("observation.identifier","OBX-21"));
     	mapping.add(new MappingList("observation.interpretation","OBX-8"));
     	mapping.add(new MappingList("observation.code","OBX-3"));
-    		return mapping;
+    	
+    	//Neha
+    	mapping.add(new MappingList("practitioner.identifier","PRD-7"));
+    	mapping.add(new MappingList("practitioner.active",""));
+    	mapping.add(new MappingList("practitioner.name","PRD-2"));
+    	mapping.add(new MappingList("practitioner.telecom","PRT-15"));
+    	mapping.add(new MappingList("practitioner.address","ORC-24"));
+    	mapping.add(new MappingList("practitioner.gender","STF-5"));
+    	mapping.add(new MappingList("practitioner.birthDate","STF-6"));
+    	mapping.add(new MappingList("practitioner.photo",""));
+    	mapping.add(new MappingList("practitioner.qualification",""));
+    	mapping.add(new MappingList("practitioner.communication","PID-15"));
+    	mapping.add(new MappingList("practitionerrole.identifier","PRD-7"));
+    	mapping.add(new MappingList("practitionerrole.active","STF-7"));
+    	mapping.add(new MappingList("practitionerrole.period","PRD-8"));
+    	mapping.add(new MappingList("practitionerrole.practitioner",""));
+    	mapping.add(new MappingList("practitionerrole.observation",""));
+    	mapping.add(new MappingList("practitionerrole.code","PRD-1"));
+    	mapping.add(new MappingList("practitionerrole.speciality","PRA-5"));
+    	mapping.add(new MappingList("practitionerrole.location",""));
+    	mapping.add(new MappingList("practitionerrole.healthcareService","EDU-2"));
+    	mapping.add(new MappingList("practitionerrole.telecome",""));
+    	mapping.add(new MappingList("practitionerrole.availableTime",""));
+    	mapping.add(new MappingList("practitionerrole.notAvailable",""));
+    	mapping.add(new MappingList("practitionerrole.availabilityExceptions",""));
+    	mapping.add(new MappingList("practitionerrole.endpoint",""));
+    	
+    	
+    	return mapping;
     }
 }
