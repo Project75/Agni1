@@ -30,6 +30,8 @@ public class MappingList {
     @Column()
     String fhir;
 
+    Boolean IsFHIRRequired;
+    Boolean IsHL7Required;
 
     public MappingList() {
     }

@@ -5,6 +5,7 @@ package com.nttdata.agni.transfomer;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import ca.uhn.hl7v2.DefaultHapiContext;
 import ca.uhn.hl7v2.HL7Exception;
@@ -48,6 +52,12 @@ public class HL7Transformer extends AbstractTransformer {
 	
 	@Autowired
     private PropertyUtil propertyUtil;
+	
+
+	@Autowired
+	RestTemplate restTemplate;
+
+	public static final String MAPPING_SERVICE_URL = "http://localhost:8090/fhirtranslator/v1/mappings/savelist";
 	
 	public HL7Transformer() {
 		
@@ -102,6 +112,13 @@ public class HL7Transformer extends AbstractTransformer {
         }
         return segmentList;
     }
+    
+    public  HashMap<String, String> getMappingsFromDB( String mapname){
+    	HashMap<String, String> mappingMap =new HashMap<String, String>();
+    	 List<MappingList> mappingList =GetMappingbyMapname(MAPPING_SERVICE_URL,mapname);
+    	return mappingMap;
+    }
+    
     public  HashMap<String, String> getMappingsFromDB(MappingService mappingService, String mapname){    	
     	HashMap<String, String> mappingMap =new HashMap<String, String>();
         List<MappingList> mappingList = mappingService.findByMapname(mapname);
@@ -175,6 +192,21 @@ public class HL7Transformer extends AbstractTransformer {
         }
     }
         
-    
+    public List<MappingList> GetMappingbyMapname(String mapname, String serviceUrl) {
+		log.info("byMapnameContains() invoked:  for " + mapname);
+		MappingList[] mapping = null;
+
+		try {
+			mapping = restTemplate.getForObject(serviceUrl
+					+ "/{name}", MappingList[].class, mapname);
+		} catch (HttpClientErrorException e) { // 404
+			// Nothing found
+		}
+
+		if (mapping == null || mapping.length == 0)
+			return null;
+		else
+			return Arrays.asList(mapping);
+	}
 
 }

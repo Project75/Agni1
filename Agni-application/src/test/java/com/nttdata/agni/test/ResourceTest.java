@@ -53,7 +53,7 @@ public class ResourceTest extends GenericResourceTest{
 
     }
 
-    @Test
+   
     public void testBundle() throws Exception {
     	String out=transform();
     	//System.out.println("Bundle:"+out);

@@ -10,3 +10,4 @@ dependency-reduced-pom.xml
 *.idea
 *.log
 Thumbs.db
+agni.war
