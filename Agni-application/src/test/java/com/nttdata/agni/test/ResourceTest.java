@@ -49,8 +49,16 @@ public class ResourceTest extends GenericResourceTest{
     	String out=transform("Appointment");
     	System.out.println("Appointment:"+out);
         assertEquals(out, "01928374 BOOKED 3-comment 199 201605150800 20160515134500");
-
     }
+    
+    @Test
+    public void testImmunization() throws Exception {
+        	String out=transform("Immunization");
+        	System.out.println("Immunization:"+out);
+            assertEquals(out, "null 48 199 0161782703 ");
+    
+    }
+        
     	
     
 }

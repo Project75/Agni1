@@ -26,6 +26,8 @@ public class ResourceFactory {
 		        return new MessageHeaderImpl();
 	      case "appointment" :
 	    	  	return new AppointmentImpl();
+	      case "immunization" :
+	    	  return new ImmunizationImpl();
 	      default:
 	          // Error
 	          return null;
