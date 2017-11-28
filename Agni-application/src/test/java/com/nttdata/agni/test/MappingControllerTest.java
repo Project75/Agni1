@@ -78,7 +78,7 @@ public class MappingControllerTest {
     }
 */
     @Test
-    public void shouldCreateRetrieveDelete() throws Exception {
+    public void shouldCreateRetrieveMapping() throws Exception {
     	 mapping = GenericResourceTest.mockMappings(mapName);
         byte[] r1Json = toJson(mapping);
 
@@ -153,9 +153,14 @@ JSONAssert.assertEquals(
          resultString = result.getResponse().getContentAsString();
             System.out.println("************REQ2");
             	System.out.println(resultString);
-            	
+    }
+    public void shouldPostHL72() throws Exception {
+        //User r1 = mockUser("shouldCreateRetrieveDelete");
+        TransformRequest transformRequest =  new TransformRequest("test1",GenericResourceTest.getTestPayload());
+        byte[] r1Json = toJson(transformRequest);
+        MvcResult result=null;String resultString =null;
              result = mvc.perform(post("/fhirtranslator/v1/hl72fhir/2")
-                .content("test1")
+                .content(transformRequest.getValue())
                 //.contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.ALL))
                 //.andExpect(status().is2xxSuccessful())          

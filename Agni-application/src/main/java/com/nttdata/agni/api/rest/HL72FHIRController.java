@@ -46,9 +46,9 @@ public class HL72FHIRController extends AbstractRestHandler {
     method = RequestMethod.POST)
 @ResponseStatus(HttpStatus.CREATED)
 @ApiOperation(value = "HL7 to FHIR.", notes = "Returns FHIR resource bundle.")
-public String hl72fhir(@RequestBody String  str,
+public String hl72fhir(@RequestBody String  payload,
                          HttpServletRequest request, HttpServletResponse response) {
-        	return transformer.transform("test1","");
+        	return transformer.transform("test1",payload);
 
 }
     

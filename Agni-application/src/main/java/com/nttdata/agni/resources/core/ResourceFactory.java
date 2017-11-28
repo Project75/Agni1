@@ -19,7 +19,7 @@ public class ResourceFactory {
 	      case "observation":
 		        return new ObservationImpl();
 	      case "encounter":
-		        return null;
+		        return new EncounterImpl();
 	      case "bundle":
 		        return new BundleImpl();
 	      case "messageheader":

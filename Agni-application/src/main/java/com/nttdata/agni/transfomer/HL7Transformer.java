@@ -54,8 +54,8 @@ public class HL7Transformer extends AbstractTransformer {
     private PropertyUtil propertyUtil;
 	
 
-	@Autowired
-	RestTemplate restTemplate;
+	
+	
 
 	public static final String MAPPING_SERVICE_URL = "http://localhost:8090/fhirtranslator/v1/mappings/savelist";
 	
@@ -66,7 +66,7 @@ public class HL7Transformer extends AbstractTransformer {
 	
 	public  String transform(String mapname, String value) {
 		log.debug("Mapname: "+mapname);
-		TransformRequest transformRequest = new TransformRequest(mapname);
+		TransformRequest transformRequest = new TransformRequest(mapname,value);
 		String response = transform(transformRequest);
 		return response;
 	}
@@ -113,11 +113,27 @@ public class HL7Transformer extends AbstractTransformer {
         return segmentList;
     }
     
-    public  HashMap<String, String> getMappingsFromDB( String mapname){
+    public  HashMap<String, String> getMappingsFromDBWithApiCall(String mapname){
     	HashMap<String, String> mappingMap =new HashMap<String, String>();
-    	 List<MappingList> mappingList =GetMappingbyMapname(MAPPING_SERVICE_URL,mapname);
-    	return mappingMap;
+    	 List<MappingList> mappingList = GetMappingbyMapname(MAPPING_SERVICE_URL,mapname);
+    	 List<MappingList> mappingListDefault = GetMappingbyMapname(MAPPING_SERVICE_URL,"default");
+         
+         if (mappingListDefault.size() > 0) {        	
+ 	    	for (MappingList entity : mappingListDefault) {	    		
+ 	    		mappingMap.put(entity.getFHIR(), entity.getHL7());
+ 	        }
+     	}
+         if (mappingList.size() > 0) {
+         	//log.debug("MappingList size is "+mappingList.size());
+         	for (MappingList entity : mappingList) {	    		
+         		mappingMap.put(entity.getFHIR(), entity.getHL7());	    		
+ 	        }
+         } 
+     	return mappingMap;
+    	
     }
+    
+
     
     public  HashMap<String, String> getMappingsFromDB(MappingService mappingService, String mapname){    	
     	HashMap<String, String> mappingMap =new HashMap<String, String>();
@@ -139,16 +155,42 @@ public class HL7Transformer extends AbstractTransformer {
     }
     
     public  HashMap<String, String> getHL7ValuesMap(Message hapiMsg, HashMap<String, String> tempMap) throws HL7Exception{ 
-    	Terser terser = new Terser(hapiMsg);
+    	
     	HashMap<String, String> dataMap =new HashMap<String, String>();
     	for (Map.Entry<String, String> entry : tempMap.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            String valueHL7= terser.get(value);
+            String valueHL7= getHL7ValueUsingTerser(hapiMsg,value);
             dataMap.put(key, valueHL7);
         }
         
         return dataMap;
+    }
+    
+    public  String getHL7ValueUsingTerser(Message hapiMsg,String hl7FieldValue) throws HL7Exception  {
+    	Terser terser = new Terser(hapiMsg);
+    	String valueHL7 = "";
+    	if (hl7FieldValue.contains("+")){
+    		String [] arr =  hl7FieldValue.split("+");
+    		for (int i=0;i<arr.length;i++){
+    			if (i==0)
+    				valueHL7 =  terser.get(arr[i]);
+    			else 
+    				valueHL7 =  valueHL7 + terser.get(arr[i]);
+    		}
+    	}else if (hl7FieldValue.contains("||")){
+    		String [] arr =  hl7FieldValue.split("||");
+    		for (int i=0;i<arr.length;i++){
+    			String temp = terser.get(arr[i]);
+    			if ((temp != null)||(temp != "")){
+    				valueHL7 =  temp;
+    				break;
+    			}
+    		}
+    	}else 
+    	 valueHL7= terser.get(hl7FieldValue);
+    	
+    	return valueHL7;
     }
     
     public  String createFHIRFromMap(HashMap<String, String> map,ArrayList<String> segmentList)  { 
@@ -193,6 +235,8 @@ public class HL7Transformer extends AbstractTransformer {
     }
         
     public List<MappingList> GetMappingbyMapname(String mapname, String serviceUrl) {
+    	//shud be autowired
+    	RestTemplate restTemplate = new RestTemplate();
 		log.info("byMapnameContains() invoked:  for " + mapname);
 		MappingList[] mapping = null;
 

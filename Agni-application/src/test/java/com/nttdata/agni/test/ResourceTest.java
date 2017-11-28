@@ -24,8 +24,8 @@ public class ResourceTest extends GenericResourceTest{
       
     @Test
     public void testMessageHeader() throws Exception {
-    	String payload = "MSH|^~\\&|HIS|RIH|EKG|EKG|199904140038||ADT^A01||P|2.2\r"
-                + "PID||001|199||JOHN^DOE||19751027|Female|||street 53^^PHOENIX^AZ^85013^US||(111)222-3333||N|W|||001|||||false||||||false|||||PID.35\r"
+    	String payload = "MSH|^~\\&|HIS|RIH|EKG1|EKG|199904140038||ADT^A01||P|2.2\r"
+                + "PID||001|199||JOHN1^DOE||19751027|Female|||street 53^^PHOENIX^AZ^85013^US||(111)222-3333||N|W|||001|||||false||||||false|||||PID.35\r"
                 + "NK1|0222555|NOTREAL^JAMES^R|FA|STREET^OTHER STREET^CITY^ST^55566|(222)111-3333|(888)999-0000|Father||||||ORGANIZATION||Male\r"
                 +"PV1||O|5501^0113^02|U|00060292||00276^DELBARE^POL^^DR.|00276^DELBARE^POL^^DR.||1901|||N|01|||||0161782703\r"
                 +"PD1|1|2|3|4|5|6|7|8|9|10\r"
@@ -35,6 +35,14 @@ public class ResourceTest extends GenericResourceTest{
     	String out=transform("messageheader", payload);
     	System.out.println("messageheader:"+out);
         assertEquals(true, out.contains("HIS"));
+        //assertNotNull(messageHeaderImpl.getResource());
+    }
+    
+    @Test
+    public void testEncounter() throws Exception {
+    	String out=transform("encounter");
+    	System.out.println("encounter:"+out);
+    	//assertEquals(true, out.contains("EpisodeofCare"));
         //assertNotNull(messageHeaderImpl.getResource());
     }
     

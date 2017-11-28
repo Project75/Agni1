@@ -59,7 +59,7 @@ public class ObservationImpl extends AbstractResource {
 		setResourceData();
 
 	}
-	
+	//input map ("observation.status","ACTIVE")
 	public void setValuesFromMap(HashMap<String,String> map) {
 		 this.observationStatus= map.get("observation.status");
 		 this.observationCode= map.get("observation.code");
@@ -92,6 +92,8 @@ public class ObservationImpl extends AbstractResource {
 		if (getObservationID() != null){
 			observation.addIdentifier().setValue(getObservationID());
 		}
+		List<Reference> thePerformer ;
+		//observation.setPerformer(new List<Reference> thePerformer);
 		if (getObservationStatus() != null){
 		//observation.setStatus(ObservationStatus.FINAL);
 				//.valueOf(getObservationStatus()));
@@ -125,6 +127,7 @@ public class ObservationImpl extends AbstractResource {
 		observation.setDevice(new Reference().setReference(getObservationDevice()));
 		
 		observation.setSubject(new Reference().setReference(getObservationSubject()));
+		
 		List<ObservationReferenceRangeComponent> theReferenceRange = new ArrayList<ObservationReferenceRangeComponent>();
 		ObservationReferenceRangeComponent refRange = new ObservationReferenceRangeComponent();
 		SimpleQuantity value =  new SimpleQuantity();

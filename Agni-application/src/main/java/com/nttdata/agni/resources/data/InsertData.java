@@ -21,7 +21,7 @@ public void setDataSource(DataSource dataSource) {
 
 public  void insert(List<MappingList> mappingListDefault ){
 
-	String sql = "INSERT INTO mappingitem2 " +
+	String sql = "INSERT INTO mappingitem " +
 		"(mapname, hl7, fhir) VALUES (?, ?, ?)";
 
 	jdbcTemplate = new JdbcTemplate(dataSource);
