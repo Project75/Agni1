@@ -56,7 +56,7 @@ public class HL7Transformer extends AbstractTransformer {
 	
 	public  String transform(String mapname, String value) {
 		log.debug("Mapname: "+mapname);
-		TransformRequest transformRequest = new TransformRequest(mapname);
+		TransformRequest transformRequest = new TransformRequest(mapname,value);
 		String response = transform(transformRequest);
 		return response;
 	}
