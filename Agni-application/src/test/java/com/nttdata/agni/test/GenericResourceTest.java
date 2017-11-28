@@ -78,7 +78,8 @@ public class GenericResourceTest {
     			+"AIP|1||1069^GOOD^ALLAN^B|RADIOLOGIST||20160515134500|15|min|45|min||ACCEPTED|\r"
                 +"AIS|1||73610^X-RAY ANKLE 3+ VW^CPT|20160515134500|15|min|45|min||\r"
                 +"ARQ|19940047^SCH001|||||047^Referral||NORMAL|||201605150800^201605151700|2|||0045^Contact^Carrie^S^^^||||3372^Person^Entered||||\r"
-                +"RXA|0|1|20131021||48^Hib^CVX|2|mL^milliliters^UCUM||01^Historical-source\r";                ;
+                +"RXA|0|1|201312211100||48^Hib^CVX|2|mL^milliliters^UCUM||00^Administered^NIP001||||||K7164HI||PMC^sanofipasteur^MVX||||A|\r"
+                +"RXR|IMLA^LeftArmIntramuscular^HL70162|LA^Left arm^HL70163|\r";                ;
     	return transform(resourceName, payload);
     	
     }
@@ -219,7 +220,7 @@ public class GenericResourceTest {
     	mapping.add(new MappingList("Immunization.encounter.identifier.period.start","PV1-19-7"));
     	mapping.add(new MappingList("Immunization.encounter.identifier.period.end","PV1-19-8"));
     	mapping.add(new MappingList("Immunization.encounter.identifier.assigner","PV1-19-4-1"));
-    	/*mapping.add(new MappingList("Immunization.date","RXA-3"));
+    	mapping.add(new MappingList("Immunization.date","RXA-3"));
     	mapping.add(new MappingList("Immunization.reportOrigin.coding.system","RXA-9-3"));
     	mapping.add(new MappingList("Immunization.reportOrigin.coding.code","RXA-9-1"));
     	mapping.add(new MappingList("Immunization.reportOrigin.coding.display","RXA-9-2"));
@@ -236,13 +237,13 @@ public class GenericResourceTest {
     	mapping.add(new MappingList("Immunization.route.coding.display","RXR-1-2"));
     	mapping.add(new MappingList("Immunization.doseQuantity","RXA-6"));
     	mapping.add(new MappingList("Immunization.practitioner","RXA-10"));
-    	mapping.add(new MappingList("Immunization.practitioner.role.coding.system","RXA-18-3"));
+    	/*mapping.add(new MappingList("Immunization.practitioner.role.coding.system","RXA-18-3"));
     	mapping.add(new MappingList("Immunization.practitioner.role.coding.code","RXA-18-1"));
-    	mapping.add(new MappingList("Immunization.practitioner.role.coding.display","RXA-18-2"));
+    	mapping.add(new MappingList("Immunization.practitioner.role.coding.display","RXA-18-2"));*/
     	mapping.add(new MappingList("Immunization.reaction.date","OBX-14"));
     	mapping.add(new MappingList("Immunization.reaction.detail","OBX-5"));
     	mapping.add(new MappingList("Immunization.reaction.detail.identifier.system","OBX-3-3"));
-    	mapping.add(new MappingList("Immunization.reaction.detail..identifier.value","OBX-3-1"));*/
+    	mapping.add(new MappingList("Immunization.reaction.detail.identifier.value","OBX-3-1"));
 
 
   	
