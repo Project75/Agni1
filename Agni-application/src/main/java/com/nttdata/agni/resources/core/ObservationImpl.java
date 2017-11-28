@@ -83,7 +83,7 @@ public class ObservationImpl extends AbstractResource {
 		if (getObservationSubject() != null){
 		observation.setSubject(new Reference().setReference(getObservationSubject()));
 		}
-		SimpleDateFormat formatter1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+		SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
 			if (getObservationEffective() != null){
 			observation.setEffective(new DateTimeType(formatter1.parse(getObservationEffective())));

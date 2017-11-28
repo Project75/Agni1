@@ -73,7 +73,11 @@ public class GenericResourceTest {
                 +"PD1|1|2|3|4|5|6|7|8|9|10\r"
                 +"OBX|1|TX|3|4|5|6|7|8|9|10|FINAL||13|20060221061809|15|16|17|18|19|20|21|22|23|24|25|26\r"
                 +"OBR|1|2156286|A140875|MRSHLR-C^MR Shoulder right wo/contrast|5||||9|10|11|12|13||15|16||18|19|20|21|20060221061809|23|24|25|26\r"
-                +"NTE|1|2|3|4\r";  
+                +"NTE|1|2|3-comment|4\r"
+                +"SCH|01928374|57483920|||||||1|hr|1^^^20160515133000^20160515134500|||||||||1173^MATTHEWS^JAMES^A|||||BOOKED\r"
+    			+"AIP|1||1069^GOOD^ALLAN^B|RADIOLOGIST||20160515134500|15|min|45|min||ACCEPTED|\r"
+                +"AIS|1||73610^X-RAY ANKLE 3+ VW^CPT|20160515134500|15|min|45|min||\r"
+                +"ARQ|19940047^SCH001|||||047^Referral||NORMAL|||201605150800^201605151700|2|||0045^Contact^Carrie^S^^^||||3372^Person^Entered||||\r";
     	return transform(resourceName, payload);
     	
     }
@@ -182,6 +186,24 @@ public class GenericResourceTest {
     	mapping.add(new MappingList("observation.identifier","OBX-21"));
     	mapping.add(new MappingList("observation.interpretation","OBX-8"));
     	mapping.add(new MappingList("observation.code","OBX-3"));
+    	
+    	// Appointment mappings
+    	mapping.add(new MappingList("appointment.identifier","SCH-1"));
+    	mapping.add(new MappingList("appointment.status","SCH-25"));
+    	mapping.add(new MappingList("appointment.appointmentType","ARQ-7"));
+    	mapping.add(new MappingList("appointment.reason","AIS-3-2"));
+    	mapping.add(new MappingList("appointment.priority","ARQ-12"));
+    	mapping.add(new MappingList("appointment.description","NTE-3"));
+    	mapping.add(new MappingList("appointment.start","ARQ-11-1"));
+    	mapping.add(new MappingList("appointment.end","SCH-11-5"));
+    	mapping.add(new MappingList("appointment.comment","NTE-3"));
+    	mapping.add(new MappingList("appointment.participant.type","AIP-4"));
+    	mapping.add(new MappingList("appointment.participant.actor","PID-3-1"));
+    	mapping.add(new MappingList("appointment.participant.status","AIP-12"));
+    	mapping.add(new MappingList("appointment.requestedPeriod","ARQ-11-1"));
+  	
+    	
+    	
     		return mapping;
     }
 }

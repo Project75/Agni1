@@ -27,5 +27,9 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/aspectj1.8/lib/aspectjrt.jar"/>
+	<classpathentry kind="lib" path="C:/aspectj1.8/lib/aspectjtools.jar"/>
+	<classpathentry kind="lib" path="C:/aspectj1.8/lib/aspectjweaver.jar"/>
+	<classpathentry kind="lib" path="C:/aspectj1.8/lib/org.aspectj.matcher.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

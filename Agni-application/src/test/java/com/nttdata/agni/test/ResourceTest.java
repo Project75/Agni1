@@ -21,7 +21,7 @@ import org.junit.Test;
 
 
 public class ResourceTest extends GenericResourceTest{
-      
+ /*     
     @Test
     public void testMessageHeader() throws Exception {
     	String out=transform("messageheader");
@@ -43,7 +43,14 @@ public class ResourceTest extends GenericResourceTest{
         assertEquals(out, "null FINAL 3 null 2006-02-21 06:18:09 2006-02-21 06:18:09 15 null 8 null null 17 17 7 7 10 null 7");
 
     }
+*/
+    @Test
+    public void testAppointment() throws Exception {
+    	String out=transform("Appointment");
+    	System.out.println("Appointment:"+out);
+        assertEquals(out, "01928374 BOOKED 3-comment 199 201605150800 20160515134500");
 
+    }
     	
     
 }
