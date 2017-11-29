@@ -1,0 +1,28 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header :: copy"></head>
+
+<body>
+	<h1>Mapping Details</h1>
+
+	<dl class="dl-horizontal">
+		<dt>Mapname</dt>
+		<dd th:text="${mapping.mapname}">string</dd>
+		<dt>FHIR</dt>
+		<dd th:text="${mapping.fhir}">string</dd>
+		<dt>HL7</dt>
+		<dd th:text="${mapping.hl7}">string</dd>
+	</dl>
+
+	<div style="height: 2cm">&nbsp;</div>
+
+	<div style="text-align: right">
+		Options: <a th:href="@{/}">Home</a> | <a
+			th:href="@{/mapping/search}">mapping Search</a>
+	</div>
+
+	<div th:replace="footer :: copy"></div>
+</body>
+</html>

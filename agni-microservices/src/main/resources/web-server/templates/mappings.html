@@ -1,0 +1,50 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header :: copy"></head>
+
+<body>
+	<h1>Mapping by Name</h1>
+	<div th:if="not ${mappings}" class="error">
+		No mapping found containing '<span th:text="${search}">text</span>'.
+		<div style="height: 2cm">&nbsp;</div>
+	</div>
+
+	<div th:if="${mappings}">
+		<p>
+			Mapping whose owner contains ' <span th:text="${search}">text</span>'
+			are:
+		</p>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Mapname</th>
+					<th>FHIR</th>
+					<th>HL7</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr th:each="mapping : ${mappings}">
+					<td><a href="mapping.html"
+						th:href="@{|/mappings/${mapping.mapname}|}"
+						th:text="|${mapping.mapname}|">mapping</a></td>
+					<td th:text="${mapping.fhir}">fhir</td>
+					<td th:text="${mapping.hl7}">hl7</td>
+					<td><button>Update</button> </td>
+					<td><button>Delete</button> </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div style="text-align: right">
+		Options: <a th:href="@{/}">Home</a> | <a
+			th:href="@{/mappings/search}">Mappings Search</a>
+	</div>
+
+	<div th:replace="footer :: copy"></div>
+</body>
+</html>
