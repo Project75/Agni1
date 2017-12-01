@@ -28,7 +28,7 @@ public class AbstractResource {
 	 * @return the resource
 	 */
 	public Resource getResource() {
-		return resource;
+		return this.resource;
 	}
 
 	/**
