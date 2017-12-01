@@ -70,6 +70,7 @@ public class GenericResourceTest {
                 + "PID||001|199^^^EHR^MR||JOHN^DOE||19751027|Female|||street 53^^PHOENIX^AZ^85013^US||(111)222-3333||N|W|||001|||||false||||||false|||||PID.35\r"
                 + "NK1|0222555|NOTREAL^JAMES^R|FA|STREET^OTHER STREET^CITY^ST^55566|(222)111-3333|(888)999-0000|Father||||||ORGANIZATION||Male\r"
                 +"PV1||O|5501^0113^02|U|00060292||00276^DELBARE^POL^^DR.|00276^DELBARE^POL^^DR.||1901|||N|01|||||0161782703^^^EHR^ACCT\r"
+                +"PV2|PV2.1|PV2.2|PV2.3|PV2.4|PV2.5|PV2.6|PV2.7|20160515||PV2.10|||||||||ACCT\r"
                 +"PD1|1|2|3|4|5|6|7|8|9|10\r"
                 +"OBX|1|TX|3|4|5|6|7|8|9|10|FINAL||13|20060221061809|15|16|17|18|19|20|21|22|23|24|25|26\r"
                 +"OBR|1|2156286|A140875|MRSHLR-C^MR Shoulder right wo/contrast|5||||9|10|11|12|13||15|16||18|19|20|21|20060221061809|23|24|25|26\r"
@@ -79,7 +80,8 @@ public class GenericResourceTest {
                 +"AIS|1||73610^X-RAY ANKLE 3+ VW^CPT|20160515134500|15|min|45|min||\r"
                 +"ARQ|19940047^SCH001|||||047^Referral||NORMAL|||201605150800^201605151700|2|||0045^Contact^Carrie^S^^^||||3372^Person^Entered||||\r"
                 +"RXA|0|1|201312211100||48^Hib^CVX|2|mL^milliliters^UCUM||00^Administered^NIP001|DUMMYPRACTITIONER|||||K7164HI||PMC^sanofipasteur^MVX|DUMNONED^DUMALLERGIC^DUM|||A|\r"
-                +"RXR|IMLA^LeftArmIntramuscular^HL70162|LA^Left arm^HL70163|\r";                
+                +"RXR|IMLA^LeftArmIntramuscular^HL70162|LA^Left arm^HL70163|\r"
+                +"ROL|45^RECORDER^ROLE MASTER LIST|AD|CP|KATE^SMITH^ELLEN|199505011201\r";                
     	return transform(resourceName, payload);
     	
     }
@@ -245,8 +247,34 @@ public class GenericResourceTest {
     	mapping.add(new MappingList("Immunization.reaction.detail.identifier.system","OBX-3-3"));
     	mapping.add(new MappingList("Immunization.reaction.detail.identifier.value","OBX-3-1"));
 
+    	//Encounter mappings
+    	mapping.add(new MappingList("Encounter.identifier", "PV1-19"));
+    	mapping.add(new MappingList("Encounter.class", "PV1-2"));
+    	mapping.add(new MappingList("Encounter.type", "PV1-4"));
+    	mapping.add(new MappingList("Encounter.priority", "PV2-25"));
+    	mapping.add(new MappingList("Encounter.subject", "PID-3"));
+    	mapping.add(new MappingList("Encounter.episodeOfCare", "PV1-54"));
+    	mapping.add(new MappingList("Encounter.participant.type", "ROL-3"));
+    	mapping.add(new MappingList("Encounter.participant.period.start", "ROL-5"));
+    	mapping.add(new MappingList("Encounter.participant.period.end", "ROL-6"));
+    	mapping.add(new MappingList("Encounter.participant.individual", "ROL-4"));
+    	mapping.add(new MappingList("Encounter.appointment", "SCH-1"));
+    	mapping.add(new MappingList("Encounter.period.start", "PV1-44"));
+    	mapping.add(new MappingList("Encounter.period.end", "PV1-45"));
+    	mapping.add(new MappingList("Encounter.length", "PV1-45"));
+    	mapping.add(new MappingList("Encounter.reason", "EVN-4"));
+    	mapping.add(new MappingList("Encounter.hospitalization.preAdmissionIdentifier", "PV1-5"));
+    	mapping.add(new MappingList("Encounter.hospitalization.admitSource", "PV1-14"));
+    	mapping.add(new MappingList("Encounter.hospitalization.reAdmission", "PV1-13"));
+    	mapping.add(new MappingList("Encounter.hospitalization.dietPreference", "PV1-38"));
+    	mapping.add(new MappingList("Encounter.hospitalization.specialCourtesy", "PV1-16"));
+    	mapping.add(new MappingList("Encounter.hospitalization.specialArrangement", "PV1-15"));
+    	mapping.add(new MappingList("Encounter.hospitalization.destination", "PV1-37"));
+    	mapping.add(new MappingList("Encounter.hospitalization.dischargeDisposition", "PV1-36"));
+    	mapping.add(new MappingList("Encounter.location.location", "PV1-3"));
+    	mapping.add(new MappingList("Encounter.serviceProvider", "PV1-10"));
 
-  	
+
     	
     	
     		return mapping;

@@ -59,6 +59,12 @@ public class ResourceTest extends GenericResourceTest{
     
     }
         
-    	
+    @Test
+    public void testEncounter() throws Exception {
+        	String out=transform("Encounter");
+        	System.out.println("Encounter:"+out);
+            assertEquals(out, "0161782703 O U null ");
+    
+    }	
     
 }

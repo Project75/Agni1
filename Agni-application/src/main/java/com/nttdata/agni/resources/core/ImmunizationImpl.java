@@ -31,7 +31,7 @@ import com.nttdata.agni.domain.MappingList;
 
 /**
  * Copyright NTT Data
- * Agni-Applicationo-
+ * Agni-Application-
  * @author Sameer Mathur
  *
  */
