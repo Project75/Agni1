@@ -22,13 +22,14 @@ import org.junit.Test;
 
 public class ResourceTest extends GenericResourceTest{
       
-    @Test
+   /* @Test
     public void testMessageHeader() throws Exception {
     	String out=transform("messageheader");
     	System.out.println("messageheader:"+out);
         assertEquals(true, out.contains("HIS"));
         //assertNotNull(messageHeaderImpl.getResource());
     }
+    */
     @Test
     public void testPatient() throws Exception {
     	String out=transform("patient");
@@ -36,11 +37,19 @@ public class ResourceTest extends GenericResourceTest{
         assertEquals(out, "JOHN DOE 199 Female null street 53 PHOENIX AZ 85013 US (111)222-3333 W false false null null null null null null null null");
         //assertNotNull(messageHeaderImpl.getResource());
     }
+    /*
     @Test
     public void testObservation() throws Exception {
     	String out=transform("Observation");
     	System.out.println("Observation:"+out);
         assertEquals(out, "null FINAL 3 null 2006-02-21 06:18:09 2006-02-21 06:18:09 15 null 8 null null 17 17 7 7 10 null 7");
+
+    } */
+    @Test
+    public void testMedicationStatement() throws Exception {
+    	String out=transform("MedicationStatement");
+    	System.out.println("MedicationStatement:"+out);
+        assertEquals(out, "2156286 199 199 JOHN");
 
     }
 

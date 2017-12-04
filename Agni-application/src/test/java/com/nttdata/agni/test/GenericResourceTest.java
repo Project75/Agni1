@@ -182,6 +182,12 @@ public class GenericResourceTest {
     	mapping.add(new MappingList("observation.identifier","OBX-21"));
     	mapping.add(new MappingList("observation.interpretation","OBX-8"));
     	mapping.add(new MappingList("observation.code","OBX-3"));
+    	
+    	// Mapping for MedicationStatement resource.
+    	mapping.add(new MappingList("MedicationStatement.identifier","OBR-2-1")); // dummy value just for testing 
+    	mapping.add(new MappingList("MedicationStatement.subject.reference","PID-3-1"));
+    	mapping.add(new MappingList("MedicationStatement.subject.identifier.value","PID-3-1"));
+    	mapping.add(new MappingList("MedicationStatement.subject.display","PID-5-1"));// dummy value just for testing
     		return mapping;
     }
 }

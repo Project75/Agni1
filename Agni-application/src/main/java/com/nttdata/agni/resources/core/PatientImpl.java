@@ -21,10 +21,13 @@ import org.hl7.fhir.dstu3.model.Resource;
 
 import ca.uhn.fhir.model.primitive.IdDt;
 
+
 /**
  * Copyright NTT Data
  * @author Harendra Pandey
  */
+
+
 public class PatientImpl extends AbstractResource{
 	/**
 	 * 
