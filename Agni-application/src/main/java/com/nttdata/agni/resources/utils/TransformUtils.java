@@ -40,9 +40,9 @@ public final class TransformUtils {
 		return encoded;
 	}
 	
-	public static CodeableConcept ConvertToCodeableConcept (String HL7fieldName, String HL7fieldValue) {		
+	public static CodeableConcept BuildCodeableConcept (String HL7fieldName, String HL7fieldValue) {		
 		
-		HashMap<String,String> fieldmap = GetHL7FieldMapNonRepeating(HL7fieldName,HL7fieldValue);
+	HashMap<String,String> fieldmap = GetHL7FieldMapNonRepeating(HL7fieldName,HL7fieldValue);
 		String codingSystem = null,	codingCode = null ,	codingDisplay = null ,codingVersion = null ,CodeableText = null;
 
 		for (Map.Entry<String, String> entry : fieldmap.entrySet()) {
@@ -60,11 +60,11 @@ public final class TransformUtils {
             }
             System.out.println("Map:key:"+key+":value:"+value);
         }
-		CodeableConcept theCodeableConcept = ConvertToCodeableConcept(codingSystem,codingCode,codingDisplay,CodeableText, codingVersion);
+		CodeableConcept theCodeableConcept = BuildCodeableConcept(codingSystem,codingCode,codingDisplay,CodeableText, codingVersion);
 		return theCodeableConcept;
 	}
 	
-	public static CodeableConcept ConvertToCodeableConcept (String codingSystem, String codingCode, String codingDisplay, String CodeableText, String codingVersion) {
+	public static CodeableConcept BuildCodeableConcept (String codingSystem, String codingCode, String codingDisplay, String CodeableText, String codingVersion) {
 		Coding theCoding = new Coding();
 		theCoding.setSystem(codingSystem);
 		theCoding.setCode(codingCode);
