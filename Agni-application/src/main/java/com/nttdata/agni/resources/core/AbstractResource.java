@@ -19,6 +19,7 @@ public class AbstractResource {
 	Resource resource;
 	String id;
 	String resourceName;
+	public String[] varibleArray ; // Added by Ankit
 	
 	
 	
@@ -82,6 +83,14 @@ public class AbstractResource {
 	public void setId() {
 		this.id = java.util.UUID.randomUUID().toString();
 	}
+
+	public String[] getVaribleArray() {
+		// TODO Auto-generated method stub
+		return varibleArray;
+		
+	}
+
+	
 
 	/**
 	 * @return

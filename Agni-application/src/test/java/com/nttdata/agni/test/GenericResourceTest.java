@@ -67,13 +67,15 @@ public class GenericResourceTest {
 
     public  String transform(String resourceName) {
     	String payload = "MSH|^~\\&|HIS|RIH|EKG|EKG|199904140038||ADT^A01||P|2.2\r"
-                + "PID||001|199||JOHN^DOE||19751027|Female|||street 53^^PHOENIX^AZ^85013^US||(111)222-3333||N|W|||001|||||false||||||false|||||PID.35\r"
+                + "PID||001|199||JOHN^DOE||19751027|Female|||street 53^^PHOENIX^AZ^85013^US||(111)222-3333^^^^^^(111)222-3333||N|W|||001|||||false||||||false|||||PID.35\r"
                 + "NK1|0222555|NOTREAL^JAMES^R|FA|STREET^OTHER STREET^CITY^ST^55566|(222)111-3333|(888)999-0000|Father||||||ORGANIZATION||Male\r"
                 +"PV1||O|5501^0113^02|U|00060292||00276^DELBARE^POL^^DR.|00276^DELBARE^POL^^DR.||1901|||N|01|||||0161782703\r"
                 +"PD1|1|2|3|4|5|6|7|8|9|10\r"
                 +"OBX|1|TX|3|4|5|6|7|8|9|10|FINAL||13|20060221061809|15|16|17|18|19|20|21|22|23|24|25|26\r"
                 +"OBR|1|2156286|A140875|MRSHLR-C^MR Shoulder right wo/contrast|5||||9|10|11|12|13||15|16||18|19|20|21|20060221061809|23|24|25|26\r"
-                +"NTE|1|2|3|4\r";  
+                +"NTE|1|2|3|4\r"
+                +"ORC||||||||||||||||||||||orcstreet 53^^LA^CAL^12345^US|(333)444-5555^^";  
+    	
     	return transform(resourceName, payload);
     	
     }
@@ -86,7 +88,7 @@ public class GenericResourceTest {
         	
 			Message hapiMsg = hl7Transformer.getHL7FromPayload(payload);
  
-        	HashMap<String, String> tempMap = getMappings();
+        	HashMap<String, String> tempMap = getMappings(resourceName); // Argument added by Ankit
         	dataMap = hl7Transformer.getHL7ValuesMap(hapiMsg, tempMap);
         	
 		} catch (HL7Exception e) {
@@ -120,10 +122,11 @@ public class GenericResourceTest {
 	private String getResourceAsString(AbstractResource resource) {
 		return resource.toString();
 	}
-	private HashMap<String, String> getMappings() {
+	private HashMap<String, String> getMappings(String resourceName) // Argument added by Ankit 
+	{
 		// TODO Auto-generated method stub
 		HashMap<String, String> mappingMap =new HashMap<String, String>();
-        List<MappingList> mappingList = mockMappings();
+        List<MappingList> mappingList = mockMappings(resourceName); // Argument added by Ankit
         
         
         if (mappingList.size() > 0) {
@@ -135,7 +138,8 @@ public class GenericResourceTest {
     	return mappingMap;
 		
 	}
-	private List<MappingList> mockMappings() {
+	private List<MappingList> mockMappings(String resourceName)// Argument Added by Ankit
+	{
     	List<MappingList> mapping =  new ArrayList<MappingList>();
     	
     	mapping.add(new MappingList("patient.identifier","PID-3-1"));
@@ -188,6 +192,49 @@ public class GenericResourceTest {
     	mapping.add(new MappingList("MedicationStatement.subject.reference","PID-3-1"));
     	mapping.add(new MappingList("MedicationStatement.subject.identifier.value","PID-3-1"));
     	mapping.add(new MappingList("MedicationStatement.subject.display","PID-5-1"));// dummy value just for testing
-    		return mapping;
+    		
+    				
+    			
+    		
+    	// Mapping for Organization resource.
+   	  //  mapping.add(new MappingList(resourceName+"."+ResourceFactory.getResource(resourceName).getVaribleArray()[0],"")); //
+   	 //   mapping.add(new MappingList(resourceName+"."+ResourceFactory.getResource(resourceName).getVaribleArray()[1],"")); //
+   	  //  mapping.add(new MappingList(resourceName+"."+ResourceFactory.getResource(resourceName).getVaribleArray()[2],"")); //
+   	  //  mapping.add(new MappingList(resourceName+"."+ResourceFactory.getResource(resourceName).getVaribleArray()[3],"")); //
+   	 //   mapping.add(new MappingList(resourceName+"."+ResourceFactory.getResource(resourceName).getVaribleArray()[4],"")); //
+   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[5],"ORC-23-3")); //
+   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[6],"ORC-23-1")); //
+   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[7],"ORC-22-7")); //
+   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[8],"ORC-22-1")); //
+   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[9],"ORC-22-3")); //
+   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[10],"ORC-22-4")); //
+   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[11],"ORC-22-5")); //
+   	   mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[12],"ORC-22-6")); //
+   	  mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[13],"ORC-22-12")); //
+   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[14],"PID-5-1")); //
+   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[15],"PID-5-2")); //
+   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[16],"PID-5-5")); //
+   	   mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[17],"PID-5-4")); //
+   	  mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[18],"PID-5-10")); //
+   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[19],"PID-13-7")); // Concatnate pending
+   	   mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[20],"PID-11-7")); //
+   	  mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[21],"PID-11-1")); //
+   	 mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[22],"PID-11-3")); //
+   	 mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[23],"PID-11-9")); //
+   	 mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[24],"PID-11-4")); //
+   	mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[25],"PID-11-5")); //
+   	 mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[26],"PID-11-6")); //
+   	 mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[27],"PID-11-12-1")); //
+   	 mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[28],"PID-11-12-2")); //
+   	  //mapping.add(new MappingList(resourceName+"."+ResourceFactory.getResource(resourceName).getVaribleArray()[29],"")); //
+
+   	    
+   	    
+    	
+    				
+    		return mapping;		
     }
+	
+	
+	
 }
