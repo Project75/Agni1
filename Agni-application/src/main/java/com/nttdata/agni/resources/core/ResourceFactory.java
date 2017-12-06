@@ -27,7 +27,9 @@ public class ResourceFactory {
 	      case "medicationstatement":
 		        return new MedicationStatementImpl();
 	      case "organization":
-		        return new OrganizationImpl(); 
+		        return new OrganizationImpl();
+	      case "dataelement":
+		        return new DataElementImpl();
 	      default:
 	          // Error
 	          return null;

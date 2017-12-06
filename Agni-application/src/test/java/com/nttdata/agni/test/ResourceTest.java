@@ -59,6 +59,12 @@ public class ResourceTest extends GenericResourceTest{
     	String out=transform("Organization");
     	System.out.println("Organization:"+out);
         assertEquals(out, "null (333)444-5555 orcstreet 53 LA CAL 12345 US street 53 PHOENIX null AZ 85013 JOHN DOE null null (111)222-3333");
+    }
+        @Test
+        public void testDataElement() throws Exception {
+        	String out=transform("DataElement");
+        	System.out.println("DataElement:"+out);
+            assertEquals(out, "2 null 16 11 null 17 (111)222-3333");
 
     }	
     

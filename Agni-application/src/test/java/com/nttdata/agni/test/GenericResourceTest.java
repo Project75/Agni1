@@ -74,7 +74,9 @@ public class GenericResourceTest {
                 +"OBX|1|TX|3|4|5|6|7|8|9|10|FINAL||13|20060221061809|15|16|17|18|19|20|21|22|23|24|25|26\r"
                 +"OBR|1|2156286|A140875|MRSHLR-C^MR Shoulder right wo/contrast|5||||9|10|11|12|13||15|16||18|19|20|21|20060221061809|23|24|25|26\r"
                 +"NTE|1|2|3|4\r"
-                +"ORC||||||||||||||||||||||orcstreet 53^^LA^CAL^12345^US|(333)444-5555^^";  
+                +"ORC||||||||||||||||||||||orcstreet 53^^LA^CAL^12345^US|(333)444-5555^^\r"
+                +"OM1||2|||19751027||||||11||13|||16|17|(111)222-3333||||\r"
+                +"MFE|MFE1\r";  
     	
     	return transform(resourceName, payload);
     	
@@ -229,7 +231,21 @@ public class GenericResourceTest {
    	  //mapping.add(new MappingList(resourceName+"."+ResourceFactory.getResource(resourceName).getVaribleArray()[29],"")); //
 
    	    
-   	    
+   	// mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[0],"")); //
+   	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[1],"OM1-2")); //
+   //	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[2],"")); //
+   	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[3],"MFE-1")); //
+   //	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[4],"")); //
+   	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[5],"OM1-21")); //
+   	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[6],"OM1-16")); //
+   //	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[7],"")); //
+   	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[8],"OM1-11")); //
+  //	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[9],"")); //
+	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[10],"OM1-17")); //
+  //	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[11],"")); //
+  //	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[12],"")); //
+  	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[13],"OM1-18")); //
+
     	
     				
     		return mapping;		
