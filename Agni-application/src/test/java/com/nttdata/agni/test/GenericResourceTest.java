@@ -1,7 +1,6 @@
 package com.nttdata.agni.test;
 
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,9 +14,6 @@ import com.nttdata.agni.resources.core.*;
 import com.nttdata.agni.transfomer.*;
 
 import org.junit.Before;
-
-
-
 
 public class GenericResourceTest {
 
@@ -40,12 +36,14 @@ public class GenericResourceTest {
                 + "PV1||O|5501^0113^02|U|00060292||00276^DELBARE^POL^^DR.|00276^DELBARE^POL^^DR.||1901|||N|01|||||0161782703\r"
                 + "PD1|1|2|3|4|5|6|7|8|9|10\r"
                 + "OBX|1|TX|3|4|5|6|7|8|9|10|FINAL||13|20060221061809|15|16|17|18|19|20|21|22|23|24|25|26\r"
-                + "OBR|1|2156286|A140875|MRSHLR-C^MR Shoulder right wo/contrast|5||||9|10|11|12|13||15|16||18|19|20|21|20060221061809|23|24|25|26\r"
+                + "OBR|1|2156286|A140875|MRSHLR-C^MR Shoulder right wo/contrast|5||||9|10|11|12|13||15|16||18|19|20|21|20060221061809|23|24|25|26|27|28|29|30|31|32|33|34|35||37|38|39|40|41|42|43|44\r"
                 + "NTE|1|2|3|4\r"
-                + "PRD|1|2|3|4|5|6|7|8|9\r"
-                + "PRT|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15\r"
-                + "ORC|1|2|3|4|5|6|7|8|20170221061809|10|11|12|13|(333)111-3333|20170221061810|16|17|18|19|20|21|22|23|24|25\r"
-                + "STF|1|2|3|4|5|20170221061820|7\r";  
+    			+ "PRD|1|Adam|3|4|5|6|1111|20171010|9\r"
+                + "PRT|1|2|3|4|5|6|7|8|9|10|11|12|13|14|(222)222-3333\r"
+                + "ORC|1|2|3|4|cancelled|6|7|8|20170221|10|11|12|13|(333)111-3333|20170221061810|16|17|18|19|20|21|22|23|street 3^^PHOENIX^AZ^85013^US|25\r"
+                + "STF|1|2|3|4|Female|19751027|7|8|9||11|||||||18\r"
+                + "PRA|1|2|3|4|GS|6|7\r"
+                + "TQ1|1|2|3|4|5|6|7|8|stat\r";  
     	return transform(resourceName, payload);
     	
     }
@@ -154,32 +152,110 @@ public class GenericResourceTest {
     	mapping.add(new MappingList("observation.interpretation","OBX-8"));
     	mapping.add(new MappingList("observation.code","OBX-3"));
     	
-    	//Neha
     	mapping.add(new MappingList("practitioner.identifier","PRD-7"));
-    	mapping.add(new MappingList("practitioner.active",""));
+    	//mapping.add(new MappingList("practitioner.active",""));
     	mapping.add(new MappingList("practitioner.name","PRD-2"));
     	mapping.add(new MappingList("practitioner.telecom","PRT-15"));
-    	mapping.add(new MappingList("practitioner.address","ORC-24"));
+    	mapping.add(new MappingList("practitioner.address.line","ORC-24-1"));
+    	mapping.add(new MappingList("practitioner.address.city","ORC-24-3"));
+    	mapping.add(new MappingList("practitioner.address.state","ORC-24-4"));
+    	mapping.add(new MappingList("practitioner.address.postalCode","ORC-24-5"));
+    	mapping.add(new MappingList("practitioner.address.country","ORC-24-6"));	
     	mapping.add(new MappingList("practitioner.gender","STF-5"));
     	mapping.add(new MappingList("practitioner.birthDate","STF-6"));
-    	mapping.add(new MappingList("practitioner.photo",""));
-    	mapping.add(new MappingList("practitioner.qualification",""));
+    	//mapping.add(new MappingList("practitioner.photo",""));
+    	//mapping.add(new MappingList("practitioner.qualification",""));
     	mapping.add(new MappingList("practitioner.communication","PID-15"));
     	mapping.add(new MappingList("practitionerrole.identifier","PRD-7"));
     	mapping.add(new MappingList("practitionerrole.active","STF-7"));
     	mapping.add(new MappingList("practitionerrole.period","PRD-8"));
-    	mapping.add(new MappingList("practitionerrole.practitioner",""));
-    	mapping.add(new MappingList("practitionerrole.observation",""));
+    	//mapping.add(new MappingList("practitionerrole.practitioner",""));
+    	//mapping.add(new MappingList("practitionerrole.observation",""));
     	mapping.add(new MappingList("practitionerrole.code","PRD-1"));
-    	mapping.add(new MappingList("practitionerrole.speciality","PRA-5"));
-    	mapping.add(new MappingList("practitionerrole.location",""));
-    	mapping.add(new MappingList("practitionerrole.healthcareService","EDU-2"));
-    	mapping.add(new MappingList("practitionerrole.telecome",""));
-    	mapping.add(new MappingList("practitionerrole.availableTime",""));
-    	mapping.add(new MappingList("practitionerrole.notAvailable",""));
-    	mapping.add(new MappingList("practitionerrole.availabilityExceptions",""));
-    	mapping.add(new MappingList("practitionerrole.endpoint",""));
-    	
+    	mapping.add(new MappingList("practitionerrole.specialty","PRA-5"));
+    	//mapping.add(new MappingList("practitionerrole.location",""));
+    	//mapping.add(new MappingList("practitionerrole.healthcareService","EDU-2"));
+    	//mapping.add(new MappingList("practitionerrole.telecom",""));
+    	//mapping.add(new MappingList("practitionerrole.availableTime",""));
+    	//mapping.add(new MappingList("practitionerrole.notAvailable",""));
+    	//mapping.add(new MappingList("practitionerrole.availabilityExceptions",""));
+    	//mapping.add(new MappingList("practitionerrole.endpoint",""));
+    	mapping.add(new MappingList("procedure.identifier","ORC-2"));
+    	//mapping.add(new MappingList("procedure.definition",""));
+    	//mapping.add(new MappingList("procedure.basedOn",""));
+    	//mapping.add(new MappingList("procedure.partOf",""));
+    	//mapping.add(new MappingList("procedure.status",""));
+    	//mapping.add(new MappingList("procedure.notDone",""));
+    	//mapping.add(new MappingList("procedure.notDoneReason",""));	
+    	//mapping.add(new MappingList("procedure.category",""));
+    	mapping.add(new MappingList("procedure.code","OBR-44"));
+    	//mapping.add(new MappingList("procedure.subject","PID-3"));
+    	//mapping.add(new MappingList("procedure.context","PV1-19"));
+    	//mapping.add(new MappingList("procedure.performed","OBR-7-1"));
+    	mapping.add(new MappingList("procedure.performer.role","STF-18"));
+    	//mapping.add(new MappingList("procedure.performer.actor","ORC-19"));
+    	//mapping.add(new MappingList("procedure.location",""));
+    	//mapping.add(new MappingList("procedure.reasonCode",""));
+    	//mapping.add(new MappingList("procedure.reasonReference",""));
+    	mapping.add(new MappingList("procedure.bodySite","OBX-20"));
+    	//mapping.add(new MappingList("procedure.outcome",""));
+    	//mapping.add(new MappingList("procedure.report",""));
+    	//mapping.add(new MappingList("procedure.complication",""));
+    	//mapping.add(new MappingList("procedure.complicationDetail",""));
+    	//mapping.add(new MappingList("procedure.followUp",""));
+    	//mapping.add(new MappingList("procedure.note","NTE"));
+    	//mapping.add(new MappingList("procedure.focalDevice",""));
+    	//mapping.add(new MappingList("procedure.usedReference",""));
+    	//mapping.add(new MappingList("procedure.usedCode",""));
+    	mapping.add(new MappingList("procedurerequest.identifier","ORC-2"));
+    	//mapping.add(new MappingList("procedurerequest.definition",""));
+    	mapping.add(new MappingList("procedurerequest.basedOn","ORC-8"));
+    	//mapping.add(new MappingList("procedurerequest.replaces",""));
+    	mapping.add(new MappingList("procedurerequest.requisition","ORC-4"));
+    	mapping.add(new MappingList("procedurerequest.status","ORC-5"));
+    	//mapping.add(new MappingList("procedurerequest.intent",""));
+    	mapping.add(new MappingList("procedurerequest.priority","TQ1-9"));
+    	//mapping.add(new MappingList("procedurerequest.doNotPerform",""));
+    	//mapping.add(new MappingList("procedurerequest.category",""));
+    	//mapping.add(new MappingList("procedurerequest.code",""));
+    	//mapping.add(new MappingList("procedurerequest.subject",""));
+    	//mapping.add(new MappingList("procedurerequest.context",""));
+    	//mapping.add(new MappingList("procedurerequest.occurrence",""));
+    	//mapping.add(new MappingList("procedurerequest.asNeeded",""));
+    	mapping.add(new MappingList("procedurerequest.authoredOn","ORC-9"));
+    	//mapping.add(new MappingList("procedurerequest.requester.agent","ORC-12"));
+    	//mapping.add(new MappingList("procedurerequest.performerType",""));
+    	//mapping.add(new MappingList("procedurerequest.performer",""));
+    	mapping.add(new MappingList("procedurerequest.reasonCode","ORC-16"));
+    	//mapping.add(new MappingList("procedurerequest.reasonReference","ORC-16"));
+    	//mapping.add(new MappingList("procedurerequest.supportingInfo",""));
+    	//mapping.add(new MappingList("procedurerequest.specimen","SPM"));
+    	//mapping.add(new MappingList("procedurerequest.bodySite","SPM"));
+    	//mapping.add(new MappingList("procedurerequest.note","NTE"));
+    	//mapping.add(new MappingList("procedurerequest.relevantHistory",""));
+    	mapping.add(new MappingList("referralrequest.identifier","RF1-6"));
+    	//mapping.add(new MappingList("referralrequest.definition",""));
+    	//mapping.add(new MappingList("referralrequest.basedOn",""));
+    	//mapping.add(new MappingList("referralrequest.replaces",""));
+    	//mapping.add(new MappingList("referralrequest.groupIdentifier",""));
+    	mapping.add(new MappingList("referralrequest.status","RF1-1"));
+    	//mapping.add(new MappingList("referralrequest.intent",""));
+    	mapping.add(new MappingList("referralrequest.type","RF1-10"));
+    	mapping.add(new MappingList("referralrequest.priority","RF1-2"));
+    	mapping.add(new MappingList("referralrequest.serviceRequested","PR1-3"));
+    	mapping.add(new MappingList("referralrequest.subject","PID-3-1"));
+    	mapping.add(new MappingList("referralrequest.context","PV1-19"));
+    	mapping.add(new MappingList("referralrequest.occurrence","ORC-7"));
+    	mapping.add(new MappingList("referralrequest.authoredOn","RF1-7"));
+    	//mapping.add(new MappingList("referralrequest.requester",""));
+    	mapping.add(new MappingList("referralrequest.specialty","RF1-3"));
+    	mapping.add(new MappingList("referralrequest.recipient","PRD-2"));
+    	mapping.add(new MappingList("referralrequest.reasonCode","RF1-10"));
+    	//mapping.add(new MappingList("referralrequest.reasonReference",""));
+    	//mapping.add(new MappingList("referralrequest.description",""));
+    	//mapping.add(new MappingList("referralrequest.supportingInfo",""));
+    	//mapping.add(new MappingList("referralrequest.note",""));
+    	//mapping.add(new MappingList("referralrequest.relevantHistory",""));
     	
     	return mapping;
     }

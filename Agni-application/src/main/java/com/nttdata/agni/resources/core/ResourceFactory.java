@@ -28,6 +28,12 @@ public class ResourceFactory {
 		        return new PractitionerImpl(); 
 	      case "practitionerrole":
 		        return new PractitionerRoleImpl();
+	      case "procedure":
+		        return new ProcedureImpl();
+	      case "procedurerequest":
+		        return new ProcedureRequestImpl();
+	      case "referralrequest":
+		        return new ReferralRequestImpl();
 	      default:
 	          // Error
 	          return null;

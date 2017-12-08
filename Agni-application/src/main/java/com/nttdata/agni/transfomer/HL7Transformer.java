@@ -20,12 +20,14 @@ import ca.uhn.hl7v2.HapiContext;
 import ca.uhn.hl7v2.model.Message;
 import ca.uhn.hl7v2.parser.Parser;
 import ca.uhn.hl7v2.util.Terser;
+
 import com.nttdata.agni.domain.MappingList;
 import com.nttdata.agni.domain.TransformRequest;
 import com.nttdata.agni.resources.core.AbstractResource;
 import com.nttdata.agni.resources.core.BundleImpl;
 import com.nttdata.agni.resources.core.PropertyUtil;
 import com.nttdata.agni.resources.core.ResourceFactory;
+import com.nttdata.agni.resources.utils.TransformUtils;
 import com.nttdata.agni.service.MappingService;
 
 
@@ -54,7 +56,7 @@ public class HL7Transformer extends AbstractTransformer {
 	
 	public  String transform(String mapname, String value) {
 		log.debug("Mapname: "+mapname);
-		TransformRequest transformRequest = new TransformRequest(mapname);
+		TransformRequest transformRequest = new TransformRequest(mapname,value);
 		String response = transform(transformRequest);
 		return response;
 	}
@@ -111,7 +113,7 @@ public class HL7Transformer extends AbstractTransformer {
 	        }
     	}
         if (mappingList.size() > 0) {
-        	System.out.println("MappingList size is "+mappingList.size());
+        	//log.debug("MappingList size is "+mappingList.size());
         	for (MappingList entity : mappingList) {	    		
         		mappingMap.put(entity.getFHIR(), entity.getHL7());	    		
 	        }
@@ -155,7 +157,7 @@ public class HL7Transformer extends AbstractTransformer {
     	AbstractResource bundle = (BundleImpl)ResourceFactory.getResource("bundle");
     	log.info("Creating Bundle : ");
     	bundle.addResourcesFromList(resourceList);
-		String json = bundle.toJson();
+		String json = TransformUtils.resourceToJson(bundle);
 		return json;
 		
     }

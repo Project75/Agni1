@@ -5,7 +5,9 @@ package com.nttdata.agni.resources.core;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import lombok.Getter;
@@ -29,6 +31,9 @@ import ca.uhn.fhir.model.primitive.IdDt;
  * Copyright NTT Data
  * @author Neha 
  */
+
+@Getter
+@Setter
 
 public class PractitionerRoleImpl extends AbstractResource{
 	/**
@@ -73,10 +78,10 @@ public class PractitionerRoleImpl extends AbstractResource{
 		this.code = map.get("practitionerrole.code");
 		this.specialty = map.get("practitionerrole.specialty");
 		//this.healthcareService = map.get("practitionerrole.healthcareService");
-		this.Telecom = map.get("practitionerrole.telecom");
-		this.availableTime = map.get("practitionerrole.availableTime");
-		this.notAvailable = map.get("practitionerrole.notAvailable");
-		this.availabilityExceptions = map.get("practitionerrole.availabilityExceptions");
+		//this.Telecom = map.get("practitionerrole.telecom");
+		//this.availableTime = map.get("practitionerrole.availableTime");
+		//this.notAvailable = map.get("practitionerrole.notAvailable");
+		//this.availabilityExceptions = map.get("practitionerrole.availabilityExceptions");
 	}
 
 	/* (non-Javadoc)
@@ -92,8 +97,14 @@ public class PractitionerRoleImpl extends AbstractResource{
         .setValue(getId());
 		
 		practitionerrole.setActive(Boolean.getBoolean(getActive()));
-				
-		//practitionerrole.setPeriod(new Period());
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			practitionerrole.getPeriod().setStart(formatter.parse(getPer()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		CodeableConcept Code = new CodeableConcept();
 		Code.setText(getCode()); 
@@ -103,12 +114,18 @@ public class PractitionerRoleImpl extends AbstractResource{
 		Specialty.setText(getSpecialty());
 		practitionerrole.addSpecialty(Specialty);
 		
-		practitionerrole.addTelecom().setValue(getTelecom());	
 		
-		//practitionerrole.addAvailableTime(new PractitionerRoleAvailableTimeComponent().getAvailableTime());
+		//practitionerrole.setHealthcareService(theHealthcareService);
 		
-		//practitionerrole.getAvailabilityExceptions().setAvailabilityExceptions();
-
+		/*practitionerrole.addTelecom().setValue(getTelecom());	
+		
+		List<PractitionerRoleAvailableTimeComponent> theAvailableTimeList = new ArrayList<PractitionerRoleAvailableTimeComponent>();
+		PractitionerRoleAvailableTimeComponent theAvailableTime = new PractitionerRoleAvailableTimeComponent();
+		theAvailableTime.setAvailableStartTime(availableTime);
+		practitionerrole.setAvailableTime(theAvailableTimeList);
+		
+		practitionerrole.setAvailabilityExceptions(availabilityExceptions);
+		*/
 	}
 	
 	/* (non-Javadoc)
@@ -200,14 +217,14 @@ public class PractitionerRoleImpl extends AbstractResource{
 	/**
 	 * @return the period
 	 */
-	public String getPeriod1() {
+	public String getPer() {
 		return period;
 	}
 
 	/**
 	 * @param period the period to set
 	 */
-	public void setPeriod1(String period) {
+	public void setPer(String period) {
 		this.period = period;
 	}
 	

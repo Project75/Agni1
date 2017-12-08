@@ -18,8 +18,6 @@ import com.nttdata.agni.transfomer.*;
 import org.junit.Before;
 import org.junit.Test;
 
-
-
 public class ResourceTest extends GenericResourceTest{
       
     @Test
@@ -44,17 +42,34 @@ public class ResourceTest extends GenericResourceTest{
 
     }
     
-    @Test //Neha
+    @Test 
     public void testPractitioner() throws Exception {
     	String out=transform("Practitioner");
     	System.out.println("Practitioner:"+out);
-        //assertEquals(out, "1 null Adam (222)222-3333 street 3 PHOENIX AZ 85013 US Male 1976-02-21 null null English");
     }	
     
+    @Test 
     public void testPractitionerRole() throws Exception {
     	String out=transform("PractitionerRole");
     	System.out.println("PractitionerRole:"+out);
-        //assertEquals(out, "1 null Adam (222)222-3333 street 3 PHOENIX AZ 85013 US Male 1976-02-21 null null English");
+    }
+    
+    @Test 
+    public void testProcedure() throws Exception {
+    	String out=transform("Procedure");
+    	System.out.println("Procedure:"+out);
+    }
+    
+    @Test 
+    public void testProcedureRequest() throws Exception {
+    	String out=transform("ProcedureRequest");
+    	System.out.println("ProcedureRequest:"+out);
+    }
+    
+    @Test 
+    public void testReferralRequest() throws Exception {
+    	String out=transform("ReferralRequest");
+    	System.out.println("ReferralRequest:"+out);
     }
     
 }
