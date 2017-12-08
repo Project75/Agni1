@@ -40,10 +40,12 @@ public class GenericResourceTest {
                 + "NTE|1|2|3|4\r"
     			+ "PRD|1|Adam|3|4|5|6|1111|20171010|9\r"
                 + "PRT|1|2|3|4|5|6|7|8|9|10|11|12|13|14|(222)222-3333\r"
-                + "ORC|1|2|3|4|cancelled|6|7|8|20170221|10|11|12|13|(333)111-3333|20170221061810|16|17|18|19|20|21|22|23|street 3^^PHOENIX^AZ^85013^US|25\r"
+                + "ORC|1|2|3|4|cancelled|6|20170202|8|20170221|10|11|12|13|(333)111-3333|20170221061810|16|17|18|19|20|21|22|23|street 3^^PHOENIX^AZ^85013^US|25\r"
                 + "STF|1|2|3|4|Female|19751027|7|8|9||11|||||||18\r"
                 + "PRA|1|2|3|4|GS|6|7\r"
-                + "TQ1|1|2|3|4|5|6|7|8|stat\r";  
+                + "TQ1|1|2|3|4|5|6|7|8|stat\r"
+                + "RF1|active|Urgent|3|4|5|6|7|8|9|10\r"
+                + "PR1|1|2|3|4||6|7|8\r";  
     	return transform(resourceName, payload);
     	
     }
@@ -245,7 +247,7 @@ public class GenericResourceTest {
     	mapping.add(new MappingList("referralrequest.serviceRequested","PR1-3"));
     	mapping.add(new MappingList("referralrequest.subject","PID-3-1"));
     	mapping.add(new MappingList("referralrequest.context","PV1-19"));
-    	mapping.add(new MappingList("referralrequest.occurrence","ORC-7"));
+    	//mapping.add(new MappingList("referralrequest.occurrence","ORC-7"));
     	mapping.add(new MappingList("referralrequest.authoredOn","RF1-7"));
     	//mapping.add(new MappingList("referralrequest.requester",""));
     	mapping.add(new MappingList("referralrequest.specialty","RF1-3"));
