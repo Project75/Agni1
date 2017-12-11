@@ -28,12 +28,10 @@ import org.hl7.fhir.dstu3.model.Immunization.ImmunizationExplanationComponent;
 
 
 import com.nttdata.agni.domain.MappingList;
-import com.nttdata.agni.resources.utils.FHIRUtils;
-import com.nttdata.agni.resources.utils.TransformUtils;
 
 /**
  * Copyright NTT Data
- * Agni-Applicationo-
+ * Agni-Application-
  * @author Sameer Mathur
  *
  */
@@ -52,7 +50,6 @@ public class ImmunizationImpl extends AbstractResource{
 	reactionDate, reactionDetail, reactionDetailIDSystem, reactionDetailIDValue;
 	
 	String resourceName="immunization";
-	private String vaccineCode;
 	
 	public ImmunizationImpl() {
 		super();
@@ -69,10 +66,7 @@ public class ImmunizationImpl extends AbstractResource{
 	}
 	/*Populate this object from the hashmap using the key for  each field*/
 	public void setValuesFromMap(HashMap<String,String> map) {
-		//test for top level field
-		this.vaccineCode = map.get("Immunization.vaccineCode");
-		
-		this.vaccineCodingSystem = map.get("Immunization.vaccineCode.coding.system");
+		 this.vaccineCodingSystem = map.get("Immunization.vaccineCode.coding.system");
 		 this.vaccineCodingCode = map.get("Immunization.vaccineCode.coding.code");
 		 this.vaccineCodingDisplay = map.get("Immunization.vaccineCode.coding.display");
 		 this.patientIDType = map.get("Immunization.patient.identifier.type");
@@ -130,40 +124,22 @@ public class ImmunizationImpl extends AbstractResource{
 		//immunization.notGiven (MapToDo)
 		immunization.setNotGiven(false);
 		
-		//immunization.vaccineCode 
-		//Method 1 
+		//immunization.vaccineCode
 		CodeableConcept vaccCode = new CodeableConcept();
-/*		vaccCode.addCoding()
+		vaccCode.addCoding()
 							.setSystem(this.getVaccineCodingSystem())
 							.setCode(this.getVaccineCodingCode())
 							.setDisplay(this.getVaccineCodingDisplay());
-		vaccCode.setText("");*/
-		
-		//Method 2
-		//CodeableConcept required params
-		//vaccCode = TransformUtils.BuildCodeableConceptDefault(vaccineCodingSystem,vaccineCodingCode, vaccineCodingDisplay);
-		
-		//Method 3 -  pass hl7 entire field
-		vaccCode = TransformUtils.BuildCodeableConceptFromHL7Field(vaccineCode);
-		
+		vaccCode.setText("");
 		immunization.setVaccineCode(vaccCode);
-		
-		
-		
 
-		//
-		Period pidPeriod = new Period();
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMddHHmm");
 		
-		Reference patient = FHIRUtils.buildReference(patientIDValue, patientIDType, patientIDSystem, 
-				patientIDPeriodStart, patientIDPeriodEnd, patientIDAssigner);
-		//Below code moved to common fucntion
 		//immunization.patient (Reference value)
 			// prepare patient to be added to immunization
-			/*Reference patient = new Reference();
+			Reference patient = new Reference();
 		
 			//patient.reference
-			patient.setReference("Patient/199");
+			patient.setReference("");
 
 			//patient.identifier
 			Identifier thePatientIdentifier = new Identifier();
@@ -199,8 +175,8 @@ public class ImmunizationImpl extends AbstractResource{
 			patient.setIdentifier(thePatientIdentifier);
 			
 			//patient.display
-			patient.setDisplay("patient name to be displayed");
-		*/
+			patient.setDisplay("");
+			
 		immunization.setPatient(patient);
 
 		//immunization.encounter (Reference value)
