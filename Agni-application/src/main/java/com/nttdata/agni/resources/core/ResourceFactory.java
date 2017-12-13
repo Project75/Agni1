@@ -60,6 +60,8 @@ public class ResourceFactory {
 		        return new OperationOutcomeImpl();
 		  case "location":
 		        return new LocationImpl();
+		  case "diagnosticreport":
+		        return new DiagnosticReportImpl();
 
 
 

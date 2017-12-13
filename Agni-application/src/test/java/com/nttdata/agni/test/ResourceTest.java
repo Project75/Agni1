@@ -45,7 +45,7 @@ public class ResourceTest extends GenericResourceTest{
         assertEquals(out, "null FINAL 3 null 2006-02-21 06:18:09 2006-02-21 06:18:09 15 null 8 null null 17 17 7 7 10 null 7");
 
     }
-    */
+  
     @Test
     public void testMedicationStatement() throws Exception {
     	String out=transform("MedicationStatement");
@@ -66,6 +66,14 @@ public class ResourceTest extends GenericResourceTest{
         	System.out.println("DataElement:"+out);
             assertEquals(out, "2 null 16 11 null 17 (111)222-3333");
 
-    }	
+    }
+          */
+        @Test
+        public void testDiagnosticReport() throws Exception {
+        	String out=transform("DiagnosticReport");
+        	System.out.println("DataElement:"+out);
+         
+
+    }
     
 }

@@ -76,7 +76,8 @@ public class GenericResourceTest {
                 +"NTE|1|2|3|4\r"
                 +"ORC||||||||||||||||||||||orcstreet 53^^LA^CAL^12345^US|(333)444-5555^^\r"
                 +"OM1||2|||19751027||||||11||13|||16|17|(111)222-3333||||\r"
-                +"MFE|MFE1\r";  
+                +"MFE|MFE1\r"
+                +"PRT|1|2|3|PO|5|6|7|PerformerROLEDISPLAY^^PerformerACTOR\r";  
     	
     	return transform(resourceName, payload);
     	
@@ -247,6 +248,30 @@ public class GenericResourceTest {
   	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[13],"OM1-18")); //
 
     	
+  	 // Mapping for Diagnostic reports
+  	mapping.add(new MappingList("DiagnosticReport.identifierValue","OBR-51-1"));
+  	mapping.add(new MappingList("DiagnosticReport.status","OBR-25"));
+  	mapping.add(new MappingList("DiagnosticReport.categoryCodingCode","OBR-24"));
+  	mapping.add(new MappingList("DiagnosticReport.codeCodingCode","OBR-4-1"));
+  	mapping.add(new MappingList("DiagnosticReport.subjectIdentifierTypeCodingCode","PID-3-5"));
+  	mapping.add(new MappingList("DiagnosticReport.subjectIdentifierSystem","PID-3-4-2"));
+  	mapping.add(new MappingList("DiagnosticReport.subjectIdentifierValue","PID-3-1"));
+  	mapping.add(new MappingList("DiagnosticReport.subjectIdentifierPeriodStart","PID-3-7"));
+  	mapping.add(new MappingList("DiagnosticReport.subjectIdentifierPeriodEnd","PID-3-8"));
+  	mapping.add(new MappingList("DiagnosticReport.subjectIdentifierAssignerDisplay","PID-3-4-1"));
+  	mapping.add(new MappingList("DiagnosticReport.contextIdentifierTypeCodingCode","PV1-19-5"));
+  	mapping.add(new MappingList("DiagnosticReport.contextIdentifierSystem","PV1-19-4-2"));
+  	mapping.add(new MappingList("DiagnosticReport.contextIdentifierValue","PV1-19-1"));
+  	mapping.add(new MappingList("DiagnosticReport.contextIdentifierPeriodStart","PV1-19-7"));
+  	mapping.add(new MappingList("DiagnosticReport.contextIdentifierPeriodEnd","PV1-19-8"));
+  	mapping.add(new MappingList("DiagnosticReport.contextIdentifierAssignerDisplay","PV1-19-1"));
+  	mapping.add(new MappingList("DiagnosticReport.effectiveEffectivedatetime","OBR-7"));
+  	mapping.add(new MappingList("DiagnosticReport.issued","OBR-22"));
+  	mapping.add(new MappingList("DiagnosticReport.performerRoleCodingDisplay","PRT-8-1"));  // doubt
+  	mapping.add(new MappingList("DiagnosticReport.performerActorReference","PRT-8-3"));  // doubt
+  	mapping.add(new MappingList("DiagnosticReport.PRT4","PRT-4"));  // If condition variable
+  	
+  	 
     				
     		return mapping;		
     }
