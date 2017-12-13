@@ -15,7 +15,7 @@ import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.model.StringType;
 import ca.uhn.fhir.model.primitive.IdDt;
-
+import org.hl7.fhir.dstu3.model.OperationOutcome;
 /**
  * Copyright NTT Data
  * Module Agni-Application
@@ -30,12 +30,12 @@ import ca.uhn.fhir.model.primitive.IdDt;
 /**
  * Class name should be <Resource Name>Impl e.g. PatientImpl
  */
-public class ImmunizationRecommendationImpl extends AbstractResource{
+public class OperationOutcomeImpl extends AbstractResource{
 	/**
 	 * Field for storing the FHIR Resource. Need to import from org.hl7.fhir.dstu3.model.*
 	 * e.g Patient patient; or Patient resource;
 	 */
-	Patient patient;
+	OperationOutcome operationOutcome;
 	/**
 	 * Create Local fields to store data from HL7. 
 	 * e.g. familyName, givenName
@@ -43,15 +43,15 @@ public class ImmunizationRecommendationImpl extends AbstractResource{
 	private String familyName;
 	private String givenName;
 	
-	String resourceName="Patient";
+	String resourceName="OperationOutcome";
 	/**
 	 * Constructor to initialize the FHIR STU3 model Object
 	 */
-	public ImmunizationRecommendationImpl() {
+	public OperationOutcomeImpl() {
 		
 		// TODO Auto-generated constructor stub
-		this.resource =  new Patient();
-		resource.setId(IdDt.newRandomUuid());
+		this.operationOutcome =  new OperationOutcome();
+		operationOutcome.setId(IdDt.newRandomUuid());
 	}
 
 	@Override
@@ -71,20 +71,8 @@ public class ImmunizationRecommendationImpl extends AbstractResource{
 	@Override
 	public void setResourceData() {
 		
-
-	//Two ways to set the name on patient 
-	//1 Create objects for all the types needed
-		List<HumanName> theNameList = new ArrayList<HumanName>();
-		HumanName theName = new HumanName();
-		List<StringType> theGivenName = new ArrayList<StringType>();			
-		theGivenName.add(new StringType(givenName));
-		theName.setFamily(familyName);
-		theName.setGiven(theGivenName);
-		//finally setting the name below
-		patient.setName(theNameList);
 		
-	//2-Alternative - one line code Using fluent API (Recommended)
-		patient.addName().setFamily(familyName).addGiven(givenName);
+
 }
 
 	/*
@@ -93,7 +81,7 @@ public class ImmunizationRecommendationImpl extends AbstractResource{
 	@Override
 	public Resource getResource() {
 		// TODO Auto-generated method stub
-		return this.patient;
+		return this.operationOutcome;
 	}
 	
 
