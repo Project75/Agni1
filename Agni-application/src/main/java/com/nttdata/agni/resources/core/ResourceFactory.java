@@ -60,8 +60,9 @@ public class ResourceFactory {
 		        return new OperationOutcomeImpl();
 		  case "location":
 		        return new LocationImpl();
-
-
+		    //Smita
+		  case "bodysite":
+			  	return new BodySiteImp();
 
 	      default:
 	          // Error

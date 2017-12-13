@@ -182,6 +182,8 @@ public class GenericResourceTest {
     	mapping.add(new MappingList("observation.identifier","OBX-21"));
     	mapping.add(new MappingList("observation.interpretation","OBX-8"));
     	mapping.add(new MappingList("observation.code","OBX-3"));
-    		return mapping;
+    	mapping.add(new MappingList("bodysite.code","OBX-20"));
+    	mapping.add(new MappingList("bodysite.qualifier","OBR-15"));
+    	return mapping;
     }
 }

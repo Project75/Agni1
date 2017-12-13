@@ -22,7 +22,7 @@ import org.junit.Test;
 
 public class ResourceTest extends GenericResourceTest{
       
-    @Test
+   /* @Test
     public void testMessageHeader() throws Exception {
     	String out=transform("messageheader");
     	System.out.println("messageheader:"+out);
@@ -43,7 +43,15 @@ public class ResourceTest extends GenericResourceTest{
         assertEquals(out, "null FINAL 3 null 2006-02-21 06:18:09 2006-02-21 06:18:09 15 null 8 null null 17 17 7 7 10 null 7");
 
     }
+    */
+    
+	@Test
+    public void testBodySite() throws Exception {
+    	String out=transform("BodySite");
+    	System.out.println("BodySite:"+out);
+        assertEquals(out, "20 15");
 
+    }
     	
     
 }
