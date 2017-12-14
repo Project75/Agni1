@@ -5,6 +5,9 @@ import org.hl7.fhir.dstu3.model.Identifier;
 import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.dstu3.model.Period;
 import org.hl7.fhir.dstu3.model.Reference;
+
+import com.nttdata.agni.resources.core.AbstractResource;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -35,7 +38,7 @@ public class FHIRUtils {
 		//Build and set patient reference
 		Reference patientReference = new Reference();
 		String name = patient.getName().toString();
-		
+		patient.getIdentifierFirstRep();
 		String patientUri;
 		
 		String id= patient.getId();
@@ -46,6 +49,16 @@ public class FHIRUtils {
 		patientReference.setId(id);
 		return patientReference;
 	}
+	
+	public static Reference buildGenericReference(AbstractResource resource){
+		Reference ref = new Reference();
+		String id = resource.getResource().getId();
+		String resourceUri = resource.getResourceName()+"/" + id;
+		ref.setId(id);
+		ref.setReference(resourceUri);		
+		return ref;
+	}
+	
 	public static Reference buildReference(String referenceIDValue, String referenceIDType, String referenceIDSystem, String referenceIDPeriodStart, String referenceIDPeriodEnd, String referenceIDAssigner){
 		
 		Reference reference = new Reference();
@@ -91,7 +104,6 @@ public class FHIRUtils {
 		return reference;
 		
 	}
-	
 
 	
 }

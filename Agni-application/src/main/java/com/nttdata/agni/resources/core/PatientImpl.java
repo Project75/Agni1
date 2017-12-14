@@ -6,7 +6,12 @@ package com.nttdata.agni.resources.core;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import org.hl7.fhir.dstu3.model.BooleanType;
 import org.hl7.fhir.dstu3.model.CodeableConcept;
@@ -14,6 +19,8 @@ import org.hl7.fhir.dstu3.model.ContactPoint;
 import org.hl7.fhir.dstu3.model.Enumerations;
 import org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender;
 import org.hl7.fhir.dstu3.model.HumanName;
+import org.hl7.fhir.dstu3.model.Identifier;
+import org.hl7.fhir.dstu3.model.Identifier.IdentifierUse;
 import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.dstu3.model.Patient.ContactComponent;
@@ -26,8 +33,12 @@ import ca.uhn.fhir.model.primitive.IdDt;
  * Copyright NTT Data
  * @author Harendra Pandey
  */
+<<<<<<< HEAD
 
 
+=======
+@ToString @Getter @Setter
+>>>>>>> remotes/origin/master
 public class PatientImpl extends AbstractResource{
 	/**
 	 * 
@@ -35,6 +46,7 @@ public class PatientImpl extends AbstractResource{
 	public PatientImpl() {
 		super();
 		this.patient = new Patient();
+		patient.setId(IdDt.newRandomUuid());
 		// TODO Auto-generated constructor stub
 	}
 
@@ -43,23 +55,10 @@ public class PatientImpl extends AbstractResource{
 	GeneralPractitioner, Link;
 
 	Patient patient;
-	
+	Reference reference;
 	String resourceName;
 	
-	/**
-	 * @return the patient
-	 */
-	public Patient getPatient() {
-		return patient;
-	}
 
-	/**
-	 * @param patient the patient to set
-	 */
-	public void setPatient(Patient patient) {
-		this.patient = patient;
-	}
-	
 	@Override
 	public void setResourceDataFromMap(HashMap<String, String> data) {
 		
@@ -91,7 +90,10 @@ public class PatientImpl extends AbstractResource{
 		this.ContactOrg = map.get("patient.contact.organization");
 		this.GeneralPractitioner = map.get("patient.generalPractitioner");
 		this.Link= map.get("patient.link.other");;
+		//this.id=java.util.UUID.randomUUID().toString();
 	}
+	
+	
 
 	/* (non-Javadoc)
 	 * @see com.nttdata.agni.resources.core.AbstractResource#setResourceData()
@@ -103,9 +105,16 @@ public class PatientImpl extends AbstractResource{
 		
 		patient.addName().setUse(HumanName.NameUse.OFFICIAL)
 		        .addPrefix("Mr").setFamily(getFamilyName()).addGiven(givenName);
-		patient.addIdentifier()
+		
+		IdentifierUtil IdentifierUtil = new IdentifierUtil();
+		//IdentifierUtil.SetPatientMinimalArgs(getId());
+		IdentifierUtil.SetPatientArgs(getId(),"11","2","3","4");
+		patient.setIdentifier(IdentifierUtil.getIdentifierList());
+		/*
+		patient.addIdentifier().setUse(IdentifierUse.OFFICIAL)
 		        .setSystem("http://ns.electronichealth.net.au/id/hi/ihi/1.0")
 		        .setValue(getId());
+		        */
 		patient.setGender(Enumerations.AdministrativeGender.valueOf(getGender().toUpperCase()));
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");	
@@ -135,7 +144,7 @@ public class PatientImpl extends AbstractResource{
 		if (getContactGender()!=null){	
 		 gender = //Optional.ofNullable().orElse();
 			Enumerations.AdministrativeGender.valueOf(getContactGender().toUpperCase());					
-		}else {gender = Enumerations.AdministrativeGender.NULL;}
+		}else {gender = Enumerations.AdministrativeGender.UNKNOWN;}
 		patient.addContact().addRelationship(new CodeableConcept().setText(getContactRel())).setName(new HumanName().addGiven(getContactName()))
 		       .addTelecom(new ContactPoint().setValue(getContactTel())).setAddress(new ContactComponent().getAddress().addLine(getContactAddress()))
 		       .setGender(gender)
@@ -144,8 +153,8 @@ public class PatientImpl extends AbstractResource{
 		patient.addGeneralPractitioner().setReference(getGeneralPractitioner());
 		patient.addLink().setId(getLink());
 		
-		patient.setId(IdDt.newRandomUuid());
-
+		//patient.setId(IdDt.newRandomUuid());
+		System.out.println("patmid-"+patient.getId()+"   "+getId());
 	}
 	
 	
@@ -197,8 +206,8 @@ public class PatientImpl extends AbstractResource{
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
-	@Override
-	public String toString() {
+	
+	public String toString2() {
 		// TODO Auto-generated method stub
 		return familyName+" "+ givenName+" "+ id+" "+ gender+" "+ DOB+" "+ AddressLine+" "+ AddressCity+" "+ AddressState+" "+ AddressPostalCode+" "+ AddressCountry+" "+ 
 		Telecom+" "+ MaritalStatus+" "+ Deceased+" "+ Birth+" "+ ContactRel+" "+ ContactName+" "+ ContactTel+" "+ ContactAddress+" "+ ContactGender+" "+ ContactOrg+" "+
@@ -206,75 +215,23 @@ public class PatientImpl extends AbstractResource{
 	}
 	
 	
-	
-	
-	
-	/**
-	 * @return the familyName
-	 */
-	public String getFamilyName() {
-		return familyName;
-	}
-
-	/**
-	 * @param familyName the familyName to set
-	 */
-	public void setFamilyName(String familyName) {
-		this.familyName = familyName;
-	}
-
-	/**
-	 * @return the givenName
-	 */
-	public String getGivenName() {
-		return givenName;
-	}
-
-	/**
-	 * @param givenName the givenName to set
-	 */
-	public void setGivenName(String givenName) {
-		this.givenName = givenName;
-	}
-
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
+	public void setReference() {
+		 Reference ref = new Reference();
+		 ref.setIdentifier(patient.getIdentifierFirstRep());		 
+		 this.reference = ref;
 	}
 	
+	public Reference getReference() {
+		 
+		 return this.reference ;
+	}
+	
+	
+		
 	public void setId() {
 		this.id = java.util.UUID.randomUUID().toString();
 	}
-	/**
-	 * @return the gender
-	 */
-	public String getGender() {
-		return gender;
-	}
-
-	/**
-	 * @param gender the gender to set
-	 */
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	/**
-	 * @return the dOB
-	 */
-	public String getDOB() {
-		return DOB;
-	}
-
+	
 	/**
 	 * @param dOB the dOB to set
 	 */
@@ -282,245 +239,5 @@ public class PatientImpl extends AbstractResource{
 		this.DOB = DOB.substring(0, 4) +"-"+ DOB.substring(4, 6) +"-"+ DOB.substring(6, 8);
 	}
 
-	/**
-	 * @return the addressLine
-	 */
-	public String getAddressLine() {
-		return AddressLine;
-	}
-
-	/**
-	 * @param addressLine the addressLine to set
-	 */
-	public void setAddressLine(String addressLine) {
-		AddressLine = addressLine;
-	}
-
-	/**
-	 * @return the addressCity
-	 */
-	public String getAddressCity() {
-		return AddressCity;
-	}
-
-	/**
-	 * @param addressCity the addressCity to set
-	 */
-	public void setAddressCity(String addressCity) {
-		AddressCity = addressCity;
-	}
-
-	/**
-	 * @return the addressState
-	 */
-	public String getAddressState() {
-		return AddressState;
-	}
-
-	/**
-	 * @param addressState the addressState to set
-	 */
-	public void setAddressState(String addressState) {
-		AddressState = addressState;
-	}
-
-	/**
-	 * @return the addressPostalCode
-	 */
-	public String getAddressPostalCode() {
-		return AddressPostalCode;
-	}
-
-	/**
-	 * @param addressPostalCode the addressPostalCode to set
-	 */
-	public void setAddressPostalCode(String addressPostalCode) {
-		AddressPostalCode = addressPostalCode;
-	}
-
-	/**
-	 * @return the addressCountry
-	 */
-	public String getAddressCountry() {
-		return AddressCountry;
-	}
-
-	/**
-	 * @param addressCountry the addressCountry to set
-	 */
-	public void setAddressCountry(String addressCountry) {
-		AddressCountry = addressCountry;
-	}
-
-	/**
-	 * @return the telecom
-	 */
-	public String getTelecom() {
-		return Telecom;
-	}
-
-	/**
-	 * @param telecom the telecom to set
-	 */
-	public void setTelecom(String telecom) {
-		Telecom = telecom;
-	}
-
-	/**
-	 * @return the maritalStatus
-	 */
-	public String getMaritalStatus() {
-		return MaritalStatus;
-	}
-
-	/**
-	 * @param maritalStatus the maritalStatus to set
-	 */
-	public void setMaritalStatus(String maritalStatus) {
-		MaritalStatus = maritalStatus;
-	}
-
-	/**
-	 * @return the deceased
-	 */
-	public String getDeceased() {
-		return Deceased;
-	}
-
-	/**
-	 * @param deceased the deceased to set
-	 */
-	public void setDeceased(String deceased) {
-		Deceased = deceased;
-	}
-
-	/**
-	 * @return the birth
-	 */
-	public String getBirth() {
-		return Birth;
-	}
-
-	/**
-	 * @param birth the birth to set
-	 */
-	public void setBirth(String birth) {
-		Birth = birth;
-	}
-
-	/**
-	 * @return the contactRel
-	 */
-	public String getContactRel() {
-		return ContactRel;
-	}
-
-	/**
-	 * @param contactRel the contactRel to set
-	 */
-	public void setContactRel(String contactRel) {
-		ContactRel = contactRel;
-	}
-
-	/**
-	 * @return the contactName
-	 */
-	public String getContactName() {
-		return ContactName;
-	}
-
-	/**
-	 * @param contactName the contactName to set
-	 */
-	public void setContactName(String contactName) {
-		ContactName = contactName;
-	}
-
-	/**
-	 * @return the contactTel
-	 */
-	public String getContactTel() {
-		return ContactTel;
-	}
-
-	/**
-	 * @param contactTel the contactTel to set
-	 */
-	public void setContactTel(String contactTel) {
-		ContactTel = contactTel;
-	}
-
-	/**
-	 * @return the contactAddress
-	 */
-	public String getContactAddress() {
-		return ContactAddress;
-	}
-
-	/**
-	 * @param contactAddress the contactAddress to set
-	 */
-	public void setContactAddress(String contactAddress) {
-		ContactAddress = contactAddress;
-	}
-
-	/**
-	 * @return the contactGender
-	 */
-	public String getContactGender() {
-		return ContactGender;
-	}
-
-	/**
-	 * @param contactGender the contactGender to set
-	 */
-	public void setContactGender(String contactGender) {
-		ContactGender = contactGender;
-	}
-
-	/**
-	 * @return the contactOrg
-	 */
-	public String getContactOrg() {
-		return ContactOrg;
-	}
-
-	/**
-	 * @param contactOrg the contactOrg to set
-	 */
-	public void setContactOrg(String contactOrg) {
-		ContactOrg = contactOrg;
-	}
-
-	/**
-	 * @return the generalPractitioner
-	 */
-	public String getGeneralPractitioner() {
-		return GeneralPractitioner;
-	}
-
-	/**
-	 * @param generalPractitioner the generalPractitioner to set
-	 */
-	public void setGeneralPractitioner(String generalPractitioner) {
-		GeneralPractitioner = generalPractitioner;
-	}
-
-	/**
-	 * @return the link
-	 */
-	public String getLink() {
-		return Link;
-	}
-
-	/**
-	 * @param link the link to set
-	 */
-	public void setLink(String link) {
-		Link = link;
-	}
-	
-
-
-	
+		
 }
