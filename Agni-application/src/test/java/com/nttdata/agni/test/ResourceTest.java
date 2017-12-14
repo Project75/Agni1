@@ -67,12 +67,17 @@ public class ResourceTest extends GenericResourceTest{
             assertEquals(out, "2 null 16 11 null 17 (111)222-3333");
 
     }
-          */
+          
         @Test
         public void testDiagnosticReport() throws Exception {
         	String out=transform("DiagnosticReport");
-        	System.out.println("DataElement:"+out);
-         
+        	System.out.println("DiagnosticReport:"+out);
+         */
+        	 @Test
+             public void testDetectedIssue() throws Exception {
+             	String out=transform("DetectedIssue");
+             	System.out.println("DetectedIssue:"+out);
+              
 
     }
     

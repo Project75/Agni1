@@ -32,11 +32,14 @@ import lombok.ToString;
 @Getter @ToString @NoArgsConstructor @AllArgsConstructor
 public class IdentifierUtil {
 	
-	Optional<Identifier> identifier;
+	
+	//Optional<Identifier> identifier;
+	
+	Identifier identifier = new Identifier();
 	List<Identifier> identifierList = new ArrayList<Identifier>();
 	
 	public void setIdentifier() {
-		Identifier identifier = new Identifier();
+		//Identifier identifier = new Identifier();
 		String option = use.orElse("");
 		switch (option){
 		case "official":

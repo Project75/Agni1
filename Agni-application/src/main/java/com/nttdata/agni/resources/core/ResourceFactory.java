@@ -62,6 +62,8 @@ public class ResourceFactory {
 		        return new LocationImpl();
 		  case "diagnosticreport":
 		        return new DiagnosticReportImpl();
+		  case "detectedissue":
+		        return new DetectedIssueImpl();
 
 
 

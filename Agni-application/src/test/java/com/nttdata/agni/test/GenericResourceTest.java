@@ -77,7 +77,9 @@ public class GenericResourceTest {
                 +"ORC||||||||||||||||||||||orcstreet 53^^LA^CAL^12345^US|(333)444-5555^^\r"
                 +"OM1||2|||19751027||||||11||13|||16|17|(111)222-3333||||\r"
                 +"MFE|MFE1\r"
-                +"PRT|1|2|3|PO|5|6|7|PerformerROLEDISPLAY^^PerformerACTOR\r";  
+                +"PRT|1|2|3|PO|5|6|7|PerformerROLEDISPLAY^^PerformerACTOR\r"
+    	        +"IAM|IAM1|IAM2|IAM3|IAM4|IAM5|IAM6|IAM7|IAM8\r"
+    	        +"AL1||AL12.1^AL12.2^AL12.3|AL13|HIGH|AL15|20060221|AL17|AL18\r";
     	
     	return transform(resourceName, payload);
     	
@@ -271,7 +273,22 @@ public class GenericResourceTest {
   	mapping.add(new MappingList("DiagnosticReport.performerActorReference","PRT-8-3"));  // doubt
   	mapping.add(new MappingList("DiagnosticReport.PRT4","PRT-4"));  // If condition variable
   	
-  	 
+ // Mapping for Detected Issue
+  	mapping.add(new MappingList("DetectedIssue.identifierValue","IAM-7"));
+  	mapping.add(new MappingList("DetectedIssue.categoryCodingCode","AL1-2-1"));
+  	mapping.add(new MappingList("DetectedIssue.categoryCodingSystem","AL1-2-3"));
+  	mapping.add(new MappingList("DetectedIssue.categoryCodingDisplay","AL1-2-2"));
+  	mapping.add(new MappingList("DetectedIssue.severity","AL1-4-1"));
+  	mapping.add(new MappingList("DetectedIssue.patientIdentifierTypeCodingCode","PID-3-5"));
+  	mapping.add(new MappingList("DetectedIssue.patientIdentifierSystem","PID-3-4-2"));
+  	mapping.add(new MappingList("DetectedIssue.patientIdentifierValue","PID-3-1"));
+  	mapping.add(new MappingList("DetectedIssue.patientIdentifierPeriodStart","PID-3-7"));
+  	mapping.add(new MappingList("DetectedIssue.patientIdentifierPeriodEnd","PID-3-8"));
+  	mapping.add(new MappingList("DetectedIssue.patientIdentifierAssignerDisplay","PID-3-4-1"));
+  	mapping.add(new MappingList("DetectedIssue.date","AL1-6"));
+  	mapping.add(new MappingList("DetectedIssue.detail","AL1-5"));
+  	
+  
     				
     		return mapping;		
     }

@@ -120,7 +120,7 @@ public class DiagnosticReportImpl  extends AbstractResource {
 	
 	effectiveEffectivePeriodStart,
 	effectiveEffectivePeriodEnd,	
-	//issues
+	//issued
 	 issued,
 	
 	//performer
