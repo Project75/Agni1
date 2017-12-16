@@ -5,20 +5,31 @@ package com.nttdata.agni.resources.core;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import org.hl7.fhir.dstu3.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.DateTimeType;
 import org.hl7.fhir.dstu3.model.Observation;
+import org.hl7.fhir.dstu3.model.Observation.ObservationReferenceRangeComponent;
 import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.model.Observation.ObservationStatus;
+import org.hl7.fhir.dstu3.model.SimpleQuantity;
+
+import ca.uhn.fhir.model.primitive.IdDt;
 
 /**
  * Copyright NTT Data
  * @author Harendra Pandey
  */
+@ToString @Getter @Setter
 public class ObservationImpl extends AbstractResource {
 	String observationID, observationStatus, observationCode, observationSubject, observationEffective,
 	observationIssued, observationPerformer, observationValue, observationInterpretation, observationComment, observationBodySite, 
@@ -27,9 +38,17 @@ public class ObservationImpl extends AbstractResource {
 	Observation observation;
 	String resourceName="observation";
 	
+	//referenced resources, hardcoded default values but can be changed by setters
+	String refPatient = "Patient/";
+	String refDevice = "Device/";
+	String refEncounter ="Encounter/"; 
+	String refPractitioner ="Practitioner/"; 
+	String refRelatedPerson ="RelatedPerson/";
+	
 	public ObservationImpl() {
 		super();
 		this.observation = new Observation();
+		observation.setId(IdDt.newRandomUuid());
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -40,11 +59,11 @@ public class ObservationImpl extends AbstractResource {
 		setResourceData();
 
 	}
-	
+	//input map ("observation.status","ACTIVE")
 	public void setValuesFromMap(HashMap<String,String> map) {
 		 this.observationStatus= map.get("observation.status");
 		 this.observationCode= map.get("observation.code");
-		 this.observationSubject= map.get("observation.subject");
+		 this.observationSubject= refPatient+map.get("patient.identifier");
 		 setObservationEffective(map.get("observation.effective"));
 		 setObservationIssued(map.get("observation.issued"));
 		 this.observationPerformer= map.get("observation.performer");
@@ -55,7 +74,7 @@ public class ObservationImpl extends AbstractResource {
 			
 		 this.observationBodySite = map.get("observation.bodysite");
 		 this.observationMethod= map.get("observation.method");
-		 this.observationDevice= map.get("observation.device");
+		 this.observationDevice= refDevice+map.get("observation.device");
 		 this.ReferenceRangeLow= map.get("observation.referenceRange.low");
 		 this.ReferenceRangeHigh= map.get("observation.referenceRange.high");
 		 this.ReferenceRangeType= map.get("observation.referenceRange.type");
@@ -73,6 +92,8 @@ public class ObservationImpl extends AbstractResource {
 		if (getObservationID() != null){
 			observation.addIdentifier().setValue(getObservationID());
 		}
+		List<Reference> thePerformer ;
+		//observation.setPerformer(new List<Reference> thePerformer);
 		if (getObservationStatus() != null){
 		//observation.setStatus(ObservationStatus.FINAL);
 				//.valueOf(getObservationStatus()));
@@ -104,6 +125,18 @@ public class ObservationImpl extends AbstractResource {
 		observation.setBodySite(new CodeableConcept().setText(getObservationBodySite()));
 		observation.setMethod(new CodeableConcept().setText(getObservationMethod()));
 		observation.setDevice(new Reference().setReference(getObservationDevice()));
+		
+		observation.setSubject(new Reference().setReference(getObservationSubject()));
+		
+		List<ObservationReferenceRangeComponent> theReferenceRange = new ArrayList<ObservationReferenceRangeComponent>();
+		ObservationReferenceRangeComponent refRange = new ObservationReferenceRangeComponent();
+		SimpleQuantity value =  new SimpleQuantity();
+		value.setCode(getReferenceRangeLow());
+		refRange.setLow(value );
+		theReferenceRange.add(refRange);
+		theReferenceRange.add(new ObservationReferenceRangeComponent().setHigh((SimpleQuantity) new SimpleQuantity().setCode(getReferenceRangeHigh())));
+		theReferenceRange.add(new ObservationReferenceRangeComponent().setType(new CodeableConcept().setText(ReferenceRangeType)));
+		observation.setReferenceRange(theReferenceRange );
 	
 	}
 	/* (non-Javadoc)
@@ -120,140 +153,29 @@ public class ObservationImpl extends AbstractResource {
 		// TODO Auto-generated method stub
 		return this.observation;
 	}
-	/**
-	 * @return the observation
-	 */
-	public Observation getObservation() {
-		return observation;
-	}
-	/**
-	 * @param observation the observation to set
-	 */
-	public void setObservation(Observation observation) {
-		this.observation = observation;
-	}
-	public String getObservationID() {
-		return observationID;
-	}
-	public void setObservationID(String observationID) {
-		this.observationID = observationID;
-	}
-	public String getObservationStatus() {
-		return observationStatus;
-	}
-	public void setObservationStatus(String observationStatus) {
-		this.observationStatus = observationStatus;
-	}
-	public String getObservationCode() {
-		return observationCode;
-	}
-	public void setObservationCode(String observationCode) {
-		this.observationCode = observationCode;
-	}
-	public String getObservationSubject() {
-		return observationSubject;
-	}
-	public void setObservationSubject(String observationSubject) {
-		this.observationSubject = observationSubject;
-	}
-	public String getObservationEffective() {
-		return observationEffective;
-	}
+	
 	public void setObservationEffective(String observationEffective) {
+		observationEffective="20170828112030";
+		System.out.println("observationEffective--"+observationEffective);
 		this.observationEffective = observationEffective.substring(0, 4) +"-"+ observationEffective.substring(4, 6) 
-									+"-"+ observationEffective.substring(6, 8) +" "+ observationEffective.substring(8, 10) 
+										+"-"+ observationEffective.substring(6, 8) +" "+ observationEffective.substring(8, 10) 
 				 					+":"+ observationEffective.substring(10, 12) +":"+ observationEffective.substring(12, 14);
 	}
-	public String getObservationIssued() {
-		return observationIssued;
-	}
+	
 	public void setObservationIssued(String observationIssued) {
+		observationIssued="20170828112030";
+		if (observationIssued.length() >= 8){
 		this.observationIssued = observationIssued.substring(0, 4) +"-"+ observationIssued.substring(4, 6) 
-								+"-"+ observationIssued.substring(6, 8)+" "+ observationIssued.substring(8, 10) 
-			 					+":"+ observationIssued.substring(10, 12) +":"+ observationIssued.substring(12, 14);
-	}
-	public String getObservationPerformer() {
-		return observationPerformer;
-	}
-	public void setObservationPerformer(String observationPerformer) {
-		this.observationPerformer = observationPerformer;
-	}
-	public String getObservationValue() {
-		return observationValue;
-	}
-	public void setObservationValue(String observationValue) {
-		this.observationValue = observationValue;
-	}
-	public String getObservationInterpretation() {
-		return observationInterpretation;
-	}
-	public void setObservationInterpretation(String observationInterpretation) {
-		this.observationInterpretation = observationInterpretation;
-	}
-	public String getObservationComment() {
-		return observationComment;
-	}
-	public void setObservationComment(String observationComment) {
-		this.observationComment = observationComment;
-	}
-	public String getObservationBodySite() {
-		return observationBodySite;
-	}
-	public void setObservationBodySite(String observationBodySite) {
-		this.observationBodySite = observationBodySite;
-	}
-	public String getObservationMethod() {
-		return observationMethod;
-	}
-	public void setObservationMethod(String observationMethod) {
-		this.observationMethod = observationMethod;
-	}
-	public String getObservationDevice() {
-		return observationDevice;
-	}
-	public void setObservationDevice(String observationDevice) {
-		this.observationDevice = observationDevice;
-	}
-	public String getReferenceRangeLow() {
-		return ReferenceRangeLow;
-	}
-	public void setReferenceRangeLow(String ReferenceRangeLow) {
-		this.ReferenceRangeLow = ReferenceRangeLow;
-	}
-	public String getReferenceRangeHigh() {
-		return ReferenceRangeHigh;
-	}
-	public void setReferenceRangeHigh(String ReferenceRangeHigh) {
-		this.ReferenceRangeHigh = ReferenceRangeHigh;
-	}
-	public String getReferenceRangeType() {
-		return ReferenceRangeType;
-	}
-	public void setReferenceRangeType(String ReferenceRangeType) {
-		this.ReferenceRangeType = ReferenceRangeType;
-	}
-	public String getReferenceRangeAppliesTo() {
-		return ReferenceRangeAppliesTo;
-	}
-	public void setReferenceRangeAppliesTo(String ReferenceRangeAppliesTo) {
-		this.ReferenceRangeAppliesTo = ReferenceRangeAppliesTo;
-	}
-	public String getReferenceRangeText() {
-		return ReferenceRangeText;
-	}
-	public void setReferenceRangeText(String ReferenceRangeText) {
-		this.ReferenceRangeText = ReferenceRangeText;
+								+"-"+ observationIssued.substring(6, 8);
+		}
+		if (observationIssued.length() >= 14){
+			this.observationIssued = this.observationIssued +" "+ observationIssued.substring(8, 10) 
+ 					+":"+ observationIssued.substring(10, 12) +":"+ observationIssued.substring(12, 14);
+
+		}
 	}
 
-	public String getResourceName() {
-		return resourceName;
-	}
-
-	public void setResourceName(String resourceName) {
-		this.resourceName = resourceName;
-	}
-	@Override
-	public String toString() {
+	public String toString2() {
 		// TODO Auto-generated method stub
 		return observationID+" "+ observationStatus+" "+ observationCode+" "+ observationSubject+" "+ observationEffective+" "+
 		observationIssued+" "+ observationPerformer+" "+ observationValue+" "+ observationInterpretation+" "+ observationComment+" "+ observationBodySite+" "+ 

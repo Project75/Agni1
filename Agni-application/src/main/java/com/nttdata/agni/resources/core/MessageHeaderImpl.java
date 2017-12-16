@@ -22,6 +22,8 @@ import org.hl7.fhir.dstu3.model.MessageHeader.MessageDestinationComponent;
 import org.hl7.fhir.dstu3.model.MessageHeader.MessageSourceComponent;
 import org.hl7.fhir.dstu3.model.Reference;
 
+import ca.uhn.fhir.model.primitive.IdDt;
+
 /**
  * Copyright NTT Data
  * Agni-Applicationo-
@@ -45,6 +47,7 @@ public class MessageHeaderImpl extends AbstractResource{
 		super();
 		// TODO Auto-generated constructor stub
 		this.messageheader =  new MessageHeader();
+		messageheader.setId(IdDt.newRandomUuid());
 	}
 
 	@Override
@@ -88,46 +91,6 @@ public class MessageHeaderImpl extends AbstractResource{
 		// TODO Auto-generated method stub
 		return this.messageheader;
 	}
-	/*public MessageHeader getMessageheader() {
-		return messageheader;
-	}
-
-	public void setMessageheader(MessageHeader messageheader) {
-		this.messageheader = messageheader;
-	}
-
-	public String getSource() {
-		return source;
-	}
-
-	public void setSource(String source) {
-		this.source = source;
-	}
-
-	public String getDestination() {
-		return destination;
-	}
-
-	public void setDestination(String destination) {
-		this.destination = destination;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public String getResourceName() {
-		return resourceName;
-	}
-
-	public void setResourceName(String resourceName) {
-		this.resourceName = resourceName;
-	}
-	*/
 	
 	public String toString(String test) {
 		// TODO Auto-generated method stub

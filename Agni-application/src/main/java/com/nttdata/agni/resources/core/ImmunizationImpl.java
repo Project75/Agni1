@@ -153,11 +153,12 @@ public class ImmunizationImpl extends AbstractResource{
 				try {
 					if (this.getPatientIDPeriodStart() != null){
 						pidPeriod.setStart(dateFormatter.parse(this.getPatientIDPeriodStart()));
+						new Period().setStart(new SimpleDateFormat("yyyyMMddHHmm").parse(this.getPatientIDPeriodStart()));
 					}
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
-				
+							
 				try {
 					if (this.getPatientIDPeriodEnd() != null){
 						pidPeriod.setEnd(dateFormatter.parse(this.getPatientIDPeriodEnd()));

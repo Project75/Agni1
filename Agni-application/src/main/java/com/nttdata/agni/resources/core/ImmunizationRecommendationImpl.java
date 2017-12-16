@@ -3,17 +3,16 @@
  */
 package com.nttdata.agni.resources.core;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hl7.fhir.dstu3.model.HumanName;
-import org.hl7.fhir.dstu3.model.Patient;
+
+import org.hl7.fhir.dstu3.model.CodeableConcept;
+import org.hl7.fhir.dstu3.model.Identifier;
+import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.dstu3.model.Resource;
-import org.hl7.fhir.dstu3.model.StringType;
 import ca.uhn.fhir.model.primitive.IdDt;
 import org.hl7.fhir.dstu3.model.ImmunizationRecommendation;
 /**
@@ -33,7 +32,7 @@ import org.hl7.fhir.dstu3.model.ImmunizationRecommendation;
 public class ImmunizationRecommendationImpl extends AbstractResource{
 	/**
 	 * Field for storing the FHIR Resource. Need to import from org.hl7.fhir.dstu3.model.*
-	 * e.g Patient patient; or Patient resource;
+	 * e.g Patient patient; or Patient immunizationRecommendation;
 	 */
 	ImmunizationRecommendation immunizationRecommendation;
 	/**
@@ -60,7 +59,7 @@ public class ImmunizationRecommendationImpl extends AbstractResource{
 	private String supportingPatientInformation;
 
 	
-	String resourceName="ImmunizationRecommendation";
+	String immunizationRecommendationName="ImmunizationRecommendation";
 	/**
 	 * Constructor to initialize the FHIR STU3 model Object
 	 */
@@ -105,12 +104,38 @@ public class ImmunizationRecommendationImpl extends AbstractResource{
 	@Override
 	public void setResourceData() {
 		//Todo
+		immunizationRecommendation.addIdentifier().setValue(identifier).setSystem("");
+		immunizationRecommendation.setPatient(new Reference().setReference(patient));
+				//new Identifier().setValue(patient));
+		//List<ImmunizationRecommendationRecommendationComponent> t;
+		immunizationRecommendation.addRecommendation().setDate(new Date("yyyy-MM-dd"));
+		
+		//(new Reference().setReference(recommendation));
+
+		immunizationRecommendation.addRecommendation().setVaccineCode(new CodeableConcept().setText(vaccineCode));
+		
+		immunizationRecommendation.addRecommendation().setTargetDisease(new CodeableConcept().setText(targetDisease));
+		
+		immunizationRecommendation.addRecommendation().setDoseNumber(Integer.parseInt(doseNumber));//new CodeableConcept().setText(doseNumber));
+		immunizationRecommendation.addRecommendation().setForecastStatus(new CodeableConcept().setText(forecastStatus));
+		immunizationRecommendation.addRecommendation().addDateCriterion().setCode(new CodeableConcept().setText(dateCriterion));
+
+		immunizationRecommendation.addRecommendation().addDateCriterion().setValue(new Date("yyyy-MM-dd"));//.parse(dateCriterionvalue));
+		immunizationRecommendation.addRecommendation().addSupportingPatientInformation(new Reference().setReference(supportingPatientInformation));
+		//(new DateTimeType(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(protocol)));
+
+		immunizationRecommendation.addRecommendation().getProtocol().setDescription(protocolDescription);
+		immunizationRecommendation.addRecommendation().getProtocol().setAuthority(new Reference().setReference(protocolAuthority));
+		immunizationRecommendation.addRecommendation().getProtocol().setSeries(protocolSeries);
+		
+		immunizationRecommendation.addRecommendation().addSupportingImmunization().setReference(supportingImmunization);
+		
 
 	
 	}
 
 	/*
-	 * Return the FHIR resource object
+	 * Return the FHIR immunizationRecommendation object
 	 */
 	@Override
 	public Resource getResource() {
