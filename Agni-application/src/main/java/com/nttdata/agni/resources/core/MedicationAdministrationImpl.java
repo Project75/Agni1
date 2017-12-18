@@ -188,12 +188,7 @@ public class MedicationAdministrationImpl extends AbstractResource{
 		Type t1 = null;
 		medicationAdministration.getDosage().setRate(t1);
 
-		try {
-			medicationAdministration.getDosage().getRateRatio().setDenominator(new Quantity()) ;
-		} catch (FHIRException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		//.setRate(dosageRateX);
 		medicationAdministration.addEventHistory(new Reference().setReference(eventHistory));
 

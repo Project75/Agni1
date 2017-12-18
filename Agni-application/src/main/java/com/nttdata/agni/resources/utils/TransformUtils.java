@@ -6,6 +6,7 @@ package com.nttdata.agni.resources.utils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.hl7.fhir.dstu3.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.Coding;
@@ -28,10 +29,16 @@ import com.nttdata.agni.resources.core.AbstractResource;
 public final class TransformUtils {
 	public static String resourceToJson(AbstractResource resource){		
 		FhirContext ctx = FhirContext.forDstu3();
+		if (resource.getResource() != null){
 		String json = ctx.newJsonParser().setPrettyPrint(true)
         		.encodeResourceToString(resource.getResource());	
-		
 		return json;
+		} else{
+			//log.error();
+			System.out.println("Resource null - "+resource.getResourceName());
+			return "ERROR -  NULL Resource -"+resource.toString();	
+		}
+				
 		
 	}
 	

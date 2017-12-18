@@ -102,7 +102,7 @@ public class PractitionerImpl extends AbstractResource{
 		
 		practitioner.setGender(Enumerations.AdministrativeGender.valueOf(getgender().toUpperCase()));
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");	
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");	
 		try {
 			if (getDOB() != null){
 				practitioner.setBirthDate(formatter.parse(getDOB()));

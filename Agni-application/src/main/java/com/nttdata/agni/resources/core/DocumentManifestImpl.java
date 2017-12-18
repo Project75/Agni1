@@ -96,7 +96,7 @@ public class DocumentManifestImpl extends AbstractResource{
 		resource.setStatus(DocumentReferenceStatus.CURRENT);
 		resource.setType(new CodeableConcept().setText(type));
 		resource.setSubject(new Reference().setReference(subject));
-		resource.setCreated(new Date("yyyy-MM-dd"));//(new DateTimeType(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(created)));
+		//resource.setCreated(new Date("yyyy-MM-dd"));//(new DateTimeType(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(created)));
 		resource.addAuthor(new Reference().setReference(author));
 		resource.addRecipient(new Reference().setReference(recipient));
 		resource.setSource(source);

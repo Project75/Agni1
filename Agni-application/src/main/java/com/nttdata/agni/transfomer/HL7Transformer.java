@@ -18,8 +18,12 @@ import ca.uhn.hl7v2.DefaultHapiContext;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.HapiContext;
 import ca.uhn.hl7v2.model.Message;
+import ca.uhn.hl7v2.parser.EncodingNotSupportedException;
 import ca.uhn.hl7v2.parser.Parser;
+import ca.uhn.hl7v2.parser.PipeParser;
 import ca.uhn.hl7v2.util.Terser;
+import ca.uhn.hl7v2.validation.builder.support.NoValidationBuilder;
+import ca.uhn.hl7v2.validation.impl.NoValidation;
 
 import com.nttdata.agni.domain.MappingList;
 import com.nttdata.agni.domain.TransformRequest;
@@ -42,7 +46,7 @@ import com.nttdata.agni.service.MappingService;
 public class HL7Transformer extends AbstractTransformer {
 	
 	private static final Logger log = LoggerFactory.getLogger(HL7Transformer.class);
-	
+	String errortext;
 	@Autowired
     private MappingService mappingService; 
 	
@@ -66,28 +70,42 @@ public class HL7Transformer extends AbstractTransformer {
     	String fhir=null;
     	HashMap<String, String> dataMap = null;
     	ArrayList<String> HL7SegmentList = null;
-    	        
+    	     
         try {
         	        	
         	Message hapiMsg = getHL7FromPayload(transformRequest.getValue());
-        	HL7SegmentList = getHL7SegmentList(hapiMsg);
-        	HashMap<String, String> tempMap = getMappingsFromDB(mappingService, transformRequest.getMapname());
-        	dataMap = getHL7ValuesMap(hapiMsg, tempMap);
-        	//printmap(tempMap);
-        	//printmap(dataMap);
-		} catch (HL7Exception e) {
+        	if (hapiMsg != null){
+        		HL7SegmentList = getHL7SegmentList(hapiMsg);
+        		HashMap<String, String> tempMap = getMappingsFromDB(mappingService, transformRequest.getMapname());
+        		dataMap = getHL7ValuesMap(hapiMsg, tempMap);
+        		fhir = createFHIRFromMap(dataMap,HL7SegmentList);
+        		}
+        	//printmap(tempMap);     	//printmap(dataMap);
+        } catch (EncodingNotSupportedException e) {
+            e.printStackTrace();
+            errortext = "HL7 Validation failure - "+e.getMessage();
+        
+        } catch (HL7Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			errortext = e.getMessage();
 		}
-        fhir = createFHIRFromMap(dataMap,HL7SegmentList);
+        if (fhir == null)
+        	fhir = errortext;
     	return fhir;
     }
 
-    public  Message getHL7FromPayload(String msg) throws HL7Exception{ 
+    public  Message getHL7FromPayload(String msg) throws EncodingNotSupportedException,HL7Exception{ 
     	@SuppressWarnings("resource")
 		HapiContext context = new DefaultHapiContext();
+    	//context.setValidationRuleBuilder(new NoValidationBuilder());
+    	//context.setValidationContext(new NoValidation());
         Parser p = context.getGenericParser();
-        Message hapiMsg = p.parse(msg);
+        Message hapiMsg =  p.parse(msg);
+        
+        //PipeParser pipeParser = new PipeParser();
+        //Message hapiMsg = pipeParser.parse(msg);
+        
         return hapiMsg;
     }
     
@@ -127,7 +145,15 @@ public class HL7Transformer extends AbstractTransformer {
     	for (Map.Entry<String, String> entry : tempMap.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            String valueHL7= terser.get(value);
+            String valueHL7 = null;
+            try{
+            	valueHL7= terser.get(value);
+            } catch (HL7Exception e) {
+    			// TODO Auto-generated catch block
+            	errortext = e.getMessage();
+            	continue;
+    			
+    		}
             dataMap.put(key, valueHL7);
         }
         
@@ -143,21 +169,23 @@ public class HL7Transformer extends AbstractTransformer {
         		resource = ResourceFactory.getResource("patient");        		
         	}*/
     		String resourceName = propertyUtil.getHl7SegToFhirResources().get(segmentList.get(i));
-    		log.info("Creating resource from factory : "+ resourceName+" for segment "+segmentList.get(i));
+    		//log.info
+    		System.out.println("Creating resource from factory : "+ resourceName+" for segment "+segmentList.get(i));
     		if (segmentList.get(i).equalsIgnoreCase("MSH")){ resourceName ="messageheader";}
     		if (!((resourceName == null)|| (resourceName.isEmpty())) ){
 	        	resource = ResourceFactory.getResource(resourceName);
 	        	if (resource !=null){
-	        		log.info("Creating resource from factory : "+ resourceName+" for segment "+segmentList.get(i));
+	        		System.out.println("Creating resource from factory : "+ resourceName+" for segment "+segmentList.get(i));
 	        		resource.setResourceDataFromMap(map);
 	        		resourceList.add(resource);
+	        		//System.out.println("Haren1"+resourceName+"\n"+ TransformUtils.resourceToJson(resource));
 	        	}
     		}
     	}
-    	AbstractResource bundle = (BundleImpl)ResourceFactory.getResource("bundle");
-    	log.info("Creating Bundle : ");
+    	BundleImpl bundle = (BundleImpl)ResourceFactory.getResource("bundle");
+    	System.out.println("Creating Bundle : ");
     	bundle.addResourcesFromList(resourceList);
-		String json = TransformUtils.resourceToJson(bundle);
+		String json = bundle.toJson();//TransformUtils.resourceToJson(bundle);
 		return json;
 		
     }

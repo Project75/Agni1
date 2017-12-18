@@ -79,7 +79,7 @@ public class MappingControllerTest {
 */
     @Test
     public void shouldCreateRetrieveDelete() throws Exception {
-    	 mapping = mockMappings(mapName);
+    	 mapping = GenericResourceTest.mockMappings();
         byte[] r1Json = toJson(mapping);
 
         //CREATE
@@ -111,50 +111,37 @@ public class MappingControllerTest {
 */
         //todo: you can test the 404 error body too.
 
-/*
-JSONAssert.assertEquals(
-  "{foo: 'bar', baz: 'qux'}",
-  JSONObject.fromObject("{foo: 'bar', baz: 'xyzzy'}"));
- */
+
     }
 
     
     @Test
     public void shouldPostHL7() throws Exception {
         //User r1 = mockUser("shouldCreateRetrieveDelete");
-        TransformRequest transformRequest =  new TransformRequest("test1");
+        TransformRequest transformRequest =  new TransformRequest("test1",GenericResourceTest.getTestPayload());
         byte[] r1Json = toJson(transformRequest);
         MvcResult result=null;String resultString =null;
-        //CREATE
-/*        MvcResult result = mvc.perform(post("/fhirtranslator/v1/hl72fhir")
-                .content(r1Json)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is2xxSuccessful())          
-                .andReturn();
-        String resultString = result.getResponse().getContentAsString();*/
-        //	System.out.println(resultString);
-        	
+        
         	//CREATE2
-        result = mvc.perform(post("/fhirtranslator/v1/hl72fhir/3/test1")
+        result = mvc.perform(post("/fhirtranslator/v1/hl72fhir/test1")
                     .content(transformRequest.getValue())
                     .contentType(MediaType.TEXT_PLAIN_VALUE)
                     .accept(MediaType.ALL))
        //             .andExpect(status().is2xxSuccessful())          
                     .andReturn();
          resultString = result.getResponse().getContentAsString();
-            System.out.println("************REQ2");
+            System.out.println("************Final Output");
             	System.out.println(resultString);
-            	
-             result = mvc.perform(post("/fhirtranslator/v1/hl72fhir/2")
-                .content("test1")
+            /*	
+             result = mvc.perform(post("/fhirtranslator/v1/hl72fhir/")
+                .content(GenericResourceTest.getTestPayload())
                 //.contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.ALL))
                 //.andExpect(status().is2xxSuccessful())          
                 .andReturn();
          resultString = result.getResponse().getContentAsString();
         	System.out.println(resultString);
-        
+        */
       
     }
     
@@ -169,7 +156,7 @@ JSONAssert.assertEquals(
     }
 
 
-    private List<MappingList> mockMappings(String mapname) {
+    private List<MappingList> mockMappingsOld(String mapname) {
     	List<MappingList> mapping =  new ArrayList<MappingList>();
     	
     	mapping.add(new MappingList("patient.identifier","PID-3-1"));

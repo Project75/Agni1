@@ -60,9 +60,12 @@ public class ResourceFactory {
 		        return new OperationOutcomeImpl();
 		  case "location":
 		        return new LocationImpl();
-
-
-
+		  case "bodysite":
+		        return new BodySiteImpl();
+		  case "diagnosticreport":
+		        return new DiagnosticReportImpl();
+		  case "detectedissue":
+		        return new DetectedIssueImpl();
 	      default:
 	          // Error
 	          return null;

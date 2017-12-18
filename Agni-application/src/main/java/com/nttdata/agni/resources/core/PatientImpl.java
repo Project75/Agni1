@@ -5,9 +5,12 @@ package com.nttdata.agni.resources.core;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,10 +27,11 @@ import org.hl7.fhir.dstu3.model.Identifier.IdentifierUse;
 import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.dstu3.model.Patient.ContactComponent;
+
 import org.hl7.fhir.dstu3.model.Resource;
 
 import ca.uhn.fhir.model.primitive.IdDt;
-
+import java.util.stream.Collectors;
 /**
  * Copyright NTT Data
  * @author Harendra Pandey
@@ -44,24 +48,43 @@ public class PatientImpl extends AbstractResource{
 		// TODO Auto-generated constructor stub
 	}
 
-	String familyName, givenName, id, gender, DOB, AddressLine, AddressCity, AddressState, AddressPostalCode, AddressCountry, 
+	//NameType name;
+	//IdentifierType identifier;
+	String familyName, givenName,  id, gender, DOB, AddressLine, AddressCity, AddressState, AddressPostalCode, AddressCountry, 
 	Telecom, MaritalStatus, Deceased, Birth, ContactRel, ContactName, ContactTel, ContactAddress, ContactGender, ContactOrg,
 	GeneralPractitioner, Link;
 
 	Patient patient;
 	Reference reference;
-	String resourceName;
+	String resourceName="patient";
 	
-
-	@Override
-	public void setResourceDataFromMap(HashMap<String, String> data) {
+	public void setResourceDataFromMapV1(TransformMap map) {
+		setResourceDataFromMap(map.getMap());
+	}
+	
+	//@Override
+	public void setResourceDataFromMap(HashMap<String, String> map) {
 		
-		setValuesFromMap(data);
-		setResourceData();
+		setValuesFromMap(map);
+		setResourceData(map);
 
 	}
 	
+	public List<String> getList(HashMap<String,String> map, String key){
+		//"patient.name.family"
+		String[] out = null;
+		List<String> list =	map.entrySet()
+        .stream()
+        .filter(entry -> entry.getKey().startsWith(key))
+        .map(Map.Entry::getValue)
+        .collect(Collectors.toList());
+        return list;
+	}
+	
 	public void setValuesFromMap(HashMap<String,String> map) {
+		
+
+		 
 		this.familyName = map.get("patient.name.family");
 		this.givenName = map.get("patient.name.given");
 		this.id = map.get("patient.identifier");
@@ -92,18 +115,34 @@ public class PatientImpl extends AbstractResource{
 	/* (non-Javadoc)
 	 * @see com.nttdata.agni.resources.core.AbstractResource#setResourceData()
 	 */
-	@Override
-	public void setResourceData() {
+	//@Override
+	public void setResourceData(HashMap<String, String> map) {
 		// TODO Auto-generated method stub
 		//super.setResourceData();
+		map.put("patient.identifier.value","123");
+		map.put("patient.identifier.use","official");
+		map.put("patient.identifier.type.coding.code","MRN");
+		map.put("patient.identifier.type.coding.system","Hospital Codes");
+		map.put("patient.identifier.system","Healthcare");
 		
 		patient.addName().setUse(HumanName.NameUse.OFFICIAL)
-		        .addPrefix("Mr").setFamily(getFamilyName()).addGiven(givenName);
+		        .addPrefix("Mr").setFamily(familyName).addGiven(givenName);
 		
 		IdentifierUtil IdentifierUtil = new IdentifierUtil();
+		//Set#1 Set identifier Values from map - generic method
+		IdentifierUtil.SetValues(map, resourceName);
+				
+		//Set#2 Set Values from local variables -patient specific method 
+		//IdentifierUtil.SetPatientArgs(getId(),"1","2","3","4");
 		//IdentifierUtil.SetPatientMinimalArgs(getId());
-		IdentifierUtil.SetPatientArgs(getId(),"11","2","3","4");
+		
+		//get #1 -get identifier Arraylist 
 		patient.setIdentifier(IdentifierUtil.getIdentifierList());
+		
+		//get #2: Get (one) Identifier  (for non-patient resources)
+		//nonpatient.setIdentifier(IdentifierUtil.getIdentifier());
+		
+		//#3 using default api
 		/*
 		patient.addIdentifier().setUse(IdentifierUse.OFFICIAL)
 		        .setSystem("http://ns.electronichealth.net.au/id/hi/ihi/1.0")
@@ -233,5 +272,9 @@ public class PatientImpl extends AbstractResource{
 		this.DOB = DOB.substring(0, 4) +"-"+ DOB.substring(4, 6) +"-"+ DOB.substring(6, 8);
 	}
 
-		
+	
 }
+
+
+
+

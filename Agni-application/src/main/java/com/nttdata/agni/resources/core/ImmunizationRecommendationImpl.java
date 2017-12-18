@@ -108,7 +108,7 @@ public class ImmunizationRecommendationImpl extends AbstractResource{
 		immunizationRecommendation.setPatient(new Reference().setReference(patient));
 				//new Identifier().setValue(patient));
 		//List<ImmunizationRecommendationRecommendationComponent> t;
-		immunizationRecommendation.addRecommendation().setDate(new Date("yyyy-MM-dd"));
+	//	immunizationRecommendation.addRecommendation().setDate(new Date("yyyy-MM-dd"));
 		
 		//(new Reference().setReference(recommendation));
 
@@ -116,11 +116,11 @@ public class ImmunizationRecommendationImpl extends AbstractResource{
 		
 		immunizationRecommendation.addRecommendation().setTargetDisease(new CodeableConcept().setText(targetDisease));
 		
-		immunizationRecommendation.addRecommendation().setDoseNumber(Integer.parseInt(doseNumber));//new CodeableConcept().setText(doseNumber));
+	//	immunizationRecommendation.addRecommendation().setDoseNumber(Integer.parseInt(doseNumber));//new CodeableConcept().setText(doseNumber));
 		immunizationRecommendation.addRecommendation().setForecastStatus(new CodeableConcept().setText(forecastStatus));
 		immunizationRecommendation.addRecommendation().addDateCriterion().setCode(new CodeableConcept().setText(dateCriterion));
 
-		immunizationRecommendation.addRecommendation().addDateCriterion().setValue(new Date("yyyy-MM-dd"));//.parse(dateCriterionvalue));
+//		immunizationRecommendation.addRecommendation().addDateCriterion().setValue(new Date("yyyy-MM-dd"));//.parse(dateCriterionvalue));
 		immunizationRecommendation.addRecommendation().addSupportingPatientInformation(new Reference().setReference(supportingPatientInformation));
 		//(new DateTimeType(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(protocol)));
 

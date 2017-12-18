@@ -83,6 +83,11 @@ public class AbstractResource {
 		this.id = java.util.UUID.randomUUID().toString();
 	}
 
+	public String[] getVaribleArray() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * @return
 	 */

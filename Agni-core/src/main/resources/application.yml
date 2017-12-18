@@ -72,7 +72,6 @@ user.service:
 logging:
   file: boot_agni.log
   org.hibernate: INFO
-  root:INFO
-  org.springframework.web=DEBUG
+
 
  

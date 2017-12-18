@@ -35,7 +35,7 @@ public class DetectedIssueImpl extends AbstractResource {
 		// TODO Auto-generated constructor stub
 	}
 
-	String resourceName;
+	String resourceName="DetectedIssue";
 	
 	String 
 	// Identifier

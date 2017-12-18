@@ -11,6 +11,8 @@ import org.hl7.fhir.dstu3.model.Bundle.BundleType;
 import org.hl7.fhir.dstu3.model.Bundle.HTTPVerb;
 
 import ca.uhn.fhir.context.FhirContext;
+import lombok.Getter;
+import lombok.Setter;
 
 
 /**
@@ -19,6 +21,7 @@ import ca.uhn.fhir.context.FhirContext;
  * @author Harendra Pandey
  *
  */
+
 public class BundleImpl extends AbstractResource {
 	Bundle bundle;
 	BundleImpl(){
@@ -28,7 +31,8 @@ public class BundleImpl extends AbstractResource {
 	void addResourceToBundle(AbstractResource res){
 				
 		bundle.addEntry()
-		   .setFullUrl(res.getResource().getId()).setResource(res.getResource())
+		   //.setFullUrl(res.getResource().getId())
+			.setResource(res.getResource())
 		   .getRequest().setUrl(res.getResourceName()).setMethod(HTTPVerb.POST);
 		
 		//bundle.addEntry()
@@ -44,7 +48,7 @@ public class BundleImpl extends AbstractResource {
 	 		   .getRequest().setUrl(res.getResourceName()).setMethod(HTTPVerb.POST);
 		 		   //.setFullUrl(res.getResource().getId())		
 	        }
-	    	//System.out.println("bundle:"+this.toJson());
+	    	System.out.println("bundle created");//+this.toJson());
     	}
 		
 		
@@ -57,5 +61,10 @@ public class BundleImpl extends AbstractResource {
         		//.newXmlParser().setPrettyPrint(true)
                 .encodeResourceToString(bundle);
 		return encoded;
+	}
+	@Override
+	public Resource getResource() {
+		// TODO Auto-generated method stub
+		return this.bundle;
 	}
 }

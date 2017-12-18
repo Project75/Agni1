@@ -83,11 +83,12 @@ public class LocationImpl extends AbstractResource{
 
 	@Override
 	public void setResourceDataFromMap(HashMap<String, String> data) {
-		
 		setValuesFromMap(data);
 		setResourceData();
 
 	}
+	
+
 	
 	public void setValuesFromMap(HashMap<String,String> map) {
 		this.identifier = map.get("location.identifier");
@@ -129,11 +130,13 @@ public class LocationImpl extends AbstractResource{
 		location.setAddress(new Address().setText(address)); 
 		location.setPhysicalType(new CodeableConcept().setText(physicalType));
 		//LocationPositionComponent new LocationPositionComponent().setLongitude(null).setLatitude();
-		location.setPosition(new LocationPositionComponent()
+		//shud check below shud nbe numbers regex
+		//if (positionLongitude.matches(regex))
+		/*location.setPosition(new LocationPositionComponent()
 				.setLongitude(Long.parseLong(positionLongitude)).
 				setLatitude(Long.parseLong(positionLatitude)).
 				setAltitude(Long.parseLong(positionAltitude)));
-		
+		*/
 		location.setManagingOrganization(new Reference().setReference(managingOrganization)); 
 		//managingOrganization
 		location.setPartOf(new Reference().setReference(partOf));

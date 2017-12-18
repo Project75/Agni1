@@ -67,7 +67,7 @@ public class DocumentReferenceImpl extends AbstractResource{
 	private String contextRelatedref;
 
 	
-	String resourceName="DocumentManifest";
+	String resourceName="DocumentReference";
 	
 	public DocumentReferenceImpl() {
 		

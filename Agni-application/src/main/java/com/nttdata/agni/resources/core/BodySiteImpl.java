@@ -37,11 +37,11 @@ import ca.uhn.fhir.model.primitive.IdDt;
 @Getter 
 @Setter 
 
-public class BodySiteImp extends AbstractResource{
+public class BodySiteImpl extends AbstractResource{
 	/**
 	 * 
 	 */
-	public BodySiteImp() {
+	public BodySiteImpl() {
 		super();
 		this.bodysite = new BodySite();
 		// TODO Auto-generated constructor stub
@@ -50,7 +50,7 @@ public class BodySiteImp extends AbstractResource{
 	String identifier, 	active, code, qualifier, description, image, patient;
 
 	BodySite bodysite;
-	String resourceName;
+	String resourceName="BodySite";
 	
 	/**
 	 * @return the patient
