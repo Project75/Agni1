@@ -22,7 +22,7 @@ import org.junit.Test;
 
 public class ResourceTest extends GenericResourceTest{
       
-    @Test
+    //@Test
     public void testMessageHeader() throws Exception {
     	String payload = "MSH|^~\\&|HIS|RIH|EKG1|EKG|199904140038||ADT^A01||P|2.2\r"
                 + "PID||001|199||JOHN1^DOE||19751027|Female|||street 53^^PHOENIX^AZ^85013^US||(111)222-3333||N|W|||001|||||false||||||false|||||PID.35\r"
@@ -38,7 +38,7 @@ public class ResourceTest extends GenericResourceTest{
         //assertNotNull(messageHeaderImpl.getResource());
     }
     
-    @Test
+    //@Test
     public void testEncounter() throws Exception {
     	String out=transform("encounter");
     	System.out.println("encounter:"+out);
@@ -53,7 +53,7 @@ public class ResourceTest extends GenericResourceTest{
     	assertEquals(true, out.contains("JOHN"));
         //assertNotNull(messageHeaderImpl.getResource());
     }
-    @Test
+    //@Test
     public void testObservation() throws Exception {
     	String out=transform("Observation");
     	System.out.println("Observation:"+out);

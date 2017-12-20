@@ -6,8 +6,11 @@ package com.nttdata.agni.resources.core;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -18,6 +21,8 @@ import org.hl7.fhir.dstu3.model.Identifier;
 import org.hl7.fhir.dstu3.model.Period;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.dstu3.model.Identifier.IdentifierUse;
+
+import com.nttdata.agni.resources.types.NameType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,9 +37,25 @@ import lombok.ToString;
 @Getter @ToString @NoArgsConstructor @AllArgsConstructor
 public class IdentifierUtil {
 	
-	Optional<Identifier> identifier;
-	List<Identifier> identifierList = new ArrayList<Identifier>();
+	//Optional<Identifier> identifier;
 	
+	List<Identifier> identifierList = new ArrayList<Identifier>();
+	private Optional<String> use;
+	private Optional<String> typeCodingSystem ;
+	private Optional<String> typeCodingCode;
+	private Optional<String> typeCodingDisplay;
+	private Optional<String> system;
+	private Optional<String>  value;
+	private Optional<String>  periodStart;
+	private Optional<String>  periodEnd;
+	private Optional<String>  assignerValue;
+	private Optional<Reference> assignerReference;
+	private Optional<String>  parentResource;
+	String lookup = ".identifier";
+	
+	public Identifier getIdentifier(){
+		return identifierList.get(0);
+	}
 	public void setIdentifier() {
 		Identifier identifier = new Identifier();
 		String option = use.orElse("");
@@ -109,17 +130,7 @@ public class IdentifierUtil {
 		identifierList.add(identifier);
 	}
 	
-	private Optional<String> use;
-	private Optional<String> typeCodingSystem ;
-	private Optional<String> typeCodingCode;
-	private Optional<String> typeCodingDisplay;
-	private Optional<String> system;
-	private Optional<String>  value;
-	private Optional<String>  periodStart;
-	private Optional<String>  periodEnd;
-	private Optional<String>  assignerValue;
-	private Optional<Reference> assignerReference;
-	private Optional<String>  parentResource;
+
 
 	//Implementation Setter methods for diff variations
 	public void SetAllStringArgs(String parentResource, String use,String value,String system, 
@@ -158,5 +169,34 @@ public class IdentifierUtil {
 					"2001-05-06", null, assigner);
 		
 	}
-
+	void SetValues(HashMap<String,String> map,String resourceName){
+		//parentResource shudnt be null
+		this.lookup = resourceName+lookup;
+		//Identifier identifier = new Identifier();
+		
+		Set<String> nameKeySet = map.keySet()
+		          .stream()
+		          .filter(s -> s.startsWith(this.lookup))
+		          .collect(Collectors.toSet());
+		System.out.println(lookup+" keyset size= "+nameKeySet.size());
+		System.out.println(map.get("patient.identifier"));
+		for (String key: nameKeySet){
+			System.out.println(key+"=="+map.get(key));
+			
+		}
+		
+		this.use = Optional.ofNullable(map.get(lookup+".use"));
+		this.typeCodingSystem  = Optional.ofNullable(map.get(lookup+".type.coding.system"));
+		this.typeCodingCode = Optional.ofNullable(map.get(lookup+".type.coding.code"));
+		this.typeCodingDisplay = Optional.ofNullable(map.get(lookup+".type.coding.display"));
+		this.system = Optional.ofNullable(map.get(lookup+".system"));
+		this.value = Optional.ofNullable(map.get(lookup+".value"));
+		this.periodStart = Optional.ofNullable(map.get(lookup+".period.start"));
+		this.periodEnd = Optional.ofNullable(map.get(lookup+".period.end"));
+		this.assignerValue = Optional.ofNullable(map.get(lookup+".assigner.value"));
+		this.assignerReference = Optional.ofNullable(null);
+		
+		setIdentifier();
+		  
+	}
 }
