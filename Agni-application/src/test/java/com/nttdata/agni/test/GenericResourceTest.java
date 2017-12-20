@@ -47,8 +47,8 @@ public class GenericResourceTest {
     }
     public static String getTestPayload(){
     	String payload = "MSH|^~\\&|HIS|RIH|EKG|EKG|199904140038||ADT^A01||P|2.2\r"
-                + "PID||TEST|199^^^EHR^MR||JOHN^DOE||19751027|FEMALE|||street 53^^PHOENIX^AZ^85013^US||(111)222-3333||N|W|||001|||||false||||||false|||||PID.35\r"
-                + "NK1|0222555|NOTREAL^JAMES^R|FA|STREET^OTHER STREET^CITY^ST^55566|(222)111-3333|(888)999-0000|Father||||||ORGANIZATION||Male\r"
+                +"PID||TEST|199^^^EHR^MR||JOHN^DOE||19751027|FEMALE|||street 53^^PHOENIX^AZ^85013^US||(111)222-3333||N|W|||001|||||false||||||false|||||PID.35\r"
+                +"NK1|0222555|NOTREAL^JAMES^R|FA|STREET^OTHER STREET^CITY^ST^55566|(222)111-3333|(888)999-0000|Father||||||ORGANIZATION||Male\r"
                 +"PV1||O|5501^0113^02|U|00060292||00276^DELBARE^POL^^DR.|00276^DELBARE^POL^^DR.||1901|||N|01|||||0161782703^^^EHR^ACCT\r"
                 +"PD1|1|2|3|4|5|6|7|8|9|10\r"
                 +"OBX|1|TX|3|4|5|6|7|8|9|10|FINAL||13|20060221061809|15|16|17|18|19|20|21|22|23|24|25|26\r"
@@ -61,20 +61,20 @@ public class GenericResourceTest {
                 +"ARQ|19940047^SCH001|||||047^Referral||NORMAL|||201605150800^201605151700|2|||0045^Contact^Carrie^S^^^||||3372^Person^Entered||||\r"
                 +"RXA|0|1|201312211100||48^Hib^CVX|2|mL^milliliters^UCUM||00^Administered^NIP001|DUMMYPRACTITIONER|||||K7164HI||PMC^sanofipasteur^MVX|DUMNONED^DUMALLERGIC^DUM|||A|\r"
                 +"RXR|IMLA^LeftArmIntramuscular^HL70162|LA^Left arm^HL70163|\r"
-                //+"ORC||||||||||||||||||||||orcstreet 53^^LA^CAL^12345^US|(333)444-5555^^\r"
+                +"ORC||||||||||||||||||||||orcstreet 53^^LA^CAL^12345^US|(333)444-5555^^\r"
                 +"OM1||2|||19751027||||||11||13|||16|17|(111)222-3333||||\r"
                 +"MFE|MFE1\r"
                 +"PRT|1|2|3|PO|5|6|7|PerformerROLEDISPLAY^^PerformerACTOR\r"
     	        +"IAM|IAM1|IAM2|IAM3|IAM4|IAM5|IAM6|IAM7|IAM8\r"
     	        +"AL1||AL12.1^AL12.2^AL12.3|AL13|HIGH|AL15|20060221|AL17|AL18\r"
-    			+ "PRD|1|Adam|3|4|5|6|1111|2017-10-10|9\r"
-                + "PRT|1|2|3|4|5|6|7|8|9|10|11|12|13|14|(222)222-3333\r"
-                + "ORC|1|2|3|4|cancelled|6|20170202|8|20170221|10|11|12|13|(333)111-3333|20170221061810|16|17|18|19|20|21|22|23|street 3^^PHOENIX^AZ^85013^US|25\r"
-                + "STF|1|2|3|4|Female|19751027|7|8|9||11|||||||18\r"
-                + "PRA|1|2|3|4|GS|6|7\r"
-                + "TQ1|1|2|3|4|5|6|7|8|stat\r"
-                + "RF1|active|Urgent|3|4|5|6|2017-01-01|8|9|10\r"
-                + "PR1|1|2|3|4||6|7|8\r";  
+    			+"PRD|1|Adam|3|4|5|6|1111|2017-10-10|9\r"
+                +"PRT|1|2|3|4|5|6|7|8|9|10|11|12|13|14|(222)222-3333\r"
+                +"ORC|1|2|3|4|cancelled|6|20170202|8|20170221|10|11|12|13|(333)111-3333|20170221061810|16|17|18|19|20|21|22|23|street 3^^PHOENIX^AZ^85013^US|25\r"
+                +"STF|1|2|3|4|Female|19751027|7|8|9||11|||||||18\r"
+                +"PRA|1|2|3|4|GS|6|7\r"
+                +"TQ1|1|2|3|4|5|6|7|8|stat\r"
+                +"RF1|active|Urgent|3|4|5|6|2017-01-01|8|9|10\r"
+                +"PR1|1|2|3|4||6|7|8\r";  
     	return payload;
     }
     public  String transform(String resourceName) {
@@ -253,56 +253,47 @@ public class GenericResourceTest {
     	mapping.add(new MappingList("MedicationStatement.subject.identifier.value","PID-3-1"));
     	mapping.add(new MappingList("MedicationStatement.subject.display","PID-5-1"));// dummy value just for testing
     		
-    				
-    			
-    		
-    	// Mapping for Organization resource.
-   	  //  mapping.add(new MappingList(resourceName+"."+ResourceFactory.getResource(resourceName).getVaribleArray()[0],"")); //
-   	 //   mapping.add(new MappingList(resourceName+"."+ResourceFactory.getResource(resourceName).getVaribleArray()[1],"")); //
-   	  //  mapping.add(new MappingList(resourceName+"."+ResourceFactory.getResource(resourceName).getVaribleArray()[2],"")); //
-   	  //  mapping.add(new MappingList(resourceName+"."+ResourceFactory.getResource(resourceName).getVaribleArray()[3],"")); //
-   	 //   mapping.add(new MappingList(resourceName+"."+ResourceFactory.getResource(resourceName).getVaribleArray()[4],"")); //
-   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[5],"ORC-23-3")); //
-   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[6],"ORC-23-1")); //
-   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[7],"ORC-22-7")); //
-   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[8],"ORC-22-1")); //
-   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[9],"ORC-22-3")); //
-   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[10],"ORC-22-4")); //
-   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[11],"ORC-22-5")); //
-   	   mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[12],"ORC-22-6")); //
-   	  mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[13],"ORC-22-12")); //
-   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[14],"PID-5-1")); //
-   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[15],"PID-5-2")); //
-   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[16],"PID-5-5")); //
-   	   mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[17],"PID-5-4")); //
-   	  mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[18],"PID-5-10")); //
-   	    mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[19],"PID-13-7")); // Concatnate pending
-   	   mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[20],"PID-11-7")); //
-   	  mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[21],"PID-11-1")); //
-   	 mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[22],"PID-11-3")); //
-   	 mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[23],"PID-11-9")); //
-   	 mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[24],"PID-11-4")); //
-   	mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[25],"PID-11-5")); //
-   	 mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[26],"PID-11-6")); //
-   	 mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[27],"PID-11-12-1")); //
-   	 mapping.add(new MappingList("Organization"+"."+ResourceFactory.getResource("Organization").getVaribleArray()[28],"PID-11-12-2")); //
-   	  //mapping.add(new MappingList(resourceName+"."+ResourceFactory.getResource(resourceName).getVaribleArray()[29],"")); //
+   	    mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[5],"ORC-23-3")); //
+   	    mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[6],"ORC-23-1")); //
+   	    mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[7],"ORC-22-7")); //
+   	    mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[8],"ORC-22-1")); //
+   	    mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[9],"ORC-22-3")); //
+   	    mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[10],"ORC-22-4")); //
+   	    mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[11],"ORC-22-5")); //
+   	   mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[12],"ORC-22-6")); //
+   	  mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[13],"ORC-22-12")); //
+   	    mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[14],"PID-5-1")); //
+   	    mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[15],"PID-5-2")); //
+   	    mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[16],"PID-5-5")); //
+   	   mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[17],"PID-5-4")); //
+   	  mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[18],"PID-5-10")); //
+   	    mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[19],"PID-13-7")); // Concatnate pending
+   	   mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[20],"PID-11-7")); //
+   	  mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[21],"PID-11-1")); //
+   	 mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[22],"PID-11-3")); //
+   	 mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[23],"PID-11-9")); //
+   	 mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[24],"PID-11-4")); //
+   	mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[25],"PID-11-5")); //
+   	 mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[26],"PID-11-6")); //
+   	 mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[27],"PID-11-12-1")); //
+   	 mapping.add(new MappingList("Organization"+"."+getVaribleArrayOrganization()[28],"PID-11-12-2")); //
+ 
 
-   	    
-   	// mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[0],"")); //
-   	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[1],"OM1-2")); //
-   //	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[2],"")); //
-   	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[3],"MFE-1")); //
-   //	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[4],"")); //
-   	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[5],"OM1-21")); //
-   	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[6],"OM1-16")); //
-   //	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[7],"")); //
-   	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[8],"OM1-11")); //
-  //	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[9],"")); //
-	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[10],"OM1-17")); //
-  //	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[11],"")); //
-  //	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[12],"")); //
-  	 mapping.add(new MappingList("DataElement"+"."+ResourceFactory.getResource("DataElement").getVaribleArray()[13],"OM1-18")); //
+	    
+	 mapping.add(new MappingList("DataElement"+"."+getVaribleArrayDataElement()[0],"PID-2")); 
+	 mapping.add(new MappingList("DataElement"+"."+getVaribleArrayDataElement()[1],"OM1-2")); 
+	 mapping.add(new MappingList("DataElement"+"."+getVaribleArrayDataElement()[2],"PID-2")); 
+	 mapping.add(new MappingList("DataElement"+"."+getVaribleArrayDataElement()[3],"MFE-1")); 
+	 mapping.add(new MappingList("DataElement"+"."+getVaribleArrayDataElement()[4],"PID-2")); 
+	 mapping.add(new MappingList("DataElement"+"."+getVaribleArrayDataElement()[5],"OM1-21")); 
+	 mapping.add(new MappingList("DataElement"+"."+getVaribleArrayDataElement()[6],"OM1-16")); 
+	 mapping.add(new MappingList("DataElement"+"."+getVaribleArrayDataElement()[7],"PID-2")); 
+	 mapping.add(new MappingList("DataElement"+"."+getVaribleArrayDataElement()[8],"OM1-11")); 
+	 mapping.add(new MappingList("DataElement"+"."+getVaribleArrayDataElement()[9],"PID-2")); 
+	 mapping.add(new MappingList("DataElement"+"."+getVaribleArrayDataElement()[10],"OM1-17")); 
+	 mapping.add(new MappingList("DataElement"+"."+getVaribleArrayDataElement()[11],"PID-2")); 
+	 mapping.add(new MappingList("DataElement"+"."+getVaribleArrayDataElement()[12],"PID-2")); 
+	 mapping.add(new MappingList("DataElement"+"."+getVaribleArrayDataElement()[13],"OM1-18")); 
 
     	
   	 // Mapping for Diagnostic reports
@@ -546,6 +537,53 @@ public class GenericResourceTest {
 	mapping.add(new MappingList("immunizationrecommendation.supportingImmunization","PID-2"));
 	mapping.add(new MappingList("immunizationrecommendation.supportingPatientInformation","PID-2"));
 
+	//Vivek
+	
+	mapping.add(new MappingList("VisionPrescription.identifier","PID-2"));
+	mapping.add(new MappingList("VisionPrescription.status","PID-2"));
+	mapping.add(new MappingList("VisionPrescription.patient.reference","PID-3-1"));
+	mapping.add(new MappingList("VisionPrescription.patient.identifier","PID-3-1"));
+	mapping.add(new MappingList("VisionPrescription.patient.display","PID-2"));
+	mapping.add(new MappingList("VisionPrescription.encounter.reference","PV1-19"));
+	mapping.add(new MappingList("VisionPrescription.encounter.identifier","PID-2"));
+	mapping.add(new MappingList("VisionPrescription.encounter.display","PID-2"));
+	mapping.add(new MappingList("VisionPrescription.dateWritten","ORC-9"));
+	mapping.add(new MappingList("VisionPrescription.prescriber.reference","RXE-13"));
+	mapping.add(new MappingList("VisionPrescription.prescriber.identifier","PID-2"));
+	mapping.add(new MappingList("VisionPrescription.prescriber.display","PID-2"));
+	mapping.add(new MappingList("VisionPrescription.reason.reasoncodableconcept","ORC-16"));
+	mapping.add(new MappingList("VisionPrescription.reason.reference","ORC-16"));
+	mapping.add(new MappingList("VisionPrescription.reason.identifier","ORC-16"));
+	mapping.add(new MappingList("VisionPrescription.reason.display","PID-2"));
+	mapping.add(new MappingList("VisionPrescription.dispenseproduct","RXE-2"));
     		return mapping;
     }
+	
+	public static String getTestPayload2(){
+    	String payload = "MSH|^~\\&|HIS|RIH|EKG|EKG|199904140038||ADT^A01||P|2.2\r"
+                + "PID||TEST|199^^^EHR^MR||JOHN^DOE||19751027|FEMALE|||street 53^^PHOENIX^AZ^85013^US||(111)222-3333||N|W|||001|||||false||||||false|||||PID.35\r"
+                + "NK1|0222555|NOTREAL^JAMES^R|FA|STREET^OTHER STREET^CITY^ST^55566|(222)111-3333|(888)999-0000|Father||||||ORGANIZATION||Male\r"
+                +"PV1||O|5501^0113^02|U|00060292||00276^DELBARE^POL^^DR.|00276^DELBARE^POL^^DR.||1901|||N|01|||||0161782703^^^EHR^ACCT\r"
+                +"PD1|1|2|3|4|5|6|7|8|9|10\r"
+                +"OBX|1|TX|3|4|5|6|7|8|9|10|FINAL||13|20060221061809|15|16|17|18|19|20|21|22|23|24|25|26\r"
+                +"OBR|1|2156286|A140875|MRSHLR-C^MR Shoulder right wo/contrast|5||||9|10|11|12|13||15|16||18|19|20|21|20060221061809|23|24|25|26\r"
+                +"NTE|1|2|3-comment|4\r"
+                ;  
+    	return payload;
+    }
+	
+	public static String[] getVaribleArrayOrganization() {
+		String[] varibleArray = {"identifier", "active","type","name", "alias", "telecomsystem", "telecomvalue", "addresstype", "addresstext", "addresscity", "addressstate", "addresspostalcode", "addresscountry","addresscountryperiodstart",
+				"contactfamily", "contactgiven", "contactprefix", "contactsuffix", "contactperiodstart" , "contacttelecomvalue", "contactaddressuse", "contactaddressline", "contactaddresscity", "contactaddressdistrict", "contactaddressstate",
+				"contactaddresspostalcode", "contactaddresscountry" , "contactaddressperiodstart", "contactaddressperiodend", "endpoint"};
+		
+		return varibleArray;
+	}
+	
+	public static String[] getVaribleArrayDataElement() {
+		String[] varibleArray = {"url","identifiervalue", "version","status","experimental", "date", "publisher", "name","title" ,"contactname", "contacttelecomvalue", "usecontextcodesystem", "usecontextcodeversion", "usecontextcodecode", "usecontextcodedisplay","usecontextcodeuserselected",
+				"usecontextvaluecodebleconceptcodingsystem", "usecontextvaluecodebleconcepttext" , "usecontextvaluequantityunit" , "usecontextvaluequantitysystem" , "usecontextvaluequantitycode"};
+		
+		return varibleArray;
+	}
 }

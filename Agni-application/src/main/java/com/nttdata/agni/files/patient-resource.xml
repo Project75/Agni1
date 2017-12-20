@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<file-format>
+    <converter name="char" class="com.blackbear.flatworm.converters.CoreConverters" method="convertChar" return-type="java.lang.String"/>
+    <record name="patientresource">
+        <record-definition>
+            <bean name="patient" class="com.nttdata.agni.files.Patient"/>
+            <line delimit =",">
+                <record-element length="0" beanref="patient.id" type="char">
+                    <conversion-option name="justify" value="left"/>
+                </record-element>
+                <record-element length="0" beanref="patient.gender" type="char">
+                    <conversion-option name="justify" value="left"/>
+                </record-element>
+                <record-element length="0" beanref="patient.dob" type="char">
+                    <conversion-option name="justify" value="left"/>
+                </record-element>
+                <record-element length="0" beanref="patient.race" type="char">
+                    <conversion-option name="justify" value="left"/>
+                </record-element>
+                <record-element length="0" beanref="patient.maritalstatus" type="char">
+                    <conversion-option name="justify" value="left"/>
+                </record-element>
+                <record-element length="0" beanref="patient.language" type="char">
+                    <conversion-option name="justify" value="left"/>
+                </record-element>
+                <record-element length="0" beanref="patient.ppbelowpoverty" type="char">
+                    <conversion-option name="justify" value="left"/>
+                </record-element>
+                
+            </line>
+        </record-definition>
+    </record>
+</file-format>

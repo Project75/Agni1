@@ -66,6 +66,12 @@ public class ResourceFactory {
 		        return new DiagnosticReportImpl();
 		  case "detectedissue":
 		        return new DetectedIssueImpl();
+		  case "VisionPrescription":
+		        return new VisionPrescriptionImpl(); 
+	      case "PaymentNotice":
+		        return new PaymentNoticeImpl(); 
+	      case "Specimen":
+		        return new SpecimenImpl(); 
 	      default:
 	          // Error
 	          return null;

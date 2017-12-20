@@ -119,14 +119,15 @@ public class PatientImpl extends AbstractResource{
 	public void setResourceData(HashMap<String, String> map) {
 		// TODO Auto-generated method stub
 		//super.setResourceData();
-		map.put("patient.identifier.value","123");
+		map.put("patient.identifier.value",this.id);
 		map.put("patient.identifier.use","official");
 		map.put("patient.identifier.type.coding.code","MRN");
 		map.put("patient.identifier.type.coding.system","Hospital Codes");
 		map.put("patient.identifier.system","Healthcare");
 		
 		patient.addName().setUse(HumanName.NameUse.OFFICIAL)
-		        .addPrefix("Mr").setFamily(familyName).addGiven(givenName);
+		        //.addPrefix("Mr")
+		        .setFamily(familyName).addGiven(givenName);
 		
 		IdentifierUtil IdentifierUtil = new IdentifierUtil();
 		//Set#1 Set identifier Values from map - generic method
@@ -177,7 +178,7 @@ public class PatientImpl extends AbstractResource{
 		if (getContactGender()!=null){	
 		 gender = //Optional.ofNullable().orElse();
 			Enumerations.AdministrativeGender.valueOf(getContactGender().toUpperCase());					
-		}else {gender = Enumerations.AdministrativeGender.UNKNOWN;}
+		}//else {gender = Enumerations.AdministrativeGender.UNKNOWN;}
 		patient.addContact().addRelationship(new CodeableConcept().setText(getContactRel())).setName(new HumanName().addGiven(getContactName()))
 		       .addTelecom(new ContactPoint().setValue(getContactTel())).setAddress(new ContactComponent().getAddress().addLine(getContactAddress()))
 		       .setGender(gender)

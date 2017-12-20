@@ -30,27 +30,7 @@ public class HL72FHIRController extends AbstractRestHandler {
     @Autowired
     private HL7Transformer transformer;
 
-/*    @RequestMapping(value = "/1",
-            method = RequestMethod.POST,
-            consumes = {"application/json", "application/xml"},
-            produces = {"application/json", "application/xml"})
-    @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "HL7 to FHIR.", notes = "Returns FHIR resource bundle.")
-    public String hl72fhir(@RequestBody TransformRequest transformRequest,
-                                 HttpServletRequest request, HttpServletResponse response) {
-        return transformer.transform(transformRequest);
-        
-    }
 
-        @RequestMapping(value = "/2",
-		    method = RequestMethod.POST)
-		@ResponseStatus(HttpStatus.CREATED)
-		@ApiOperation(value = "HL7 to FHIR.", notes = "Returns FHIR resource bundle.")
-		public String hl72fhir(@RequestBody String  str,
-		                         HttpServletRequest request, HttpServletResponse response) {
-		        	return transformer.transform("test1","");
-
-	}*/
     
     @RequestMapping(value = "/{mapname}",
             method = RequestMethod.POST,
