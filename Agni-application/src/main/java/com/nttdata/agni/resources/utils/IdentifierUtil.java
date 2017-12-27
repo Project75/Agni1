@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.nttdata.agni.resources.core;
+package com.nttdata.agni.resources.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -168,7 +168,7 @@ public class IdentifierUtil {
 					"2001-05-06", null, assigner);
 		
 	}
-	void SetValues(HashMap<String,String> map,String resourceName){
+	public void SetValues(HashMap<String,String> map,String resourceName){
 		//parentResource shudnt be null
 		this.lookup = resourceName+lookup;
 		//Identifier identifier = new Identifier();

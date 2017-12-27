@@ -33,6 +33,7 @@ import org.hl7.fhir.dstu3.model.Type;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import ca.uhn.fhir.model.primitive.IdDt;
+import ca.uhn.fhir.util.DateUtils;
 
 /**
  * Copyright NTT Data
@@ -154,19 +155,22 @@ public class MedicationAdministrationImpl extends AbstractResource{
 		medicationAdministration.setContext(new Reference().setReference(context));
 		medicationAdministration.addSupportingInformation(new Reference().setReference(supportingInformation));
 		//medicationAdministration.setEffective(effective[x]);
+		
+		
 		try{
-			if(effectiveDateTime != null){
-				medicationAdministration.setEffective(new DateTimeType(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(effectiveDateTime)));
+			if (effectiveDateTime != null){
+				medicationAdministration.setEffective(new DateTimeType(DateUtils.parseDate(effectiveDateTime,
+													new String[]{"yyyyMMdd","yyyy-MM-dd","yyyy-MM-dd HH:mm:ss"})));
 			}
-			}catch(ParseException e) {
+			if (effectivePeriod != null){
+				medicationAdministration.setEffective(new Period().setStart(DateUtils.parseDate(effectiveDateTime,
+													new String[]{"yyyyMMdd","yyyy-MM-dd","yyyy-MM-dd HH:mm:ss","yyyyMMddHHmm"})));
+			}
+				
+			}catch(NullPointerException e) {
 				e.printStackTrace();
 			}
-		try {
-			medicationAdministration.setEffective(new Period().setStart(new SimpleDateFormat("yyyyMMddHHmm").parse(effectivePeriod)));
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} //.effectivePeriod);
+		//.effectivePeriod);
 		//todo
 		medicationAdministration.addPerformer().setActor(new Reference().setReference(null));
 		//medicationAdministration.setPerformerOnBehalfOf(new Reference().setReference(performerOnBehalfOf));

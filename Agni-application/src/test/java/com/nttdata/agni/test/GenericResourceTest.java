@@ -134,7 +134,7 @@ public class GenericResourceTest {
         if (mappingList.size() > 0) {
         	//System.out.println("MappingList size is "+mappingList.size());
         	for (MappingList entity : mappingList) {	    		
-        		mappingMap.put(entity.getFHIR(), entity.getHL7());	    		
+        		mappingMap.put(entity.getFhir(), entity.getHl7());	    		
 	        }
         } 
     	return mappingMap;

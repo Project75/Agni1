@@ -5,9 +5,11 @@ package com.nttdata.agni.transfomer;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +31,8 @@ import com.nttdata.agni.domain.MappingList;
 import com.nttdata.agni.domain.TransformRequest;
 import com.nttdata.agni.resources.core.AbstractResource;
 import com.nttdata.agni.resources.core.BundleImpl;
-import com.nttdata.agni.resources.core.PropertyUtil;
 import com.nttdata.agni.resources.core.ResourceFactory;
+import com.nttdata.agni.resources.utils.PropertyUtil;
 import com.nttdata.agni.resources.utils.TransformUtils;
 import com.nttdata.agni.service.MappingService;
 
@@ -127,13 +129,13 @@ public class HL7Transformer extends AbstractTransformer {
         
         if (mappingListDefault.size() > 0) {        	
 	    	for (MappingList entity : mappingListDefault) {	    		
-	    		mappingMap.put(entity.getFHIR(), entity.getHL7());
+	    		mappingMap.put(entity.getFhir(), entity.getHl7());
 	        }
     	}
         if (mappingList.size() > 0) {
         	//log.debug("MappingList size is "+mappingList.size());
         	for (MappingList entity : mappingList) {	    		
-        		mappingMap.put(entity.getFHIR(), entity.getHL7());	    		
+        		mappingMap.put(entity.getFhir(), entity.getHl7());	    		
 	        }
         } 
     	return mappingMap;
@@ -168,18 +170,21 @@ public class HL7Transformer extends AbstractTransformer {
 /*        	if (segmentList.get(i)=="PID"){
         		resource = ResourceFactory.getResource("patient");        		
         	}*/
-    		String resourceName = propertyUtil.getHl7SegToFhirResources().get(segmentList.get(i));
+    		//String resourceName = propertyUtil.getHl7SegToFhirResources().get(segmentList.get(i));
+    		List<String> resourceNames = propertyUtil.getHl7SegToFhirResources().get(segmentList.get(i));
     		//log.info
-    		System.out.println("Creating resource from factory : "+ resourceName+" for segment "+segmentList.get(i));
-    		if (segmentList.get(i).equalsIgnoreCase("MSH")){ resourceName ="messageheader";}
-    		if (!((resourceName == null)|| (resourceName.isEmpty())) ){
-	        	resource = ResourceFactory.getResource(resourceName);
-	        	if (resource !=null){
-	        		System.out.println("Creating resource from factory : "+ resourceName+" for segment "+segmentList.get(i));
-	        		resource.setResourceDataFromMap(map);
-	        		resourceList.add(resource);
-	        		//System.out.println("Haren1"+resourceName+"\n"+ TransformUtils.resourceToJson(resource));
-	        	}
+    		for (String resourceName:Optional.ofNullable(resourceNames).orElse(Collections.emptyList())){
+	    		System.out.println("Creating resource from factory : "+ resourceName+" for segment "+segmentList.get(i));
+	    		if (segmentList.get(i).equalsIgnoreCase("MSH")){ resourceName ="messageheader";}
+	    		if (!((resourceName == null)|| (resourceName.isEmpty())) ){
+		        	resource = ResourceFactory.getResource(resourceName);
+		        	if (resource !=null){
+		        		System.out.println("Creating resource from factory : "+ resourceName+" for segment "+segmentList.get(i));
+		        		resource.setResourceDataFromMap(map);
+		        		resourceList.add(resource);
+		        		//System.out.println("Haren1"+resourceName+"\n"+ TransformUtils.resourceToJson(resource));
+		        	}
+	    		}
     		}
     	}
     	BundleImpl bundle = (BundleImpl)ResourceFactory.getResource("bundle");

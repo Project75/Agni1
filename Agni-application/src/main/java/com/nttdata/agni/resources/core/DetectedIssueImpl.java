@@ -10,6 +10,7 @@ import org.hl7.fhir.dstu3.model.DetectedIssue;
 import org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueSeverity;
 
 import com.nttdata.agni.resources.utils.FHIRUtils;
+import com.nttdata.agni.resources.utils.IdentifierUtil;
 
 import org.hl7.fhir.dstu3.model.Identifier;
 import org.hl7.fhir.dstu3.model.Patient;

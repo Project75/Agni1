@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.nttdata.agni.resources.core;
+package com.nttdata.agni.resources.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ public class PropertySplitter {
     }
 
     /**
-     * Example: one.example.property = KEY1:VALUE1.1,VALUE1.2;KEY2:VALUE2.1,VALUE2.2
+     * Example: one.example.property = KEY1:VALUE1.1,VALUE1.2 ; KEY2:VALUE2.1,VALUE2.2
      */
     public Map<String, List<String>> mapOfList(String property) {
         Map<String, String> map = this.map(property, ";");

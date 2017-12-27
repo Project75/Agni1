@@ -24,7 +24,7 @@ import org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus;
 import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.model.StringType;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.joda.time.DateTime;
+
 
 import ca.uhn.fhir.model.primitive.IdDt;
 

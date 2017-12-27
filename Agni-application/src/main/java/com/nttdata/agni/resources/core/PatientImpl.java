@@ -28,6 +28,8 @@ import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.dstu3.model.Patient.ContactComponent;
 
+import com.nttdata.agni.resources.utils.IdentifierUtil;
+
 import org.hl7.fhir.dstu3.model.Resource;
 
 import ca.uhn.fhir.model.primitive.IdDt;

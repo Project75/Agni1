@@ -3,12 +3,13 @@
  */
 package com.nttdata.agni.resources.core;
 
-import java.sql.Date;
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,7 @@ import org.hl7.fhir.dstu3.model.StringType;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import ca.uhn.fhir.model.primitive.IdDt;
+import ca.uhn.fhir.util.DateUtils;
 
 /**
  * Copyright NTT Data
@@ -77,7 +79,7 @@ public class ProcedureRequestImpl extends AbstractResource{
 		this.identifier = map.get("procedurerequest.identifier");
 		this.basedOn = map.get("procedurerequest.basedOn");
 		this.requisition = map.get("procedurerequest.requisition");
-		this.status = map.get("procedurerequest.status");
+		this.status = Optional.ofNullable(map.get("procedurerequest.status")).orElse(ProcedureRequestStatus.ACTIVE.toString());
 		this.priority = map.get("procedurerequest.priority");
 		this.authoredOn = map.get("procedurerequest.authoredOn");
 		//this.requesterAgent = map.get("procedurerequest.requester.agent");
@@ -92,15 +94,15 @@ public class ProcedureRequestImpl extends AbstractResource{
 		procedurerequest.addBasedOn().setReference(basedOn);
 		procedurerequest.setRequisition(new Identifier().setValue(requisition));
 		procedurerequest.setStatus(ProcedureRequestStatus.valueOf(status.toUpperCase()));	
+		
 		procedurerequest.setPriority(ProcedureRequestPriority.valueOf(priority.toUpperCase()));
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-			procedurerequest.setAuthoredOn(formatter.parse(authoredOn));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		
+
+		if (authoredOn != null)
+			procedurerequest.setAuthoredOn(DateUtils.parseDate(authoredOn,new String[]{"yyyyMMdd","yyyy-MM-dd"}));
+
 		procedurerequest.addReasonCode(new CodeableConcept().setText(reasonCode));
 		
 }
