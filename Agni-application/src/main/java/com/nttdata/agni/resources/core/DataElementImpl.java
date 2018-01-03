@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Period;
 import java.util.Arrays;
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 
 import org.hl7.fhir.dstu3.model.Address;
 import org.hl7.fhir.dstu3.model.Address.AddressType;
@@ -59,13 +59,13 @@ public class DataElementImpl extends AbstractResource {
 		
 
 	@Override
-	public void setResourceDataFromMap(HashMap<String, String> data) {
+	public void setResourceDataFromMap(TransformMap data) {
 		// TODO Auto-generated method stub
 		setValuesFromMap(data );
 		setResourceData();
 	}
 
-	private void setValuesFromMap(HashMap<String, String> map) {
+	private void setValuesFromMap(TransformMap map) {
 		// TODO Auto-generated method stub
 		
 	for ( int i=0; i < this.varibleArray.length ; i++)

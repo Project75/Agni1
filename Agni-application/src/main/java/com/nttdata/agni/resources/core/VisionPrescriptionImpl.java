@@ -2,7 +2,7 @@ package com.nttdata.agni.resources.core;
 
 
 import java.util.Date;
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 
 import org.hl7.fhir.dstu3.model.Identifier;
 import org.hl7.fhir.dstu3.model.Reference;
@@ -30,14 +30,14 @@ reasonreference, reasonidentifier, reasondisplay, dispenseproduct;
 
 
 @Override
-public void setResourceDataFromMap(HashMap<String, String> data) {
+public void setResourceDataFromMap(TransformMap data) {
 	// TODO Auto-generated method stub
 	setValuesFromMap(data);
 	setResourceData();
 	
 }
 
-private void setValuesFromMap(HashMap<String, String> map) {
+private void setValuesFromMap(TransformMap map) {
 	// TODO Auto-generated method stub
 	this.identifier = map.get("VisionPrescription.identifier");
 	this.status = map.get("VisionPrescription.status");

@@ -7,7 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 
 import lombok.Getter;
@@ -51,14 +51,14 @@ public class MessageHeaderImpl extends AbstractResource{
 	}
 
 	@Override
-	public void setResourceDataFromMap(HashMap<String, String> data) {
+	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
 		setResourceData();
 
 	}
 	
-	public void setValuesFromMap(HashMap<String,String> map) {
+	public void setValuesFromMap(TransformMap map) {
 		this.source = map.get("messageheader.source.name");
 		this.destination = map.get("messageheader.destination.name");
 		this.triggerevent = map.get("messageheader.event.code");

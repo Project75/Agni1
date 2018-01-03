@@ -8,7 +8,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 
 import lombok.Getter;
@@ -18,6 +18,9 @@ import lombok.ToString;
 import org.hl7.fhir.dstu3.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.DateTimeType;
 import org.hl7.fhir.dstu3.model.Resource;
+
+import com.nttdata.agni.resources.utils.TransformMap;
+
 import org.hl7.fhir.dstu3.model.Period;
 import org.hl7.fhir.dstu3.model.Identifier;
 import org.hl7.fhir.dstu3.model.Appointment;
@@ -51,14 +54,14 @@ public class AppointmentImpl extends AbstractResource{
 	}
 
 	@Override
-	public void setResourceDataFromMap(HashMap<String, String> data) {
+	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
 		setResourceData();
 
 	}
 	/*Populate this object from the hashmap using the key for  each field*/
-	public void setValuesFromMap(HashMap<String,String> map) {
+	public void setValuesFromMap(TransformMap map) {
 		 this.identifier = map.get("appointment.identifier");
 		 this.status = map.get("appointment.status");
 		 this.appointmentType = map.get("appointment.appointmentType");

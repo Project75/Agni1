@@ -4,11 +4,11 @@
 package com.nttdata.agni.resources.core;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.hl7.fhir.dstu3.model.Resource;
 
-import ca.uhn.fhir.context.FhirContext;
+import com.nttdata.agni.resources.utils.TransformMap;
+
 
 /**
  * Copyright NTT Data
@@ -41,7 +41,7 @@ public class AbstractResource {
 	public void setResourceData() {
 	}
 	
-	public void setResourceDataFromMap(HashMap<String, String> data) {
+	public void setResourceDataFromMap(TransformMap data) {
 		
 	}
 	public void getResourcedata() {

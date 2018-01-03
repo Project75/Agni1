@@ -2,7 +2,7 @@ package com.nttdata.agni.resources.core;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 
 import org.hl7.fhir.dstu3.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.Coding;
@@ -151,7 +151,7 @@ public class DetectedIssueImpl extends AbstractResource {
 	
 
 	@Override
-	public void setResourceDataFromMap(HashMap<String, String> map) {
+	public void setResourceDataFromMap(TransformMap map) {
 		// TODO Auto-generated method stub
 		setValuesFromMap(map);
 		setResourceData();
@@ -159,7 +159,7 @@ public class DetectedIssueImpl extends AbstractResource {
 	}
 
 	
-	private void setValuesFromMap(HashMap<String, String> map) {
+	private void setValuesFromMap(TransformMap map) {
 		// TODO Auto-generated method stub
 		
 		

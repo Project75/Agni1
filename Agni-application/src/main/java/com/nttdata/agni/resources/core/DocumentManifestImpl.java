@@ -2,7 +2,7 @@ package com.nttdata.agni.resources.core;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -61,14 +61,14 @@ public class DocumentManifestImpl extends AbstractResource{
 	}
 
 	@Override
-	public void setResourceDataFromMap(HashMap<String, String> data) {
+	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
 		setResourceData();
 
 	}
 	
-	public void setValuesFromMap(HashMap<String,String> map) {
+	public void setValuesFromMap(TransformMap map) {
 		this.masterIdentifier = map.get("documentmanifest.masteridentifier");
 		this.identifier = map.get("documentmanifest.identifier");
 		this.status = map.get("documentmanifest.status");

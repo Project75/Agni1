@@ -10,6 +10,7 @@ import com.nttdata.agni.resources.core.AbstractResource;
 import com.nttdata.agni.resources.core.BundleImpl;
 import com.nttdata.agni.resources.core.PatientImpl;
 import com.nttdata.agni.resources.core.ResourceFactory;
+import com.nttdata.agni.resources.utils.TransformMap;
 
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.Message;
@@ -27,7 +28,7 @@ public class CustomTransformer {
 	public String transform(String mapname, String payload) {
 		// TODO Auto-generated method stub
 		String fhir=null;
-		HashMap<String, String> map = null;
+		TransformMap map = null;
 		ArrayList<AbstractResource> resourceList = new ArrayList<AbstractResource>();
 		PatientFlatParser patientParser = new PatientFlatParser();
     	ArrayList<Patient> patients = patientParser.parsePatient(payload);
@@ -49,10 +50,10 @@ public class CustomTransformer {
 		return json;
 	}
 
-	private HashMap<String, String> MapToFHIR(Patient patient) {
+	private TransformMap MapToFHIR(Patient patient) {
 		// TODO Auto-generated method stub
 		//PatientImpl patFhir = new PatientImpl();
-		HashMap<String, String> map = new HashMap<String, String>();
+		TransformMap map = new TransformMap();
 		map.put("patient.name.family",patient.family);
 		map.put("patient.name.given",patient.given);
 		map.put("patient.identifier",patient.id);
@@ -68,7 +69,7 @@ public class CustomTransformer {
 		return map;
 				
 	}
-	private AbstractResource createFHIRResource(HashMap<String, String> dataMap,String resourceName) {
+	private AbstractResource createFHIRResource(TransformMap dataMap,String resourceName) {
 		// TODO Auto-generated method stub
     	AbstractResource resource =  null;
     	if (resourceName !=null){

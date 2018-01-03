@@ -4,7 +4,7 @@
 package com.nttdata.agni.resources.core;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 
 import lombok.Getter;
@@ -55,14 +55,14 @@ public class OperationOutcomeImpl extends AbstractResource{
 	}
 
 	@Override
-	public void setResourceDataFromMap(HashMap<String, String> data) {
+	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
 		setResourceData();
 
 	}
 	
-	public void setValuesFromMap(HashMap<String,String> map) {
+	public void setValuesFromMap(TransformMap map) {
 		this.familyName = map.get("patient.family.name");
 		this.givenName = map.get("patient.given.name");
 

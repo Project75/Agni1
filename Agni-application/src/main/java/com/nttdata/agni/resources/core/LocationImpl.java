@@ -4,7 +4,7 @@
 package com.nttdata.agni.resources.core;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 
 import lombok.Getter;
@@ -82,7 +82,7 @@ public class LocationImpl extends AbstractResource{
 	}
 
 	@Override
-	public void setResourceDataFromMap(HashMap<String, String> data) {
+	public void setResourceDataFromMap(TransformMap data) {
 		setValuesFromMap(data);
 		setResourceData();
 
@@ -90,7 +90,7 @@ public class LocationImpl extends AbstractResource{
 	
 
 	
-	public void setValuesFromMap(HashMap<String,String> map) {
+	public void setValuesFromMap(TransformMap map) {
 		this.identifier = map.get("location.identifier");
 		this.status = map.get("location.status");
 		this.operationalStatus = map.get("location.operationalStatus");

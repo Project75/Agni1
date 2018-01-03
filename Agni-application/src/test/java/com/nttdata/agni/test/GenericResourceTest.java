@@ -5,9 +5,14 @@ package com.nttdata.agni.test;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+
+import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.Message;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import com.nttdata.agni.domain.MappingList;
 import com.nttdata.agni.resources.core.*;
 import com.nttdata.agni.resources.utils.TransformUtils;
@@ -47,7 +52,8 @@ public class GenericResourceTest {
     }
     public static String getTestPayload(){
     	String payload = "MSH|^~\\&|HIS|RIH|EKG|EKG|199904140038||ADT^A01||P|2.2\r"
-                +"PID||TEST|199^^^EHR^MR||JOHN^DOE||19751027|FEMALE|||street 53^^PHOENIX^AZ^85013^US||(111)222-3333||N|W|||001|||||false||||||false|||||PID.35\r"
+                +"PID||TEST|199^20110101^^EHR^MR^FAC~1000||JOHN^DOE~JOHNY^DEPP||19751027|FEMALE|||street 53^^PHOENIX^AZ^85013^US||(111)222-3333||N|W|||001|||||false||||||false|||||PID.35\r"
+ 
                 +"NK1|0222555|NOTREAL^JAMES^R|FA|STREET^OTHER STREET^CITY^ST^55566|(222)111-3333|(888)999-0000|Father||||||ORGANIZATION||Male\r"
                 +"PV1||O|5501^0113^02|U|00060292||00276^DELBARE^POL^^DR.|00276^DELBARE^POL^^DR.||1901|||N|01|||||0161782703^^^EHR^ACCT\r"
                 +"PD1|1|2|3|4|5|6|7|8|9|10\r"
@@ -85,13 +91,13 @@ public class GenericResourceTest {
     public  String transform(String resourceName,String payload) {
     	System.out.println("***************************");
     	System.out.println("Processing for "+resourceName);
-    	HashMap<String, String> dataMap = null;
+    	TransformMap dataMap = null;
     	    	  
         try {        	        	
         	
 			Message hapiMsg = hl7Transformer.getHL7FromPayload(payload);
  
-        	HashMap<String, String> tempMap = getMappings();
+        	ListMultimap<String, String> tempMap = getMappings();
         	dataMap = hl7Transformer.getHL7ValuesMap(hapiMsg, tempMap);
         	
 		} catch (HL7Exception e) {
@@ -104,7 +110,7 @@ public class GenericResourceTest {
         return getResourceAsString(res);
         
     }
-	private AbstractResource createFHIRResource(HashMap<String, String> dataMap,String resourceName) {
+	private AbstractResource createFHIRResource(TransformMap dataMap,String resourceName) {
 		// TODO Auto-generated method stub
     	AbstractResource resource =  null;
     	if (resourceName !=null){
@@ -125,9 +131,9 @@ public class GenericResourceTest {
 	private String getResourceAsString(AbstractResource resource) {
 		return resource.toString();
 	}
-	private HashMap<String, String> getMappings() {
+	private ListMultimap<String, String> getMappings() {
 		// TODO Auto-generated method stub
-		HashMap<String, String> mappingMap =new HashMap<String, String>();
+		ListMultimap<String, String> mappingMap =ArrayListMultimap.create();
         List<MappingList> mappingList = mockMappings();
         
         
@@ -144,7 +150,16 @@ public class GenericResourceTest {
 	public static List<MappingList> mockMappings() {
     	List<MappingList> mapping =  new ArrayList<MappingList>();
     	
-    	mapping.add(new MappingList("patient.identifier","PID-3-1"));
+		//mapping.add(new MappingList("patient.identifier.use","PID-3-?"));
+		mapping.add(new MappingList("patient.identifier.value","PID-3-1"));
+		//mapping.add(new MappingList("patient.identifier.system","PID-3-"));
+		//mapping.add(new MappingList("patient.identifier.type.coding.code","PID-3-5"));
+		mapping.add(new MappingList("patient.identifier.type.coding.display","PID-3-5"));
+		//mapping.add(new MappingList("patient.identifier.type.coding.system","PID-3-5"));
+		mapping.add(new MappingList("patient.identifier.period.start","PID-3-2"));
+		//mapping.add(new MappingList("patient.identifier.period.end","PID-7-1"));
+		mapping.add(new MappingList("patient.identifier.assigner.value","PID-3-4"));
+		mapping.add(new MappingList("patient.identifier.assigner.display","PID-3-4"));
     	mapping.add(new MappingList("patient.name.family","PID-5-1"));
     	mapping.add(new MappingList("patient.name.given","PID-5-2"));
     	mapping.add(new MappingList("patient.gender","PID-8-1"));

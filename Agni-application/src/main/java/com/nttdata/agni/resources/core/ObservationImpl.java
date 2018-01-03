@@ -6,7 +6,7 @@ package com.nttdata.agni.resources.core;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 
 import lombok.Getter;
@@ -53,14 +53,14 @@ public class ObservationImpl extends AbstractResource {
 	}
 	
 	@Override
-	public void setResourceDataFromMap(HashMap<String, String> data) {
+	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
 		setResourceData();
 
 	}
 	//input map ("observation.status","ACTIVE")
-	public void setValuesFromMap(HashMap<String,String> map) {
+	public void setValuesFromMap(TransformMap map) {
 		 this.observationStatus= map.get("observation.status");
 		 this.observationCode= map.get("observation.code");
 		 this.observationSubject= refPatient+map.get("patient.identifier");

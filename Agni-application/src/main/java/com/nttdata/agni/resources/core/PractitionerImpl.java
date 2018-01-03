@@ -5,7 +5,7 @@ package com.nttdata.agni.resources.core;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -56,12 +56,12 @@ public class PractitionerImpl extends AbstractResource{
 	}
 	
 	@Override
-	public void setResourceDataFromMap(HashMap<String, String> data) {
+	public void setResourceDataFromMap(TransformMap data) {
 		setValuesFromMap(data);
 		setResourceData();
 	}
 	
-	public void setValuesFromMap(HashMap<String,String> map) {
+	public void setValuesFromMap(TransformMap map) {
 		this.identifier = map.get("practitioner.identifier");
 		//this.active = map.get("practitioner.active");
 		this.name = map.get("practitioner.name");

@@ -3,7 +3,7 @@ package com.nttdata.agni.resources.core;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 
 import org.hl7.fhir.dstu3.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.CodeableConcept.*;
@@ -237,14 +237,14 @@ public class DiagnosticReportImpl  extends AbstractResource {
 	PRT4;
 	
 	@Override
-	public void setResourceDataFromMap(HashMap<String, String> data) {
+	public void setResourceDataFromMap(TransformMap data) {
 		// TODO Auto-generated method stub
 		setValuesFromMap(data);
 		setResourceData();
 		
 	}
 
-	private void setValuesFromMap(HashMap<String, String> map) {
+	private void setValuesFromMap(TransformMap map) {
 		// TODO Auto-generated method stub
 		
 		this.identifierValue = map.get("DiagnosticReport.identifierValue");

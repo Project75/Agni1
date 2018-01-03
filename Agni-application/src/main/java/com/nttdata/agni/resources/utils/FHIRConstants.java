@@ -1,6 +1,7 @@
 package com.nttdata.agni.resources.utils;
 
 public class FHIRConstants {
+	public static final String IDENTIFIER_SYSTEM_DEFAULT = "http://hl7.org/fhir/v2/0203";
 	public static final String LOINC_URI = "http://loinc.org";
 
 	public static final String SNOMED_CT_URI = "http://snomed.info/sct";

@@ -4,7 +4,7 @@
 package com.nttdata.agni.resources.core;
 
 import java.util.Date;
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -71,14 +71,14 @@ public class ImmunizationRecommendationImpl extends AbstractResource{
 	}
 
 	@Override
-	public void setResourceDataFromMap(HashMap<String, String> data) {
+	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
 		setResourceData();
 
 	}
 	
-	public void setValuesFromMap(HashMap<String,String> map) {
+	public void setValuesFromMap(TransformMap map) {
 		this.identifier = map.get("immunizationrecommendation.identifier");
 		this.patient = map.get("immunizationrecommendation.patient");
 		this.recommendation = map.get("immunizationrecommendation.recommendation");

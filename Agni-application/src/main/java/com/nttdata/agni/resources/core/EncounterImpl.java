@@ -6,7 +6,7 @@ package com.nttdata.agni.resources.core;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 import java.util.Date;
 
@@ -60,14 +60,14 @@ public class EncounterImpl extends AbstractResource{
 	}
 
 	@Override
-	public void setResourceDataFromMap(HashMap<String, String> data) {
+	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
 		setResourceData();
 
 	}
 	/*Populate this object from the hashmap using the key for  each field*/
-	public void setValuesFromMap(HashMap<String,String> map) {
+	public void setValuesFromMap(TransformMap map) {
 		this.identifier = map.get("Encounter.identifier");
 		this.encounterClass = map.get("Encounter.class");
 		this.encounterType = map.get("Encounter.type");

@@ -7,7 +7,7 @@ import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,14 +68,14 @@ public class ProcedureRequestImpl extends AbstractResource{
 	}
 
 	@Override
-	public void setResourceDataFromMap(HashMap<String, String> data) {
+	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
 		setResourceData();
 
 	}
 	
-	public void setValuesFromMap(HashMap<String,String> map) {
+	public void setValuesFromMap(TransformMap map) {
 		this.identifier = map.get("procedurerequest.identifier");
 		this.basedOn = map.get("procedurerequest.basedOn");
 		this.requisition = map.get("procedurerequest.requisition");

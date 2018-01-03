@@ -5,6 +5,7 @@ package com.nttdata.agni.transfomer;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -27,12 +28,17 @@ import ca.uhn.hl7v2.util.Terser;
 import ca.uhn.hl7v2.validation.builder.support.NoValidationBuilder;
 import ca.uhn.hl7v2.validation.impl.NoValidation;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import com.nttdata.agni.domain.MappingList;
 import com.nttdata.agni.domain.TransformRequest;
 import com.nttdata.agni.resources.core.AbstractResource;
 import com.nttdata.agni.resources.core.BundleImpl;
 import com.nttdata.agni.resources.core.ResourceFactory;
+import com.nttdata.agni.resources.utils.HL7Parser;
+import com.nttdata.agni.resources.utils.MapConfig;
 import com.nttdata.agni.resources.utils.PropertyUtil;
+import com.nttdata.agni.resources.utils.TransformMap;
 import com.nttdata.agni.resources.utils.TransformUtils;
 import com.nttdata.agni.service.MappingService;
 
@@ -70,7 +76,7 @@ public class HL7Transformer extends AbstractTransformer {
 	@Override
     public  String transform(TransformRequest transformRequest) {
     	String fhir=null;
-    	HashMap<String, String> dataMap = null;
+    	TransformMap dataMap = null;
     	ArrayList<String> HL7SegmentList = null;
     	     
         try {
@@ -78,11 +84,11 @@ public class HL7Transformer extends AbstractTransformer {
         	Message hapiMsg = getHL7FromPayload(transformRequest.getValue());
         	if (hapiMsg != null){
         		HL7SegmentList = getHL7SegmentList(hapiMsg);
-        		HashMap<String, String> tempMap = getMappingsFromDB(mappingService, transformRequest.getMapname());
+        		ListMultimap<String, String> tempMap = getMappingsFromDB(mappingService, transformRequest.getMapname(),transformRequest.getMappingStrategy());
         		dataMap = getHL7ValuesMap(hapiMsg, tempMap);
         		fhir = createFHIRFromMap(dataMap,HL7SegmentList);
         		}
-        	//printmap(tempMap);     	//printmap(dataMap);
+        	
         } catch (EncodingNotSupportedException e) {
             e.printStackTrace();
             errortext = "HL7 Validation failure - "+e.getMessage();
@@ -101,7 +107,7 @@ public class HL7Transformer extends AbstractTransformer {
     	@SuppressWarnings("resource")
 		HapiContext context = new DefaultHapiContext();
     	//context.setValidationRuleBuilder(new NoValidationBuilder());
-    	//context.setValidationContext(new NoValidation());
+    	context.setValidationContext(new NoValidation());
         Parser p = context.getGenericParser();
         Message hapiMsg =  p.parse(msg);
         
@@ -122,47 +128,98 @@ public class HL7Transformer extends AbstractTransformer {
         }
         return segmentList;
     }
-    public  HashMap<String, String> getMappingsFromDB(MappingService mappingService, String mapname){    	
-    	HashMap<String, String> mappingMap =new HashMap<String, String>();
+    public  ListMultimap<String, String> getMappingsFromDB(MappingService mappingService, String mapname,String mappingStrategy){
+		if (mappingStrategy=="MINIMAL")
+			return getMappingsFromDBWithMiniMal(mappingService, mapname);
+		else
+			return getMappingsFromDBWithDefault(mappingService, mapname);  
+    
+    }
+    public  ListMultimap<String, String> getMappingsFromDBWithMiniMal(MappingService mappingService, String mapname){    	
+    	ListMultimap<String, String> newMappings = ArrayListMultimap.create();
+        List<MappingList> mappingList = mappingService.findByMapname(mapname);
+        if (mappingList.size() > 0) {
+        	//log.debug("MappingList size is "+mappingList.size());
+        	for (MappingList entity : mappingList) {	    		
+        		newMappings.put(entity.getFhir(), entity.getHl7());	    		
+	        }
+        }
+        return newMappings;
+     }	   
+    public  ListMultimap<String, String> getMappingsFromDBWithDefault(MappingService mappingService, String mapname){    	
+    	ListMultimap<String, String> mappingMap = ArrayListMultimap.create();
+    	ListMultimap<String, String> defMappings = ArrayListMultimap.create();
+    	ListMultimap<String, String> newMappings = ArrayListMultimap.create();
         List<MappingList> mappingList = mappingService.findByMapname(mapname);
         List<MappingList> mappingListDefault = mappingService.findByMapname("default");
         
         if (mappingListDefault.size() > 0) {        	
 	    	for (MappingList entity : mappingListDefault) {	    		
-	    		mappingMap.put(entity.getFhir(), entity.getHl7());
+	    		defMappings.put(entity.getFhir(), entity.getHl7());
 	        }
     	}
         if (mappingList.size() > 0) {
         	//log.debug("MappingList size is "+mappingList.size());
         	for (MappingList entity : mappingList) {	    		
-        		mappingMap.put(entity.getFhir(), entity.getHl7());	    		
+        		newMappings.put(entity.getFhir(), entity.getHl7());	    		
 	        }
         } 
+        //newMappings.putAll(arg0)
+        Map<String, Collection<String>> defMap = defMappings.asMap();
+        Map<String, Collection<String>> newMap = newMappings.asMap();
+        defMap.putAll(newMap);
+        
+        for (Map.Entry<String, Collection<String>> entry : defMap.entrySet()) {	    		
+    		String key = entry.getKey();
+    		Collection<String> value = entry.getValue();
+            //List<String> valueHL7 = hL7Map.getAll(value);
+    		mappingMap.putAll(key, value);
+    		
+        }
+        
+        /*      	
+	    	for (Map.Entry<String, Collection<String>> entry : defMap.entrySet()) {	    		
+	    		String key = entry.getKey();
+	    		Collection<String> value = entry.getValue();
+	            //List<String> valueHL7 = hL7Map.getAll(value);
+	    		newMap.putIfAbsent(key, value);
+	        }
+    	*/
+        
     	return mappingMap;
     }
     
-    public  HashMap<String, String> getHL7ValuesMap(Message hapiMsg, HashMap<String, String> tempMap) throws HL7Exception{ 
-    	Terser terser = new Terser(hapiMsg);
-    	HashMap<String, String> dataMap =new HashMap<String, String>();
-    	for (Map.Entry<String, String> entry : tempMap.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            String valueHL7 = null;
-            try{
-            	valueHL7= terser.get(value);
-            } catch (HL7Exception e) {
-    			// TODO Auto-generated catch block
-            	errortext = e.getMessage();
-            	continue;
-    			
-    		}
-            dataMap.put(key, valueHL7);
+    public  TransformMap getHL7ValuesMap(Message hapiMsg, ListMultimap<String, String> mappingMap) throws HL7Exception{ 
+    	HL7Parser HL7Parser =new HL7Parser();
+    	TransformMap hL7Map =  null;
+    	try{
+    		hL7Map = HL7Parser.getHL7Map(hapiMsg);
+        } catch (HL7Exception e) {
+			// TODO Auto-generated catch block
+        	errortext = e.getMessage();        	
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			errortext = e.getMessage();
+			e.printStackTrace();
+		}
+    	
+    	
+    	TransformMap dataMap =new TransformMap();
+    	for (String key : mappingMap.keySet()) {
+            List<String> values = mappingMap.get(key);
+            //String value = entry.getValue();
+            List<String> valueHL7 = hL7Map.getAll(values);
+            dataMap.putAll(key, valueHL7);
         }
-        
+        //print maps
+    	//System.out.println("hL7Map:"+hL7Map.getMap().toString());
+    	//System.out.println("dataMap:"+dataMap.getMap().toString());
+    	
         return dataMap;
     }
     
-    public  String createFHIRFromMap(HashMap<String, String> map,ArrayList<String> segmentList)  { 
+    public  String createFHIRFromMap(TransformMap map,ArrayList<String> segmentList)  { 
     	//PropertyUtil propertyUtil =new PropertyUtil();
     	AbstractResource resource =  null;
     	ArrayList<AbstractResource> resourceList = new ArrayList<AbstractResource>();

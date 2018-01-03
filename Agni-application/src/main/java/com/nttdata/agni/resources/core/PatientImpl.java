@@ -6,7 +6,7 @@ package com.nttdata.agni.resources.core;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,6 +29,9 @@ import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.dstu3.model.Patient.ContactComponent;
 
 import com.nttdata.agni.resources.utils.IdentifierUtil;
+import com.nttdata.agni.resources.utils.IdentifierUtil2;
+import com.nttdata.agni.resources.utils.NameUtils;
+import com.nttdata.agni.resources.utils.TransformMap;
 
 import org.hl7.fhir.dstu3.model.Resource;
 
@@ -61,18 +64,18 @@ public class PatientImpl extends AbstractResource{
 	String resourceName="patient";
 	
 	public void setResourceDataFromMapV1(TransformMap map) {
-		setResourceDataFromMap(map.getMap());
+		setResourceDataFromMap(map);
 	}
 	
 	//@Override
-	public void setResourceDataFromMap(HashMap<String, String> map) {
+	public void setResourceDataFromMap(TransformMap map) {
 		
 		setValuesFromMap(map);
 		setResourceData(map);
 
 	}
 	
-	public List<String> getList(HashMap<String,String> map, String key){
+	/*public List<String> getList(TransformMap map, String key){
 		//"patient.name.family"
 		String[] out = null;
 		List<String> list =	map.entrySet()
@@ -81,9 +84,9 @@ public class PatientImpl extends AbstractResource{
         .map(Map.Entry::getValue)
         .collect(Collectors.toList());
         return list;
-	}
+	}*/
 	
-	public void setValuesFromMap(HashMap<String,String> map) {
+	public void setValuesFromMap(TransformMap map) {
 		
 
 		 
@@ -118,29 +121,20 @@ public class PatientImpl extends AbstractResource{
 	 * @see com.nttdata.agni.resources.core.AbstractResource#setResourceData()
 	 */
 	//@Override
-	public void setResourceData(HashMap<String, String> map) {
+	public void setResourceData(TransformMap map) {
 		// TODO Auto-generated method stub
 		//super.setResourceData();
-		map.put("patient.identifier.value",this.id);
-		map.put("patient.identifier.use","official");
-		map.put("patient.identifier.type.coding.code","MRN");
-		map.put("patient.identifier.type.coding.system","Hospital Codes");
-		map.put("patient.identifier.system","Healthcare");
-		
-		patient.addName().setUse(HumanName.NameUse.OFFICIAL)
+		//IdentifierUse IdentifierUse = new IdentifierUse();
+
+		patient.setName(NameUtils.getNames(map, resourceName));
+		//#1
+		//patient.addName().setUse(HumanName.NameUse.OFFICIAL)
 		        //.addPrefix("Mr")
-		        .setFamily(familyName).addGiven(givenName);
+		//        .setFamily(familyName).addGiven(givenName);
 		
-		IdentifierUtil IdentifierUtil = new IdentifierUtil();
-		//Set#1 Set identifier Values from map - generic method
-		IdentifierUtil.SetValues(map, resourceName);
-				
-		//Set#2 Set Values from local variables -patient specific method 
-		//IdentifierUtil.SetPatientArgs(getId(),"1","2","3","4");
-		//IdentifierUtil.SetPatientMinimalArgs(getId());
 		
 		//get #1 -get identifier Arraylist 
-		patient.setIdentifier(IdentifierUtil.getIdentifierList());
+		patient.setIdentifier(IdentifierUtil2.getIdentifierList(map, resourceName));
 		
 		//get #2: Get (one) Identifier  (for non-patient resources)
 		//nonpatient.setIdentifier(IdentifierUtil.getIdentifier());

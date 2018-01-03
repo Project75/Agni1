@@ -50,7 +50,15 @@ public class IdentifierUtil {
 	private Optional<String>  assignerValue;
 	private Optional<Reference> assignerReference;
 	private Optional<String>  parentResource;
-	String lookup = ".identifier";
+	public String TYPE = ".identifier";
+	public String IDENTIFIER_SYSTEM_HL7 = "http://hl7.org/fhir/v2/0203";
+	public String IDENTIFIER_SYSTEM_LOC = "urn:oid:1.2.36.146.595.217.0.1";
+	
+	public static List<Identifier> getIdentifierList(TransformMap map,String resourceName){
+		IdentifierUtil identifierUtil =  new IdentifierUtil();
+		identifierUtil.SetValues( map, resourceName);
+		return identifierUtil.identifierList;
+	}
 	
 	public Identifier getIdentifier(){
 		return identifierList.get(0);
@@ -69,9 +77,11 @@ public class IdentifierUtil {
 		
 		
 			if (!(typeCodingSystem.isPresent()))
-			  typeCodingSystem= Optional.of("http://hl7.org/fhir/v2/0203");
+			  typeCodingSystem= Optional.of(IDENTIFIER_SYSTEM_HL7);
 			if (!(typeCodingCode.isPresent()))
 				typeCodingCode = Optional.of("MR");
+			if (!(system.isPresent()))
+				system= Optional.of(IDENTIFIER_SYSTEM_LOC);
 		
 			Coding coding =new Coding();
 			List<Coding> codingList =  new ArrayList<Coding>();
@@ -80,7 +90,7 @@ public class IdentifierUtil {
 			if (typeCodingSystem.isPresent())
 				coding.setSystem(typeCodingSystem.get());
 			if (typeCodingDisplay.isPresent())
-				coding.setCode(typeCodingDisplay.get());
+				coding.setDisplay(typeCodingDisplay.get());
 				
 			Optional<Coding> codingOpt = Optional.of(coding);
 			if (codingOpt.isPresent())
@@ -149,50 +159,52 @@ public class IdentifierUtil {
 		
 		setIdentifier();
 	}
-	public void SetPatientMinimalArgs(String value){
+	public void SetPatientMinimalTestArgs(String value){
 		
 		//SetPatientArgs(typeCodingValue,null,null,null);
 		
-		SetAllStringArgs("Patient", null,value, "urn:oid:1.2.36.146.595.217.0.1", 
-				"http://hl7.org/fhir/v2/0203", "MR", null,
+		SetAllStringArgs("Patient", null,value, IDENTIFIER_SYSTEM_LOC, 
+				IDENTIFIER_SYSTEM_HL7, "MR", null,
 				"2001-05-06", null, "ABC Organization");
 	}
 	public void SetPatientArgs(String value,String use, String system,String typeCodingCode,String assigner ) {
 	
-		system = Optional.ofNullable(system).orElse("urn:oid:1.2.36.146.595.217.0.1");
+		system = Optional.ofNullable(system).orElse(IDENTIFIER_SYSTEM_LOC);
 		typeCodingCode = Optional.ofNullable(typeCodingCode).orElse("MR");
 		
 			
 		SetAllStringArgs("Patient", null,value, system, 
-					"http://hl7.org/fhir/v2/0203", typeCodingCode, null,
-					"2001-05-06", null, assigner);
+				IDENTIFIER_SYSTEM_HL7, typeCodingCode, null,
+					null, null, assigner);
 		
 	}
-	public void SetValues(HashMap<String,String> map,String resourceName){
-		//parentResource shudnt be null
-		this.lookup = resourceName+lookup;
+	public void SetValues(TransformMap map,String resourceName){
+		//resourceName shudnt be null
+		//if (resourceName = null || map = null)
+		//		throw new Exception NullMappingException;
+		this.TYPE = resourceName+TYPE;
 		//Identifier identifier = new Identifier();
 		
-		Set<String> nameKeySet = map.keySet()
+/*		Set<String> nameKeySet = map.map.keySet()
 		          .stream()
-		          .filter(s -> s.startsWith(this.lookup))
+		          .filter(s -> s.startsWith(this.TYPE))
 		          .collect(Collectors.toSet());
-		System.out.println(lookup+" keyset size= "+nameKeySet.size());
+		System.out.println(TYPE+" keyset size= "+nameKeySet.size());
 		System.out.println(map.get("patient.identifier"));
 		for (String key: nameKeySet){
 			System.out.println(key+"=="+map.get(key));
 			
-		}
+		}*/
 		
-		this.use = Optional.ofNullable(map.get(lookup+".use"));
-		this.typeCodingSystem  = Optional.ofNullable(map.get(lookup+".type.coding.system"));
-		this.typeCodingCode = Optional.ofNullable(map.get(lookup+".type.coding.code"));
-		this.typeCodingDisplay = Optional.ofNullable(map.get(lookup+".type.coding.display"));
-		this.system = Optional.ofNullable(map.get(lookup+".system"));
-		this.value = Optional.ofNullable(map.get(lookup+".value"));
-		this.periodStart = Optional.ofNullable(map.get(lookup+".period.start"));
-		this.periodEnd = Optional.ofNullable(map.get(lookup+".period.end"));
-		this.assignerValue = Optional.ofNullable(map.get(lookup+".assigner.value"));
+		this.use = Optional.ofNullable(map.get(TYPE+".use"));
+		this.typeCodingSystem  = Optional.ofNullable(map.get(TYPE+".type.coding.system"));
+		this.typeCodingCode = Optional.ofNullable(map.get(TYPE+".type.coding.code"));
+		this.typeCodingDisplay = Optional.ofNullable(map.get(TYPE+".type.coding.display"));
+		this.system = Optional.ofNullable(map.get(TYPE+".system"));
+		this.value = Optional.ofNullable(map.get(TYPE+".value"));
+		this.periodStart = Optional.ofNullable(map.get(TYPE+".period.start"));
+		this.periodEnd = Optional.ofNullable(map.get(TYPE+".period.end"));
+		this.assignerValue = Optional.ofNullable(map.get(TYPE+".assigner.value"));
 		this.assignerReference = Optional.ofNullable(null);
 		
 		setIdentifier();

@@ -3,7 +3,7 @@
  */
 package com.nttdata.agni.resources.core;
 
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -77,14 +77,14 @@ public class DocumentReferenceImpl extends AbstractResource{
 	}
 
 	@Override
-	public void setResourceDataFromMap(HashMap<String, String> data) {
+	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
 		setResourceData();
 
 	}
 	
-	public void setValuesFromMap(HashMap<String,String> map) {
+	public void setValuesFromMap(TransformMap map) {
 		this.masterIdentifier = map.get("documentreference.masteridentifier");
 		this.identifier = map.get("documentreference.identifier");
 		this.status = map.get("documentreference.status");

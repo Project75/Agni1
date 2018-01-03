@@ -6,7 +6,7 @@ package com.nttdata.agni.resources.core;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,12 +66,12 @@ public class PractitionerRoleImpl extends AbstractResource{
 	}
 	
 	@Override
-	public void setResourceDataFromMap(HashMap<String, String> data) {
+	public void setResourceDataFromMap(TransformMap data) {
 		setValuesFromMap(data);
 		setResourceData();
 	}
 	
-	public void setValuesFromMap(HashMap<String,String> map) {
+	public void setValuesFromMap(TransformMap map) {
 		this.identifier = map.get("practitionerrole.identifier");
 		this.active = map.get("practitionerrole.active");
 		this.period = map.get("practitionerrole.period");
