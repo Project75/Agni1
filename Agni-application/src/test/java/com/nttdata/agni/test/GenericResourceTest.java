@@ -102,7 +102,7 @@ public class GenericResourceTest {
         AbstractResource res = createFHIRResource(dataMap,resourceName);
         //print json 
         System.out.println(getResourceAsJson(res));
-        return getResourceAsString(res);
+        return getResourceAsJson(res);
         
     }
 	private AbstractResource createFHIRResource(TransformMap dataMap,String resourceName) {

@@ -105,13 +105,13 @@ public class EncounterImpl extends AbstractResource{
 		encounter.addIdentifier().setValue(this.getIdentifier());
 		
 		//Encounter.status (MapToDo)
-		encounter.setStatus(EncounterStatus.valueOf("NULL"));
+		encounter.setStatus(EncounterStatus.INPROGRESS);
 		
 		//Encounter.statusHistory (MapToDo)
 		encounter.addStatusHistory().setStatus(EncounterStatus.valueOf("UNKNOWN"));
 		
 		//Encounter.class () (inpatient | outpatient | ambulatory | emergency +.)
-		encounter.setClass_(new Coding().setCode(this.getEncounterClass()));
+		//encounter.setClass_(new Coding().setCode(this.getEncounterClass()));
 		
 		//Encounter.classHistory (MapToDo)
 		encounter.addClassHistory().setClass_(new Coding().setCode(this.getEncounterClass()));

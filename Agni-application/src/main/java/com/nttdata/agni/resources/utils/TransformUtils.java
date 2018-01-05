@@ -29,14 +29,27 @@ import com.nttdata.agni.resources.core.AbstractResource;
 public final class TransformUtils {
 	public static String resourceToJson(AbstractResource resource){		
 		FhirContext ctx = FhirContext.forDstu3();
-		if (resource.getResource() != null){
-		String json = ctx.newJsonParser().setPrettyPrint(true)
-        		.encodeResourceToString(resource.getResource());	
-		return json;
+		if (resource.getResource() != null){			
+			return resourceToJson(resource.getResource());
 		} else{
 			//log.error();
 			System.out.println("Resource null - "+resource.getResourceName());
 			return "ERROR -  NULL Resource -"+resource.toString();	
+		}
+				
+		
+	}
+	
+	public static String resourceToJson(Resource resource){		
+		FhirContext ctx = FhirContext.forDstu3();
+		if (resource != null){
+		String json = ctx.newJsonParser().setPrettyPrint(true)
+        		.encodeResourceToString(resource);	
+		return json;
+		} else{
+			//log.error();
+			System.out.println("Resource null - "+resource.fhirType());
+			return "ERROR -  NULL Resource -"+resource.fhirType();	
 		}
 				
 		

@@ -112,7 +112,7 @@ public class PatientImpl extends AbstractResource{
 		
 		patient.setIdentifier(IdentifierUtils.getIdentifierList(map, resourceName));
 
-
+		if (getGender() != null)
 		patient.setGender(Enumerations.AdministrativeGender.valueOf(getGender().toUpperCase()));
 		
 		if (DOB != null){

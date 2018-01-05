@@ -12,8 +12,10 @@ import com.nttdata.agni.api.rest.UserController;
 import com.nttdata.agni.domain.MappingList;
 import com.nttdata.agni.domain.TransformRequest;
 import com.nttdata.agni.domain.User;
+import com.nttdata.agni.resources.utils.TransformUtils;
 
 import org.hamcrest.Matcher;
+import org.hl7.fhir.dstu3.model.Patient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -81,7 +83,7 @@ public class MappingControllerTest {
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 */
-   // @Test
+    @Test
     public void shouldCreateRetrieveDelete() throws Exception {
     	 mapping = GenericResourceTest.mockMappings();
         byte[] r1Json = toJson(mapping);
@@ -155,15 +157,7 @@ public class MappingControllerTest {
       
     }
     
-   
-    /*
-    ******************************
-     */
 
-    private void assertThat(URI location, Matcher<Object> notNullValue) {
-		// TODO Auto-generated method stub
-		
-	}
 	private long getResourceIdFromUrl(String locationUrl) {
         String[] parts = locationUrl.split("/");
         return Long.valueOf(parts[parts.length - 1]);
