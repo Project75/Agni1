@@ -26,11 +26,6 @@ import ch.qos.logback.classic.Logger;
 import org.slf4j.LoggerFactory;
 
 
-
-
-
-
-
 public class GenericResourceTest {
 
     private HL7Transformer hl7Transformer;
@@ -52,7 +47,7 @@ public class GenericResourceTest {
     }
     public static String getTestPayload(){
     	String payload = "MSH|^~\\&|HIS|RIH|EKG|EKG|199904140038||ADT^A01||P|2.2\r"
-                +"PID||TEST|199^20110101^^EHR^MR^FAC~1000||JOHN^DOE~JOHNY^DEPP||19751027|FEMALE|||street 53^^PHOENIX^AZ^85013^US||(111)222-3333||N|W|||001|||||false||||||false|||||PID.35\r"
+                +"PID||TEST|199&100^20110101^^EHR^MR&SSN^FAC~1000||JOHN^DOE~JOHNY^DEPP||19751027|FEMALE|||street 53^^PHOENIX^AZ^85013^US||(111)222-3333||N|W|||001|||||false||||||false|||||PID.35\r"
  
                 +"NK1|0222555|NOTREAL^JAMES^R|FA|STREET^OTHER STREET^CITY^ST^55566|(222)111-3333|(888)999-0000|Father||||||ORGANIZATION||Male\r"
                 +"PV1||O|5501^0113^02|U|00060292||00276^DELBARE^POL^^DR.|00276^DELBARE^POL^^DR.||1901|||N|01|||||0161782703^^^EHR^ACCT\r"
@@ -152,14 +147,15 @@ public class GenericResourceTest {
     	
 		//mapping.add(new MappingList("patient.identifier.use","PID-3-?"));
 		mapping.add(new MappingList("patient.identifier.value","PID-3-1"));
+		mapping.add(new MappingList("patient.identifier.value","PID-3-1-2"));
 		//mapping.add(new MappingList("patient.identifier.system","PID-3-"));
 		//mapping.add(new MappingList("patient.identifier.type.coding.code","PID-3-5"));
 		mapping.add(new MappingList("patient.identifier.type.coding.display","PID-3-5"));
 		//mapping.add(new MappingList("patient.identifier.type.coding.system","PID-3-5"));
-		mapping.add(new MappingList("patient.identifier.period.start","PID-3-2"));
+		//mapping.add(new MappingList("patient.identifier.period.start","PID-3-2"));
 		//mapping.add(new MappingList("patient.identifier.period.end","PID-7-1"));
-		mapping.add(new MappingList("patient.identifier.assigner.value","PID-3-4"));
-		mapping.add(new MappingList("patient.identifier.assigner.display","PID-3-4"));
+		//mapping.add(new MappingList("patient.identifier.assigner.value","PID-3-4"));
+		//mapping.add(new MappingList("patient.identifier.assigner.display","PID-3-4"));
     	mapping.add(new MappingList("patient.name.family","PID-5-1"));
     	mapping.add(new MappingList("patient.name.given","PID-5-2"));
     	mapping.add(new MappingList("patient.gender","PID-8-1"));
@@ -167,7 +163,7 @@ public class GenericResourceTest {
     	mapping.add(new MappingList("patient.address.line","PID-11-1"));
     	mapping.add(new MappingList("patient.address.city","PID-11-3"));
     	mapping.add(new MappingList("patient.address.state","PID-11-4"));
-    	mapping.add(new MappingList("patient.address.postalCode","PID-11-5"));
+    	mapping.add(new MappingList("patient.address.postalcode","PID-11-5"));
     	mapping.add(new MappingList("patient.address.country","PID-11-6"));
     	mapping.add(new MappingList("patient.telecom.value","PID-13-1"));
     	mapping.add(new MappingList("patient.maritalStatus","PID-16-1"));

@@ -64,7 +64,7 @@ public class DocumentManifestImpl extends AbstractResource{
 	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 
 	}
 	
@@ -90,7 +90,7 @@ public class DocumentManifestImpl extends AbstractResource{
 	}
 	
 	@Override
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		resource.setMasterIdentifier(new Identifier().setValue(masterIdentifier));
 		resource.addIdentifier(new Identifier().setValue(identifier));
 		resource.setStatus(DocumentReferenceStatus.CURRENT);
@@ -104,6 +104,7 @@ public class DocumentManifestImpl extends AbstractResource{
 
 		DocumentManifestContentComponent contentType = new DocumentManifestContentComponent();
 		try {
+			if (contentPAttachment !=null)
 			contentType.addChild(contentPAttachment);
 		} catch (FHIRException e) {
 			// TODO Auto-generated catch block

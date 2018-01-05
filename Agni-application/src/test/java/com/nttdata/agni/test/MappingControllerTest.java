@@ -13,6 +13,7 @@ import com.nttdata.agni.domain.MappingList;
 import com.nttdata.agni.domain.TransformRequest;
 import com.nttdata.agni.domain.User;
 
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -27,8 +29,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -132,6 +136,12 @@ public class MappingControllerTest {
          resultString = result.getResponse().getContentAsString();
             System.out.println("************Final Output");
             	System.out.println(resultString);
+/*            	RestTemplate restTemplate = new RestTemplate();
+            	HttpEntity<String> request = new HttpEntity<>(new String(resultString));
+            	String fooResourceUrl  = "http://localhost:9001/dstu2/patient";
+				URI location = restTemplate.postForLocation(fooResourceUrl, request);
+            	assertThat(location, notNullValue());
+            	System.out.println(location.toString());*/
             /*	
              result = mvc.perform(post("/fhirtranslator/v1/hl72fhir/")
                 .content(GenericResourceTest.getTestPayload())
@@ -150,7 +160,11 @@ public class MappingControllerTest {
     ******************************
      */
 
-    private long getResourceIdFromUrl(String locationUrl) {
+    private void assertThat(URI location, Matcher<Object> notNullValue) {
+		// TODO Auto-generated method stub
+		
+	}
+	private long getResourceIdFromUrl(String locationUrl) {
         String[] parts = locationUrl.split("/");
         return Long.valueOf(parts[parts.length - 1]);
     }

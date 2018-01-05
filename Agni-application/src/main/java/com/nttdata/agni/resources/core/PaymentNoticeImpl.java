@@ -32,7 +32,7 @@ public class PaymentNoticeImpl extends AbstractResource{
 public void setResourceDataFromMap(TransformMap data) {
 	// TODO Auto-generated method stub
 	setValuesFromMap(data);
-	setResourceData();
+	setResourceData(data);
 	
 }
 
@@ -63,7 +63,7 @@ private void setValuesFromMap(TransformMap map) {
 }
 
 @Override
-public void setResourceData() {
+public void setResourceData(TransformMap map) {
 	// TODO Auto-generated method stub
 	paymentnotice.addIdentifier().setValue(identifier);
 	paymentnotice.setRequest(new Reference().setDisplay(requestdisplay).setIdentifier(new Identifier().setValue(requestidentifier)).setReference(requestreference));

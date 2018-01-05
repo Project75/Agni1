@@ -8,6 +8,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import com.nttdata.agni.resources.utils.IdentifierUtils;
 import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 
@@ -17,9 +19,6 @@ import lombok.ToString;
 
 import org.hl7.fhir.dstu3.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.DateTimeType;
-import org.hl7.fhir.dstu3.model.Resource;
-
-import com.nttdata.agni.resources.utils.TransformMap;
 
 import org.hl7.fhir.dstu3.model.Period;
 import org.hl7.fhir.dstu3.model.Identifier;
@@ -28,6 +27,7 @@ import org.hl7.fhir.dstu3.model.Appointment.AppointmentParticipantComponent;
 import org.hl7.fhir.dstu3.model.Appointment.AppointmentStatus;
 import org.hl7.fhir.dstu3.model.Appointment.ParticipationStatus;
 import org.hl7.fhir.dstu3.model.Reference;
+import org.hl7.fhir.dstu3.model.Resource;
 
 /**
  * Copyright NTT Data
@@ -57,7 +57,7 @@ public class AppointmentImpl extends AbstractResource{
 	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 
 	}
 	/*Populate this object from the hashmap using the key for  each field*/
@@ -79,19 +79,15 @@ public class AppointmentImpl extends AbstractResource{
 	
 	@Override
 	/*Adding populated values from known mappings to the appointment resource*/
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		
 		
 		//appointment.identifier
-		List<Identifier> identifiers = new ArrayList<Identifier>();
-		Identifier theIdentifier = new Identifier();
-		theIdentifier.setValue(this.getIdentifier());
-		theIdentifier.setType(new CodeableConcept().setText("Appointment"));
-		identifiers.add(theIdentifier);
-		appointment.setIdentifier(identifiers);
-		
+		appointment.setIdentifier(IdentifierUtils.getIdentifierList(map, resourceName));
+		appointment.getIdentifierFirstRep().getType().setText(resourceName);
 		//appointment.status
-		appointment.setStatus(AppointmentStatus.valueOf(this.getStatus().toUpperCase()));		
+		if (this.getStatus() !=null)
+			appointment.setStatus(AppointmentStatus.valueOf(this.getStatus().toUpperCase()));		
 		
 		//appointment.type
 		appointment.setAppointmentType(new CodeableConcept().setText(this.getAppointmentType()));
@@ -104,7 +100,8 @@ public class AppointmentImpl extends AbstractResource{
 		appointment.setReason(appointmentReason);
 		
 		//appointment.priority
-		appointment.setPriority(Integer.parseInt(this.getPriority()));
+		if (this.getPriority()!=null)
+			appointment.setPriority(Integer.parseInt(this.getPriority()));
 		
 		//appoinment.description
 		appointment.setDescription(this.getDescription());
@@ -149,6 +146,7 @@ public class AppointmentImpl extends AbstractResource{
 			participant.setActor(patientRef);
 			
 			//participant.status
+			if (this.getParticipantStatus()!=null)
 			participant.setStatus(ParticipationStatus.valueOf(this.getParticipantStatus()));
 			
 		theParticipant.add(participant);

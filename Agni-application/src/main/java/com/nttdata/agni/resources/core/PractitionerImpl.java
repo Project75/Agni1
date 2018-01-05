@@ -5,6 +5,8 @@ package com.nttdata.agni.resources.core;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
+import com.nttdata.agni.resources.utils.IdentifierUtils;
 import com.nttdata.agni.resources.utils.TransformMap;
 
 import lombok.Getter;
@@ -58,7 +60,7 @@ public class PractitionerImpl extends AbstractResource{
 	@Override
 	public void setResourceDataFromMap(TransformMap data) {
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 	}
 	
 	public void setValuesFromMap(TransformMap map) {
@@ -82,13 +84,11 @@ public class PractitionerImpl extends AbstractResource{
 	 * @see com.nttdata.agni.resources.core.AbstractResource#setResourceData()
 	 */
 	@Override
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		// TODO Auto-generated method stub
-		//super.setResourceData();
+		//super.setResourceData(data);
 		
-		practitioner.addIdentifier()
-        .setSystem("http://ns.electronichealth.net.au/id/hi/ihi/1.0")
-        .setValue(getId());
+		practitioner.setIdentifier(IdentifierUtils.getIdentifierList(map, resourceName));
 		
 		//practitioner.getActive();
 		
@@ -99,7 +99,7 @@ public class PractitionerImpl extends AbstractResource{
 		
 		practitioner.addAddress().addLine(getAddressLine()).setCity(getAddressCity()).setState(getAddressState())
 		.setPostalCode(getAddressPostalCode()).setCountry(getAddressCountry());
-		
+		if(getgender()!=null)
 		practitioner.setGender(Enumerations.AdministrativeGender.valueOf(getgender().toUpperCase()));
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");	

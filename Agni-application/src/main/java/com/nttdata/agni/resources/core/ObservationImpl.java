@@ -6,6 +6,8 @@ package com.nttdata.agni.resources.core;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import com.nttdata.agni.resources.utils.FHIRUtils;
 import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 
@@ -56,7 +58,7 @@ public class ObservationImpl extends AbstractResource {
 	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 
 	}
 	//input map ("observation.status","ACTIVE")
@@ -82,13 +84,10 @@ public class ObservationImpl extends AbstractResource {
 		 this.ReferenceRangeText = map.get("observation.referenceRange.text");
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.nttdata.agni.resources.core.AbstractResource#setResourceData()
-	 */
+
 	@Override
-	public void setResourceData() {
-		// TODO Auto-generated method stub
-		//super.setResourceData();
+	public void setResourceData(TransformMap map) {
+		
 		if (getObservationID() != null){
 			observation.addIdentifier().setValue(getObservationID());
 		}
@@ -101,9 +100,7 @@ public class ObservationImpl extends AbstractResource {
 		if (getObservationCode() != null){
 		observation.setCode(new CodeableConcept().setText(getObservationCode()));
 		}
-		if (getObservationSubject() != null){
-		observation.setSubject(new Reference().setReference(getObservationSubject()));
-		}
+		
 		SimpleDateFormat formatter1 = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
 		try {
 			if (getObservationEffective() != null){
@@ -126,7 +123,7 @@ public class ObservationImpl extends AbstractResource {
 		observation.setMethod(new CodeableConcept().setText(getObservationMethod()));
 		observation.setDevice(new Reference().setReference(getObservationDevice()));
 		
-		observation.setSubject(new Reference().setReference(getObservationSubject()));
+		observation.setSubject(FHIRUtils.buildPatientReference(map));
 		
 		List<ObservationReferenceRangeComponent> theReferenceRange = new ArrayList<ObservationReferenceRangeComponent>();
 		ObservationReferenceRangeComponent refRange = new ObservationReferenceRangeComponent();

@@ -58,7 +58,7 @@ public class OperationOutcomeImpl extends AbstractResource{
 	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 
 	}
 	
@@ -69,7 +69,7 @@ public class OperationOutcomeImpl extends AbstractResource{
 	}
 	
 	@Override
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		
 		
 

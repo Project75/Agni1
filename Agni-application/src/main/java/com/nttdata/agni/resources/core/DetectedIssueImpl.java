@@ -3,6 +3,7 @@ package com.nttdata.agni.resources.core;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import com.nttdata.agni.resources.utils.TransformMap;
+import com.nttdata.agni.resources.utils.TypeUtils;
 
 import org.hl7.fhir.dstu3.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.Coding;
@@ -10,14 +11,10 @@ import org.hl7.fhir.dstu3.model.DetectedIssue;
 import org.hl7.fhir.dstu3.model.DetectedIssue.DetectedIssueSeverity;
 
 import com.nttdata.agni.resources.utils.FHIRUtils;
-import com.nttdata.agni.resources.utils.IdentifierUtil;
+import com.nttdata.agni.resources.utils.IdentifierUtils;
 
-import org.hl7.fhir.dstu3.model.Identifier;
-import org.hl7.fhir.dstu3.model.Patient;
-import org.hl7.fhir.dstu3.model.Reference;
+
 import org.hl7.fhir.dstu3.model.Resource;
-
-import java.util.Optional;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -39,19 +36,7 @@ public class DetectedIssueImpl extends AbstractResource {
 	String resourceName="DetectedIssue";
 	
 	String 
-	// Identifier
-	identifierUse,
-	identifierTypeCodingSystem,
-	identifierTypeCodingVersion,
-	identifierTypeCodingCode,
-	identifierTypeCodingDisplay,
-	identifierTypeCodingUserSelected,
-	identifierTypeText,
-	identifierSystem,
-	identifierValue,
-	identifierPeriodStart,
-	identifierPeriodEnd,
-	identifierAssignerDisplay,
+
 	
 	//status
 	status,
@@ -154,7 +139,7 @@ public class DetectedIssueImpl extends AbstractResource {
 	public void setResourceDataFromMap(TransformMap map) {
 		// TODO Auto-generated method stub
 		setValuesFromMap(map);
-		setResourceData();
+		setResourceData(map);
 		
 	}
 
@@ -163,7 +148,7 @@ public class DetectedIssueImpl extends AbstractResource {
 		// TODO Auto-generated method stub
 		
 		
-	this.identifierValue                  =      map.get("DetectedIssue.identifierValue");
+	//this.identifierValue                  =      map.get("DetectedIssue.identifierValue");
 	this.categoryCodingCode               = 	 map.get("DetectedIssue.categoryCodingCode");
 	this.categoryCodingSystem             = 	 map.get("DetectedIssue.categoryCodingSystem");
 	this.categoryCodingDisplay            = 	 map.get("DetectedIssue.categoryCodingDisplay");
@@ -181,19 +166,20 @@ public class DetectedIssueImpl extends AbstractResource {
 
 	
 	@Override
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		// TODO Auto-generated method stub
 		
 		//detectedissue.setIdentifier(new Identifier().setValue(this.identifierValue  ));
-		IdentifierUtil IdentifierUtil = new IdentifierUtil();
-		//IdentifierUtil.SetPatientMinimalArgs(getId());
-		IdentifierUtil.SetPatientArgs(this.identifierValue,"","","","");
-		detectedissue.setIdentifier(IdentifierUtil.getIdentifier());
+
+		detectedissue.setIdentifier(IdentifierUtils.getFirstIdentifier(map, resourceName));
 		
-		detectedissue.setCategory(new CodeableConcept().addCoding(new Coding().setCode(this.categoryCodingCode).setSystem(this.categoryCodingSystem ).setDisplay(this.categoryCodingDisplay)));
+		detectedissue.setCategory(TypeUtils.BuildCodeableConcept(map, resourceName+".category", 0));
+	//new CodeableConcept().addCoding(new Coding().setCode(this.categoryCodingCode).setSystem(this.categoryCodingSystem ).setDisplay(this.categoryCodingDisplay)));
 		detectedissue.setSeverity(DetectedIssueSeverity.valueOf(getSeverity()));
-		detectedissue.setPatient(FHIRUtils.buildReference(this.patientIdentifierValue, this.patientIdentifierTypeCodingCode, this.patientIdentifierSystem, this.patientIdentifierPeriodStart, this.patientIdentifierPeriodEnd, this.patientIdentifierAssignerDisplay));
+		detectedissue.setPatient(FHIRUtils.buildPatientReference(map));
+				//buildReference(this.patientIdentifierValue, this.patientIdentifierTypeCodingCode, this.patientIdentifierSystem, this.patientIdentifierPeriodStart, this.patientIdentifierPeriodEnd, this.patientIdentifierAssignerDisplay));
 		try {
+			if (this.date !=null)
 			detectedissue.setDate(new SimpleDateFormat("yyyyMMdd").parse(this.date));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block

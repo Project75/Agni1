@@ -3,15 +3,7 @@
  */
 package com.nttdata.agni.resources.core;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import com.nttdata.agni.resources.utils.TransformMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,20 +14,18 @@ import org.hl7.fhir.dstu3.model.ContactPoint;
 import org.hl7.fhir.dstu3.model.Enumerations;
 import org.hl7.fhir.dstu3.model.Enumerations.AdministrativeGender;
 import org.hl7.fhir.dstu3.model.HumanName;
-import org.hl7.fhir.dstu3.model.Identifier;
-import org.hl7.fhir.dstu3.model.Identifier.IdentifierUse;
 import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.dstu3.model.Reference;
-import org.hl7.fhir.dstu3.model.Patient.ContactComponent;
 
-import com.nttdata.agni.resources.utils.IdentifierUtil;
-import com.nttdata.agni.resources.utils.IdentifierUtil2;
+import com.nttdata.agni.resources.utils.AddressUtils;
+import com.nttdata.agni.resources.utils.IdentifierUtils;
 import com.nttdata.agni.resources.utils.NameUtils;
-import com.nttdata.agni.resources.utils.TransformMap;
 
 import org.hl7.fhir.dstu3.model.Resource;
 
 import ca.uhn.fhir.model.primitive.IdDt;
+import ca.uhn.fhir.util.DateUtils;
+
 import java.util.stream.Collectors;
 /**
  * Copyright NTT Data
@@ -98,7 +88,7 @@ public class PatientImpl extends AbstractResource{
 		this.AddressLine = map.get("patient.address.line");
 		this.AddressCity = map.get("patient.address.city");
 		this.AddressState = map.get("patient.address.state");
-		this.AddressPostalCode = map.get("patient.address.postalCode");
+		this.AddressPostalCode = map.get("patient.address.postalcode");
 		this.AddressCountry = map.get("patient.address.country");
 		this.Telecom = map.get("patient.telecom.value");
 		this.MaritalStatus = map.get("patient.maritalStatus");
@@ -115,50 +105,28 @@ public class PatientImpl extends AbstractResource{
 		//this.id=java.util.UUID.randomUUID().toString();
 	}
 	
-	
-
-	/* (non-Javadoc)
-	 * @see com.nttdata.agni.resources.core.AbstractResource#setResourceData()
-	 */
-	//@Override
+	@Override
 	public void setResourceData(TransformMap map) {
-		// TODO Auto-generated method stub
-		//super.setResourceData();
-		//IdentifierUse IdentifierUse = new IdentifierUse();
-
+		
 		patient.setName(NameUtils.getNames(map, resourceName));
-		//#1
-		//patient.addName().setUse(HumanName.NameUse.OFFICIAL)
-		        //.addPrefix("Mr")
-		//        .setFamily(familyName).addGiven(givenName);
 		
-		
-		//get #1 -get identifier Arraylist 
-		patient.setIdentifier(IdentifierUtil2.getIdentifierList(map, resourceName));
-		
-		//get #2: Get (one) Identifier  (for non-patient resources)
-		//nonpatient.setIdentifier(IdentifierUtil.getIdentifier());
-		
-		//#3 using default api
-		/*
-		patient.addIdentifier().setUse(IdentifierUse.OFFICIAL)
-		        .setSystem("http://ns.electronichealth.net.au/id/hi/ihi/1.0")
-		        .setValue(getId());
-		        */
+		patient.setIdentifier(IdentifierUtils.getIdentifierList(map, resourceName));
+
+
 		patient.setGender(Enumerations.AdministrativeGender.valueOf(getGender().toUpperCase()));
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");	
-		try {
-			if (getDOB() != null){
-				patient.setBirthDate(formatter.parse(getDOB()));
-			}
-		} catch (ParseException e) {
-			e.printStackTrace();
-			//patient.setBirthDate(null);
-		}       
+		if (DOB != null){
+			patient.setBirthDate(DateUtils.parseDate(DOB,new String[]{"yyyyMMdd","yyyy-MM-dd"}));
+			
+		} 
+		/*
 		patient.addAddress().addLine(getAddressLine()).setCity(getAddressCity()).setState(getAddressState())
 				.setPostalCode(getAddressPostalCode()).setCountry(getAddressCountry());
+		*/
+		patient.setAddress(AddressUtils.getAddress(map, resourceName));
 		patient.addTelecom().setValue(getTelecom());
+		
+		
 		
 		CodeableConcept MaritalStatus = new CodeableConcept();
 		MaritalStatus.setText(getMaritalStatus()); 
@@ -176,30 +144,21 @@ public class PatientImpl extends AbstractResource{
 			Enumerations.AdministrativeGender.valueOf(getContactGender().toUpperCase());					
 		}//else {gender = Enumerations.AdministrativeGender.UNKNOWN;}
 		patient.addContact().addRelationship(new CodeableConcept().setText(getContactRel())).setName(new HumanName().addGiven(getContactName()))
-		       .addTelecom(new ContactPoint().setValue(getContactTel())).setAddress(new ContactComponent().getAddress().addLine(getContactAddress()))
+		       .addTelecom(new ContactPoint().setValue(getContactTel()))
+		       .setAddress(AddressUtils.getFirstAddress(map, resourceName+".contact"))
+		       //.setAddress(new ContactComponent().getAddress().addLine(getContactAddress()))
 		       .setGender(gender)
 		       .setOrganization(new Reference().setReference(getContactOrg()));
 		       
 		patient.addGeneralPractitioner().setReference(getGeneralPractitioner());
 		patient.addLink().setId(getLink());
 		
+		this.setReference();
 		//patient.setId(IdDt.newRandomUuid());
-		System.out.println("patmid-"+patient.getId()+"   "+getId());
+		System.out.println("pat id-"+patient.getId()+"   "+getId());
 	}
 	
-	
-	/* (non-Javadoc)
-	 * @see com.nttdata.agni.resources.core.AbstractResource#getResourcedata()
-	 */
-	@Override
-	public void getResourcedata() {
-		// TODO Auto-generated method stub
-		super.getResourcedata();
-	}
 
-	/* (non-Javadoc)
-	 * @see com.nttdata.agni.resources.core.AbstractResource#getResource()
-	 */
 	@Override
 	public Resource getResource() {
 		// TODO Auto-generated method stub
@@ -215,35 +174,7 @@ public class PatientImpl extends AbstractResource{
 		this.setPatient((Patient) resource);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.nttdata.agni.resources.core.AbstractResource#getResourceName()
-	 */
-	@Override
-	public String getResourceName() {
-		// TODO Auto-generated method stub
-		return this.resourceName;
-	}
 
-	/* (non-Javadoc)
-	 * @see com.nttdata.agni.resources.core.AbstractResource#setResourceName(java.lang.String)
-	 */
-	@Override
-	public void setResourceName(String resourceName) {
-		// TODO Auto-generated method stub
-		this.resourceName=resourceName;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	
-	public String toString2() {
-		// TODO Auto-generated method stub
-		return familyName+" "+ givenName+" "+ id+" "+ gender+" "+ DOB+" "+ AddressLine+" "+ AddressCity+" "+ AddressState+" "+ AddressPostalCode+" "+ AddressCountry+" "+ 
-		Telecom+" "+ MaritalStatus+" "+ Deceased+" "+ Birth+" "+ ContactRel+" "+ ContactName+" "+ ContactTel+" "+ ContactAddress+" "+ ContactGender+" "+ ContactOrg+" "+
-		GeneralPractitioner+" "+ Link;
-	}
-	
 	
 	public void setReference() {
 		 Reference ref = new Reference();
@@ -251,10 +182,6 @@ public class PatientImpl extends AbstractResource{
 		 this.reference = ref;
 	}
 	
-	public Reference getReference() {
-		 
-		 return this.reference ;
-	}
 	
 	
 		

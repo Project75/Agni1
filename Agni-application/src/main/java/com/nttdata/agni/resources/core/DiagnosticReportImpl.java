@@ -19,6 +19,7 @@ import com.nttdata.agni.resources.utils.FHIRUtils;
 import com.nttdata.agni.resources.utils.TransformUtils;
 
 import ca.uhn.fhir.model.primitive.IdDt;
+import ca.uhn.fhir.util.DateUtils;
 
 public class DiagnosticReportImpl  extends AbstractResource {
 	
@@ -240,7 +241,7 @@ public class DiagnosticReportImpl  extends AbstractResource {
 	public void setResourceDataFromMap(TransformMap data) {
 		// TODO Auto-generated method stub
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 		
 	}
 
@@ -273,7 +274,7 @@ public class DiagnosticReportImpl  extends AbstractResource {
 	}
 
 	@Override
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		// TODO Auto-generated method stub
 		diagnosticreport.addIdentifier().setValue(this.identifierValue);
 		diagnosticreport.setStatus(DiagnosticReportStatus.UNKNOWN); // .valueOf(this.status)
@@ -281,19 +282,21 @@ public class DiagnosticReportImpl  extends AbstractResource {
 		diagnosticreport.setCode(new CodeableConcept().addCoding(new Coding().setCode(this.codeCodingCode)));
 		diagnosticreport.setSubject(FHIRUtils.buildReference(this.subjectIdentifierValue, this.subjectIdentifierTypeCodingCode, this.subjectIdentifierSystem, this.subjectIdentifierPeriodStart, this.subjectIdentifierPeriodEnd, this.subjectIdentifierAssignerDisplay));
 		diagnosticreport.setContext(FHIRUtils.buildReference(this.contextIdentifierValue, this.contextIdentifierTypeCodingCode, this.contextIdentifierSystem, this.contextIdentifierPeriodStart, this.contextIdentifierPeriodEnd, this.contextIdentifierAssignerDisplay));
-	    try {
-			diagnosticreport.setIssued(new SimpleDateFormat("yyyyMMddHHmm").parse(this.issued));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	    
-		diagnosticreport.setEffective(DateTimeType.parseV3(this.effectiveEffectivedatetime));
-		if(this.PRT4.equalsIgnoreCase("PO"))
-	    {
-		 diagnosticreport.addPerformer().setRole(new CodeableConcept().addCoding(new Coding().setDisplay(this.performerRoleCodingDisplay))).setActor(new Reference().setReference(this.performerActorReference));
-	    }
-				}
+		if (this.issued != null)
+			diagnosticreport.setIssued(DateUtils.parseDate(this.issued,new String[]{"yyyyMMdd","yyyy-MM-dd"}));
+		
+		if (this.effectiveEffectivedatetime != null)			
+			diagnosticreport.setEffective(DateTimeType.parseV3(this.effectiveEffectivedatetime));
+		if (this.effectiveEffectivedatetime != null){
+			if(this.PRT4.equalsIgnoreCase("PO"))
+			    {
+				 diagnosticreport.addPerformer()
+				 	.setRole(new CodeableConcept().addCoding(new Coding().setDisplay(this.performerRoleCodingDisplay)))
+				 	.setActor(new Reference().setReference(this.performerActorReference));
+			    }
+		}
+}
 		
 		
 	

@@ -7,6 +7,8 @@ import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import com.nttdata.agni.resources.utils.IdentifierUtils;
 import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 import java.util.Optional;
@@ -56,7 +58,7 @@ public class ProcedureRequestImpl extends AbstractResource{
 	private String identifier;
 	private String basedOn, requisition, status, priority, authoredOn, requesterAgent, reasonCode, reasonReference;
 	
-	//String resourceName = "procedure";
+	String resourceName = "procedurerequest";
 	/**
 	 * Constructor to initialize the FHIR STU3 model Object
 	 */
@@ -71,7 +73,7 @@ public class ProcedureRequestImpl extends AbstractResource{
 	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 
 	}
 	
@@ -88,13 +90,15 @@ public class ProcedureRequestImpl extends AbstractResource{
 	}
 	
 	@Override
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		
-		procedurerequest.addIdentifier().setSystem("http://ns.electronichealth.net.au/id/hi/ihi/1.0").setValue(identifier);
+		//procedurerequest.addIdentifier().setSystem("http://ns.electronichealth.net.au/id/hi/ihi/1.0").setValue(identifier);
+		procedurerequest.setIdentifier(IdentifierUtils.getIdentifierList(map, resourceName));
 		procedurerequest.addBasedOn().setReference(basedOn);
 		procedurerequest.setRequisition(new Identifier().setValue(requisition));
+		if(status!=null)
 		procedurerequest.setStatus(ProcedureRequestStatus.valueOf(status.toUpperCase()));	
-		
+		if(priority!=null)
 		procedurerequest.setPriority(ProcedureRequestPriority.valueOf(priority.toUpperCase()));
 		
 		//SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");

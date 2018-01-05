@@ -34,7 +34,7 @@ import lombok.ToString;
  *
  */
 @Getter @ToString @NoArgsConstructor @AllArgsConstructor
-public class IdentifierUtil {
+public class IdentifierUtilOld {
 	
 	//Optional<Identifier> identifier;
 	
@@ -55,7 +55,7 @@ public class IdentifierUtil {
 	public String IDENTIFIER_SYSTEM_LOC = "urn:oid:1.2.36.146.595.217.0.1";
 	
 	public static List<Identifier> getIdentifierList(TransformMap map,String resourceName){
-		IdentifierUtil identifierUtil =  new IdentifierUtil();
+		IdentifierUtilOld identifierUtil =  new IdentifierUtilOld();
 		identifierUtil.SetValues( map, resourceName);
 		return identifierUtil.identifierList;
 	}

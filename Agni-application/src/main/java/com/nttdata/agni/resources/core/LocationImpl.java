@@ -84,7 +84,7 @@ public class LocationImpl extends AbstractResource{
 	@Override
 	public void setResourceDataFromMap(TransformMap data) {
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 
 	}
 	
@@ -114,7 +114,7 @@ public class LocationImpl extends AbstractResource{
 	}
 	
 	@Override
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		location.addIdentifier().setValue(this.identifier)
 								.setType(new CodeableConcept().setText("Location"));
 		//Active Inactive NULL

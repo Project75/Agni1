@@ -74,7 +74,7 @@ public class ImmunizationRecommendationImpl extends AbstractResource{
 	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 
 	}
 	
@@ -102,7 +102,7 @@ public class ImmunizationRecommendationImpl extends AbstractResource{
 	}
 	
 	@Override
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		//Todo
 		immunizationRecommendation.addIdentifier().setValue(identifier).setSystem("");
 		immunizationRecommendation.setPatient(new Reference().setReference(patient));

@@ -18,14 +18,15 @@ public class FHIRUtils {
 	 * @param Hashmap with inbound data mapped to fhir fields as key
 	 * @return FHIR Reference
 	 */
-	public static Reference buildPatientReference(HashMap<String,String> map){
+	public static Reference buildPatientReference(TransformMap map){
 		String patientIDType = map.get("patient.identifier.type"),
-				 patientIDSystem = map.get("patient.identifier.system"),
-				 patientIDValue = map.get("patient.identifier.value"),
-				 patientIDPeriodStart = map.get("patient.identifier.period.start"),
-				 patientIDPeriodEnd = map.get("patient.identifier.period.end"),
-				 patientIDAssigner= map.get("patient.identifier.assigner");
-		Reference patRef = buildReference(patientIDValue,patientIDType, patientIDSystem, patientIDPeriodStart, patientIDPeriodEnd, patientIDAssigner);
+		 patientIDSystem = map.get("patient.identifier.system"),
+		 patientIDValue = map.get("patient.identifier.value"),
+		 patientIDPeriodStart = map.get("patient.identifier.period.start"),
+		 patientIDPeriodEnd = map.get("patient.identifier.period.end"),
+		 patientIDAssigner= map.get("patient.identifier.assigner"),
+		 display= map.get("patient.name.first")+" "+map.get("patient.name.given");
+		Reference patRef = buildReference(patientIDValue,patientIDType, patientIDSystem, patientIDPeriodStart, patientIDPeriodEnd, patientIDAssigner,display);
 		
 		return patRef;
 	}
@@ -59,7 +60,9 @@ public class FHIRUtils {
 		return ref;
 	}
 	
-	public static Reference buildReference(String referenceIDValue, String referenceIDType, String referenceIDSystem, String referenceIDPeriodStart, String referenceIDPeriodEnd, String referenceIDAssigner){
+	public static Reference buildReference(String referenceIDValue, String referenceIDType, String referenceIDSystem, 
+			String referenceIDPeriodStart, String referenceIDPeriodEnd, 
+			String referenceIDAssigner, String display){
 		
 		Reference reference = new Reference();
 		
@@ -100,9 +103,17 @@ public class FHIRUtils {
 		reference.setIdentifier(theEncounterIdentifier);
 		
 		//reference.display
-		reference.setDisplay("");
+		reference.setDisplay(display);
 		return reference;
 		
+	}
+	public static Reference buildReference(String subjectIdentifierValue, String subjectIdentifierTypeCodingCode,
+			String subjectIdentifierSystem, String subjectIdentifierPeriodStart, String subjectIdentifierPeriodEnd,
+			String subjectIdentifierAssignerDisplay) {
+		// TODO Auto-generated method stub
+		return buildReference( subjectIdentifierValue,  subjectIdentifierTypeCodingCode,
+				 subjectIdentifierSystem,  subjectIdentifierPeriodStart,  subjectIdentifierPeriodEnd,
+				 subjectIdentifierAssignerDisplay,"");
 	}
 
 	

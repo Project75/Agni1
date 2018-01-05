@@ -63,7 +63,7 @@ public class EncounterImpl extends AbstractResource{
 	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 
 	}
 	/*Populate this object from the hashmap using the key for  each field*/
@@ -98,7 +98,7 @@ public class EncounterImpl extends AbstractResource{
 	
 	@Override
 	/*Adding populated values from known mappings to the appointment resource*/
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		
 		
 		//Encounter.identifier

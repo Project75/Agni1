@@ -32,7 +32,7 @@ public class MedicationStatementImpl extends AbstractResource{
 	public void setResourceDataFromMap(TransformMap data) {
 		// TODO Auto-generated method stub
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 		
 	}
 
@@ -69,7 +69,7 @@ public class MedicationStatementImpl extends AbstractResource{
 
 
 	@Override
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		// TODO Auto-generated method stub
 		medicationstatement.addIdentifier().setValue(identifier);
 		

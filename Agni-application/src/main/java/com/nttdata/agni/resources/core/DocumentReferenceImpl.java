@@ -80,7 +80,7 @@ public class DocumentReferenceImpl extends AbstractResource{
 	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 
 	}
 	
@@ -121,7 +121,7 @@ public class DocumentReferenceImpl extends AbstractResource{
 	}
 	
 	@Override
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		resource.setMasterIdentifier(new Identifier().setValue(resource.getId()));
 		resource.addIdentifier(new Identifier().setValue(resource.getId()));
 		resource.setStatus(DocumentReferenceStatus.CURRENT);

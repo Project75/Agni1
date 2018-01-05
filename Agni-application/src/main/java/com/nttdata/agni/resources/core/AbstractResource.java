@@ -23,7 +23,6 @@ public class AbstractResource {
 	
 	
 	
-	
 	/**
 	 * @return the resource
 	 */
@@ -38,7 +37,7 @@ public class AbstractResource {
 		this.resource = resource;
 	}
 
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 	}
 	
 	public void setResourceDataFromMap(TransformMap data) {

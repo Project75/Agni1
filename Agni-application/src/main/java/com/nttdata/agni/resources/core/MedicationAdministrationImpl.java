@@ -103,7 +103,7 @@ public class MedicationAdministrationImpl extends AbstractResource{
 	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 
 	}
 	
@@ -141,7 +141,7 @@ public class MedicationAdministrationImpl extends AbstractResource{
 	}
 	
 	@Override
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		medicationAdministration.addIdentifier(new Identifier().setValue(identifier));
 		medicationAdministration.addDefinition(new Reference().setReference(definition));
 		medicationAdministration.addPartOf(new Reference().setReference(partOf));

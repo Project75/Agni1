@@ -6,6 +6,8 @@ package com.nttdata.agni.resources.core;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import com.nttdata.agni.resources.utils.IdentifierUtils;
 import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 import java.util.Date;
@@ -61,7 +63,7 @@ public class ImmunizationImpl extends AbstractResource{
 	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 
 	}
 	/*Populate this object from the hashmap using the key for  each field*/
@@ -110,14 +112,11 @@ public class ImmunizationImpl extends AbstractResource{
 	
 	@Override
 	/*Adding populated values from known mappings to the appointment resource*/
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		
 		
 		//immunization.identifier
-		immunization.addIdentifier()
-									.setValue(this.getIdentifier())
-									.setType(new CodeableConcept().setText("Immunization"));
-		
+		immunization.setIdentifier(IdentifierUtils.getIdentifierList(map, resourceName));
 		//immunization.status (MapToDo)
 		immunization.setStatus(ImmunizationStatus.valueOf("COMPLETED"));
 		
@@ -287,6 +286,7 @@ public class ImmunizationImpl extends AbstractResource{
 	
 	//Immunization.doseQuantity
 	SimpleQuantity immDoseQuantity = new SimpleQuantity();
+	if (this.getDoseQuantity() != null)
 	immDoseQuantity.setValue(Long.parseLong(this.getDoseQuantity()));
 	immunization.setDoseQuantity(immDoseQuantity);
 	

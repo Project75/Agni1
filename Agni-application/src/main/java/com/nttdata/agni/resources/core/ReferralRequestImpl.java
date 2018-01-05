@@ -7,6 +7,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import com.nttdata.agni.resources.utils.IdentifierUtils;
 import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 
@@ -27,6 +29,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 
 import ca.uhn.fhir.model.primitive.IdDt;
+import ca.uhn.fhir.util.DateUtils;
 
 /**
  * Copyright NTT Data
@@ -45,6 +48,7 @@ public class ReferralRequestImpl extends AbstractResource{
 	 * e.g Patient patient; or Patient resource;
 	 */
 	ReferralRequest referralrequest;
+	String resourceName="referralrequest";
 	/**
 	 * Create Local fields to store data from HL7. 
 	 * e.g. familyName, givenName
@@ -59,13 +63,13 @@ public class ReferralRequestImpl extends AbstractResource{
 		
 		// TODO Auto-generated constructor stub
 		this.referralrequest =  new ReferralRequest();
-		//resource.setId(IdDt.newRandomUuid());
+		this.referralrequest.setId(IdDt.newRandomUuid());
 	}
 
 	@Override
 	public void setResourceDataFromMap(TransformMap data) {
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 	}
 	
 	public void setValuesFromMap(TransformMap map) {
@@ -76,7 +80,7 @@ public class ReferralRequestImpl extends AbstractResource{
 		this.serviceRequested = map.get("referralrequest.serviceRequested");
 		this.subject = map.get("referralrequest.subject");
 		this.context = map.get("referralrequest.context");
-		//this.occurrence = map.get("referralrequest.occurrence");
+		this.occurrence = map.get("referralrequest.occurrence");
 		this.authoredOn = map.get("referralrequest.authoredOn");
 		this.specialty = map.get("referralrequest.specialty");
 		this.recipient = map.get("referralrequest.recipient");
@@ -84,33 +88,29 @@ public class ReferralRequestImpl extends AbstractResource{
 	}
 	
 	@Override
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		
-		referralrequest.addIdentifier().setSystem("http://ns.electronichealth.net.au/id/hi/ihi/1.0").setValue(identifier);
+		referralrequest.setIdentifier(IdentifierUtils.getIdentifierList(map, resourceName));
+		if (status !=null)
 		referralrequest.setStatus(ReferralRequestStatus.valueOf(status.toUpperCase()));
 		referralrequest.setType(new CodeableConcept().setText(type));
+		if (priority !=null)
 		referralrequest.setPriority(ReferralPriority.valueOf(priority.toUpperCase()));
 		referralrequest.addServiceRequested(new CodeableConcept().setText(serviceRequested));
 		referralrequest.getSubject().setReference(subject);
 		referralrequest.getContext().setReference(context);
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		/*try {
-			referralrequest.getOccurrenceDateTimeType().setValue(formatter.parse(occurrence));
+		//SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			if (occurrence !=null)
+			referralrequest.getOccurrenceDateTimeType().setValue(DateUtils.parseDate(occurrence,new String[]{"yyyyMMdd","yyyy-MM-dd"}));
 		} catch (FHIRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
-		try {
-			referralrequest.setAuthoredOn(formatter.parse(authoredOn));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+		
+		if (authoredOn !=null)
+		referralrequest.setAuthoredOn(DateUtils.parseDate(authoredOn,new String[]{"yyyyMMdd","yyyy-MM-dd"}));
 		
 		referralrequest.setSpecialty(new CodeableConcept().setText(specialty));
 		referralrequest.addRecipient().setReference(recipient);

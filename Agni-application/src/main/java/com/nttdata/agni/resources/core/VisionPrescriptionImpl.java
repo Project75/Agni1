@@ -33,7 +33,7 @@ reasonreference, reasonidentifier, reasondisplay, dispenseproduct;
 public void setResourceDataFromMap(TransformMap data) {
 	// TODO Auto-generated method stub
 	setValuesFromMap(data);
-	setResourceData();
+	setResourceData(data);
 	
 }
 
@@ -60,7 +60,7 @@ private void setValuesFromMap(TransformMap map) {
 }
 
 @Override
-public void setResourceData() {
+public void setResourceData(TransformMap map) {
 	// TODO Auto-generated method stub
 	visionprescription.addIdentifier().setValue(identifier);
     visionprescription.setPatient(new Reference().setDisplay(patientdisplay).setIdentifier(new Identifier().setValue(patientidentifier)).setReference(patientreference));

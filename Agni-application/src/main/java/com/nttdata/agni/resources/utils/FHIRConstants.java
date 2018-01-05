@@ -2,6 +2,10 @@ package com.nttdata.agni.resources.utils;
 
 public class FHIRConstants {
 	public static final String IDENTIFIER_SYSTEM_DEFAULT = "http://hl7.org/fhir/v2/0203";
+	public static final String DataAbsentReasonCodeSystem = "http://hl7.org/fhir/data-absent-reason";
+	public static final String ParticipationTypeSystem= "http://hl7.org/fhir/v3/ParticipationType";
+	public static final String PatientContactRelationshipCodeSystem ="http://hl7.org/fhir/patient-contact-relationship";
+
 	public static final String LOINC_URI = "http://loinc.org";
 
 	public static final String SNOMED_CT_URI = "http://snomed.info/sct";

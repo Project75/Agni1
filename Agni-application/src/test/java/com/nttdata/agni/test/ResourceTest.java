@@ -31,7 +31,7 @@ public class ResourceTest extends GenericResourceTest{
         //assertNotNull(messageHeaderImpl.getResource());
     }
 	
-	/*  
+	 
     @Test
     public void testMessageHeader() throws Exception {
     	String out=transform("messageheader");
@@ -39,13 +39,7 @@ public class ResourceTest extends GenericResourceTest{
         assertEquals(true, out.contains("HIS"));
         //assertNotNull(messageHeaderImpl.getResource());
     }
-    @Test
-    public void testPatient() throws Exception {
-    	String out=transform("patient");
-    	System.out.println("patient:"+out);
-        //assertEquals(out, "JOHN DOE 199 Female null street 53 PHOENIX AZ 85013 US (111)222-3333 W false false null null null null null null null null");
-        //assertNotNull(messageHeaderImpl.getResource());
-    }
+    
     @Test
     public void testObservation() throws Exception {
     	String out=transform("Observation");
@@ -162,5 +156,5 @@ public class ResourceTest extends GenericResourceTest{
 		    	String out=transform("ReferralRequest");
 		    	System.out.println("ReferralRequest:"+out);
 		    }
-		    */
+		    
 }

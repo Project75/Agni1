@@ -6,6 +6,8 @@ package com.nttdata.agni.resources.core;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import com.nttdata.agni.resources.utils.IdentifierUtils;
 import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +51,7 @@ public class PractitionerRoleImpl extends AbstractResource{
 	
 	String identifier, active, period, code, specialty, healthcareService, Telecom, availableTime, notAvailable, availabilityExceptions;
 	
-	String resourceName;
+	String resourceName="practitionerrole";
 	
 	/**
 	 * @return the patient
@@ -68,7 +70,7 @@ public class PractitionerRoleImpl extends AbstractResource{
 	@Override
 	public void setResourceDataFromMap(TransformMap data) {
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 	}
 	
 	public void setValuesFromMap(TransformMap map) {
@@ -88,18 +90,17 @@ public class PractitionerRoleImpl extends AbstractResource{
 	 * @see com.nttdata.agni.resources.core.AbstractResource#setResourceData()
 	 */
 	@Override
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		// TODO Auto-generated method stub
-		//super.setResourceData();
+		//super.setResourceData(data);
 		
-		practitionerrole.addIdentifier()
-        .setSystem("http://ns.electronichealth.net.au/id/hi/ihi/1.0")
-        .setValue(getId());
+		practitionerrole.setIdentifier(IdentifierUtils.getIdentifierList(map, resourceName));
 		
 		practitionerrole.setActive(Boolean.getBoolean(getActive()));
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		try {
+			if (getPer()!=null)
 			practitionerrole.getPeriod().setStart(formatter.parse(getPer()));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block

@@ -54,7 +54,7 @@ public class MessageHeaderImpl extends AbstractResource{
 	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 
 	}
 	
@@ -66,7 +66,7 @@ public class MessageHeaderImpl extends AbstractResource{
 	}
 	
 	@Override
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		List<MessageDestinationComponent> theDestination = new ArrayList<MessageDestinationComponent>();
 		MessageDestinationComponent messageDestinationComponent = new MessageDestinationComponent();		
 		messageDestinationComponent.setEndpoint(destination);

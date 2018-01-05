@@ -70,7 +70,7 @@ public class BodySiteImpl extends AbstractResource{
 	public void setResourceDataFromMap(TransformMap data) {
 		
 		setValuesFromMap(data);
-		setResourceData();
+		setResourceData(data);
 
 	}
 	
@@ -85,9 +85,9 @@ public class BodySiteImpl extends AbstractResource{
 	 * @see com.nttdata.agni.resources.core.AbstractResource#setResourceData()
 	 */
 	@Override
-	public void setResourceData() {
+	public void setResourceData(TransformMap map) {
 		// TODO Auto-generated method stub
-		//super.setResourceData();
+		//super.setResourceData(data);
 		
 		bodysite.setCode(new CodeableConcept().setText(this.getCode()));
 		bodysite.addQualifier(new CodeableConcept().setText(this.getQualifier()));

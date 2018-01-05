@@ -167,9 +167,18 @@ public class HL7Transformer extends AbstractTransformer {
         //newMappings.putAll(arg0)
         Map<String, Collection<String>> defMap = defMappings.asMap();
         Map<String, Collection<String>> newMap = newMappings.asMap();
-        defMap.putAll(newMap);
+        //newMap.putAll(defMap);
+              	
+    	for (Map.Entry<String, Collection<String>> entry : defMap.entrySet()) {	    		
+    		String key = entry.getKey();
+    		Collection<String> value = entry.getValue();
+            //List<String> valueHL7 = hL7Map.getAll(value);
+    		newMap.putIfAbsent(key, value);
+        }
+	
+    
         
-        for (Map.Entry<String, Collection<String>> entry : defMap.entrySet()) {	    		
+        for (Map.Entry<String, Collection<String>> entry : newMap.entrySet()) {	    		
     		String key = entry.getKey();
     		Collection<String> value = entry.getValue();
             //List<String> valueHL7 = hL7Map.getAll(value);
@@ -177,14 +186,6 @@ public class HL7Transformer extends AbstractTransformer {
     		
         }
         
-        /*      	
-	    	for (Map.Entry<String, Collection<String>> entry : defMap.entrySet()) {	    		
-	    		String key = entry.getKey();
-	    		Collection<String> value = entry.getValue();
-	            //List<String> valueHL7 = hL7Map.getAll(value);
-	    		newMap.putIfAbsent(key, value);
-	        }
-    	*/
         
     	return mappingMap;
     }
@@ -213,7 +214,7 @@ public class HL7Transformer extends AbstractTransformer {
             dataMap.putAll(key, valueHL7);
         }
         //print maps
-    	//System.out.println("hL7Map:"+hL7Map.getMap().toString());
+    	System.out.println("hL7Map:"+hL7Map.getMap().toString());
     	//System.out.println("dataMap:"+dataMap.getMap().toString());
     	
         return dataMap;
