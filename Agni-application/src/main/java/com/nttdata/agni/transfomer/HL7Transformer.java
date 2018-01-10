@@ -214,7 +214,7 @@ public class HL7Transformer extends AbstractTransformer {
             dataMap.putAll(key, valueHL7);
         }
         //print maps
-    	System.out.println("hL7Map:"+hL7Map.getMap().toString());
+    	//System.out.println("hL7Map:"+hL7Map.getMap().toString());
     	//System.out.println("dataMap:"+dataMap.getMap().toString());
     	
         return dataMap;

@@ -51,14 +51,18 @@ public class AddressUtils extends TypeUtils{
 			case "POSTAL":
 				dType.setType(AddressType.POSTAL);
 			default:
-				dType.setType(AddressType.PHYSICAL);
+				//dType.setType(AddressType.PHYSICAL);
 			}
 			//System.out.println(i+"-"+map.get(kmap.get("family"),i)+"-"+map.get(kmap.get("given"),i));
-			List<StringType> theLine = new ArrayList<StringType>();
-			StringType stringType = new StringType(map.get(kmap.get("line"),i).toString());
 			
-			theLine.add(stringType);
-			dType.setLine(theLine);
+			String line_address = map.get(kmap.get("line"),i);
+			if (line_address !=null ){
+				List<StringType> theLine = new ArrayList<StringType>();
+				StringType stringType = new StringType(line_address);			
+				theLine.add(stringType);
+				dType.setLine(theLine);
+			}
+			
 			dType.setCity(map.get(kmap.get("city"),i));
 			dType.setState(map.get(kmap.get("state"),i));
 			dType.setCountry(map.get(kmap.get("country"),i));

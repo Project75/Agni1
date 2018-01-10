@@ -6,6 +6,8 @@ package com.nttdata.agni.resources.core;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import com.nttdata.agni.resources.utils.IdentifierUtils;
 import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
 
@@ -83,7 +85,7 @@ public class ProcedureImpl extends AbstractResource{
 	@Override
 	public void setResourceData(TransformMap map) {
 		
-		procedure.addIdentifier().setSystem("http://ns.electronichealth.net.au/id/hi/ihi/1.0").setValue(identifier);
+		procedure.setIdentifier(IdentifierUtils.getIdentifierList(map, resourceName));
 		procedure.setCode(new CodeableConcept().setText(code));
 			
 		/*try {

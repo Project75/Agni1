@@ -8,11 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Splitter;
+
+import javafx.util.Pair;
 
 /**
  * Copyright NTT Data
@@ -44,7 +47,19 @@ public class PropertySplitter {
 
         return mapOfList;
     }
+    /**
+     * Example: one.example.property = KEY1:VALUE1=1,VALUE2=2 ; KEY2:VALUE3=3,VALUE4=4
+     */
+    public Map<String, List<Pair<String, String>>> mapOfListOfProperties(String property) {
+        Map<String, String> map = this.map(property, ";");
 
+        Map<String, List<Pair<String,String>>> mapOfList = new HashMap<>();
+        for (Entry<String, String> entry : map.entrySet()) {
+            mapOfList.put(entry.getKey(), this.listOfKVPairs(entry.getValue()));
+        }
+
+        return mapOfList;
+    }
     /**
      * Example: one.example.property = VALUE1,VALUE2,VALUE3,VALUE4
      */
@@ -67,6 +82,22 @@ public class PropertySplitter {
 
     }
 
+    private List<Pair<String,String>> listOfKVPairs(String property) {
+    	List<String> list1=this.list(property);
+    	Pair<String, String> pair = null;
+    	List<Pair<String,String>> listOut = new ArrayList<Pair<String,String>>();
+    	for (String item:list1){
+    		String[] arr = item.split(Pattern.quote("="));
+    		if (arr.length ==2){
+    			pair = new Pair<String,String>(arr[0],arr[1]);
+    		}
+    		listOut.add(pair);
+    	}
+    	
+    	return listOut;
+    	//return Splitter.on(splitter).omitEmptyStrings().trimResults().splitToList(property);
+    }
+    
     private List<String> list(String property, String splitter) {
         return Splitter.on(splitter).omitEmptyStrings().trimResults().splitToList(property);
     }

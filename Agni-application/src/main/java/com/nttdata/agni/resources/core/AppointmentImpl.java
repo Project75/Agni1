@@ -169,6 +169,7 @@ public class AppointmentImpl extends AbstractResource{
 }
 
 	public void setRequestedPeriod(String requestedPeriod) {
+		if (this.requestedPeriod !=null)
 		this.requestedPeriod = requestedPeriod.substring(0, 4) +"-"+ requestedPeriod.substring(4, 6) 
 									+"-"+ requestedPeriod.substring(6, 8) +" "+ requestedPeriod.substring(8, 10) 
 				 					+":"+ requestedPeriod.substring(10, 12);

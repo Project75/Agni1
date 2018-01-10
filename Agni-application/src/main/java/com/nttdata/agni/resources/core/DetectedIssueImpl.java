@@ -175,6 +175,7 @@ public class DetectedIssueImpl extends AbstractResource {
 		
 		detectedissue.setCategory(TypeUtils.BuildCodeableConcept(map, resourceName+".category", 0));
 	//new CodeableConcept().addCoding(new Coding().setCode(this.categoryCodingCode).setSystem(this.categoryCodingSystem ).setDisplay(this.categoryCodingDisplay)));
+		if (this.severity !=null )
 		detectedissue.setSeverity(DetectedIssueSeverity.valueOf(getSeverity()));
 		detectedissue.setPatient(FHIRUtils.buildPatientReference(map));
 				//buildReference(this.patientIdentifierValue, this.patientIdentifierTypeCodingCode, this.patientIdentifierSystem, this.patientIdentifierPeriodStart, this.patientIdentifierPeriodEnd, this.patientIdentifierAssignerDisplay));

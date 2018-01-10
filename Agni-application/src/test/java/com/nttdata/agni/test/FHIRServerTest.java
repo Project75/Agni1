@@ -1,23 +1,8 @@
 package com.nttdata.agni.test;
 
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
-import ca.uhn.hl7v2.HL7Exception;
-import ca.uhn.hl7v2.model.Message;
-
-import com.nttdata.agni.domain.MappingList;
-import com.nttdata.agni.domain.TransformRequest;
-import com.nttdata.agni.resources.core.*;
-import com.nttdata.agni.transfomer.*;
-
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

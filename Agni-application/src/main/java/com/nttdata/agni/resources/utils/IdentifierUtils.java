@@ -66,16 +66,17 @@ public class IdentifierUtils extends TypeUtils{
 			case "usual":
 				identifier.setUse(IdentifierUse.USUAL);
 			default:
-				identifier.setUse(IdentifierUse.USUAL);
-			}		
-		
-			String typeCodingSystem = Optional.ofNullable(map.get(kmap.get("type.coding.system"),i))
-					.orElse(IDENTIFIER_SYSTEM_HL7);
-			String typeCodingCode = Optional.ofNullable(map.get(kmap.get("type.coding.code"),i))
-			.orElse("MR");
-			String system = Optional.ofNullable(map.get(kmap.get("system"),i))
-					.orElse(IDENTIFIER_SYSTEM_LOC);
+				//identifier.setUse(IdentifierUse.USUAL);
+			}	
+			String typeCodingSystem = map.get(kmap.get("type.coding.system"),i);
+			String typeCodingCode = map.get(kmap.get("type.coding.code"),i);
+			String system = map.get(kmap.get("system"),i);
 			
+			if (resourceName.equalsIgnoreCase("patient")){
+				typeCodingSystem= Optional.ofNullable(typeCodingSystem).orElse(IDENTIFIER_SYSTEM_HL7);
+				typeCodingCode = Optional.ofNullable(typeCodingCode).orElse("MR");
+				system = Optional.ofNullable(system).orElse(IDENTIFIER_SYSTEM_LOC);
+			}
 			
 			Coding coding =new Coding();
 			List<Coding> codingList =  new ArrayList<Coding>();
