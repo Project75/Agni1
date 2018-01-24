@@ -95,36 +95,13 @@ public class BodySiteImpl extends AbstractResource{
 			}
 	
 	
-	/* (non-Javadoc)
-	 * @see com.nttdata.agni.resources.core.AbstractResource#getResourcedata()
-	 */
-	@Override
-	public void getResourcedata() {
-		// TODO Auto-generated method stub
-		super.getResourcedata();
-	}
-
-	/* (non-Javadoc)
-	 * @see com.nttdata.agni.resources.core.AbstractResource#getResource()
-	 */
+	
 	@Override
 	public Resource getResource() {
 		// TODO Auto-generated method stub
 		return this.bodysite;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.nttdata.agni.resources.core.AbstractResource#setResource(org.hl7.fhir.dstu3.model.Resource)
-	 */
-	@Override
-	public void setResource(Resource resource) {
-		// TODO Auto-generated method stub
-		this.setBodySite((BodySite) resource);
-	}
-
-	/* (non-Javadoc)
-	 * @see com.nttdata.agni.resources.core.AbstractResource#getResourceName()
-	 */
 	@Override
 	public String getResourceName() {
 		// TODO Auto-generated method stub
@@ -140,14 +117,6 @@ public class BodySiteImpl extends AbstractResource{
 		this.resourceName=resourceName;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return code + " " +  qualifier;
-	}
-	
+
 	
 }

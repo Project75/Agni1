@@ -51,9 +51,11 @@ public class MappingServiceTest {
 		mapping.add(new MappingList("patient.identifier","PID-3-1"));
 		mapping.add(new MappingList("patient.name.family","PID-5-1"));
 		mapping.add(new MappingList("patient.name.given","PID-5-2"));
-
+//mock method
 		when(MappingListRepository.findByMapname(mapName)).thenReturn(mapping);
+	//	
 		List<MappingList> result = MappingListService.getMapping(mapName);
+		System.out.println("size="+result.size());
 		assertEquals(3, result.size());
 	}
 	
@@ -65,8 +67,11 @@ public class MappingServiceTest {
 	public void saveMappingList(){
 		List<MappingList> mapping = new ArrayList<MappingList>();
 		mapping.add(new MappingList("patient.name.given","PID-5-2"));
+		//mock
 		when(MappingListRepository.save(mapping)).thenReturn(mapping);
+		//actual
 		List<MappingList> result = MappingListService.updateMapping(mapping);
+		
 		assertEquals("patient.name.given", result.get(0).getFhir());
 		assertEquals("PID-5-2", result.get(0).getHl7());
 	}

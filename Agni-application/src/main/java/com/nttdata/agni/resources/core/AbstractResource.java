@@ -5,37 +5,35 @@ package com.nttdata.agni.resources.core;
 
 import java.util.ArrayList;
 
+import org.hl7.fhir.dstu3.model.Patient;
+import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.dstu3.model.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.nttdata.agni.resources.utils.TransformMap;
+
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 
 /**
  * Copyright NTT Data
  * @author Harendra Pandey
  */
+@Data
 public class AbstractResource {
 	
 	Resource resource;
 	String id;
 	String resourceName;
 	
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());	
 	
 	
 	
-	/**
-	 * @return the resource
-	 */
-	public Resource getResource() {
-		return resource;
-	}
-
-	/**
-	 * @param resource the resource to set
-	 */
-	public void setResource(Resource resource) {
-		this.resource = resource;
-	}
 
 	public void setResourceData(TransformMap map) {
 	}
@@ -43,8 +41,7 @@ public class AbstractResource {
 	public void setResourceDataFromMap(TransformMap data) {
 		
 	}
-	public void getResourcedata() {
-	}
+	
 
 	/**
 	 * @return the resourceName

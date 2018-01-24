@@ -31,9 +31,13 @@ public class IdentifierUtils extends TypeUtils{
 
 	
 	public static List<Identifier> getIdentifierList(TransformMap map,String resourceName){
-		IdentifierUtils identifierUtil =  new IdentifierUtils();
-		identifierUtil.setIdentifier(map, resourceName);
-		return identifierUtil.identifierList;
+		if (resourceName != null){
+			IdentifierUtils identifierUtil =  new IdentifierUtils();
+			identifierUtil.setIdentifier(map, resourceName.toLowerCase());
+			return identifierUtil.identifierList;
+		}else
+			return null;
+		
 	}
 	
 	public static Identifier getFirstIdentifier(TransformMap map,String resourceName){
@@ -75,7 +79,7 @@ public class IdentifierUtils extends TypeUtils{
 			if (resourceName.equalsIgnoreCase("patient")){
 				typeCodingSystem= Optional.ofNullable(typeCodingSystem).orElse(IDENTIFIER_SYSTEM_HL7);
 				typeCodingCode = Optional.ofNullable(typeCodingCode).orElse("MR");
-				system = Optional.ofNullable(system).orElse(IDENTIFIER_SYSTEM_LOC);
+				//system = Optional.ofNullable(system).orElse(IDENTIFIER_SYSTEM_LOC);
 			}
 			
 			Coding coding =new Coding();

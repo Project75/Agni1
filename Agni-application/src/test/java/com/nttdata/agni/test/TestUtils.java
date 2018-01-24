@@ -1,8 +1,16 @@
 package com.nttdata.agni.test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
+import com.github.javafaker.Faker;
 import com.nttdata.agni.domain.MappingList;
 
 public class TestUtils {
@@ -52,7 +60,7 @@ public class TestUtils {
 		mapping.add(new MappingList("patient.name.family","PID-5-1"));
 		mapping.add(new MappingList("patient.name.given","PID-5-2"));
 		mapping.add(new MappingList("patient.gender","PID-8-1"));
-		mapping.add(new MappingList("patient.birthDate","PID-7-1"));
+		mapping.add(new MappingList("patient.birthdate","PID-7"));
 		mapping.add(new MappingList("patient.address.line","PID-11-1"));
 		mapping.add(new MappingList("patient.address.city","PID-11-3"));
 		mapping.add(new MappingList("patient.address.state","PID-11-4"));
@@ -468,5 +476,78 @@ public class TestUtils {
                 ;  
     	return payload;
     }
+	public static String generateFlatFileTestPayload(int num){
+		
+		String output =""; 
+		 		 
+        	for (int i=0;i<num;i++){
+        		Faker faker = new Faker();
 
+        		String name = faker.name().fullName(); // Miss Samanta Schmidt
+        		String firstName = faker.name().firstName(); // Emory
+        		String lastName = faker.name().lastName(); // Barton
+
+        		String streetAddress = faker.address().streetAddress();
+        		String city = faker.address().city();
+        		String state = faker.address().state();
+        		Date dob=faker.date().birthday();
+        		String phone=faker.phoneNumber().cellPhone();
+        		int randomNum = ThreadLocalRandom.current().nextInt(100, 1000000);
+        		String gender="Female";
+        		if (i%2==0){
+        			 gender="Male";
+        		}
+        		String data=randomNum+","+firstName+","+lastName+","+gender+","+randomBirthDate()+","+city+","+state+","+phone+",Married\r";
+                
+        		output = output+data;
+        	}
+		
+		return output;
+		
+	}
+    private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	public static String randomAlphaNumeric(int count) {
+		StringBuilder builder = new StringBuilder();
+		while (count-- != 0) {
+		int character = (int)(Math.random()*ALPHA_NUMERIC_STRING.length());
+		builder.append(ALPHA_NUMERIC_STRING.charAt(character));
+		}
+		return builder.toString();
+	}
+	public static String randomBirthDate() {
+		Random  rnd;
+		Date    dt;
+		long    ms;
+	
+		// Get a new random instance, seeded from the clock
+		rnd = new Random();
+	
+		// Get an Epoch value roughly between 1940 and 2010
+		// -946771200000L = January 1, 1940
+		// Add up to 70 years to it (using modulus on the next long)
+		ms = -946771200000L + (Math.abs(rnd.nextLong()) % (70L * 365 * 24 * 60 * 60 * 1000));
+	
+		// Construct a date
+		dt = new Date(ms);
+		
+		String pattern = "yyyy-MM-dd";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+		String date = simpleDateFormat.format(dt);
+
+		return date;
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+	
+		String content = TestUtils.generateFlatFileTestPayload(10);
+		try {
+			Files.write(Paths.get("c:/poc/output1.txt"), content.getBytes());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 }

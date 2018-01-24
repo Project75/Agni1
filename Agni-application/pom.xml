@@ -12,7 +12,11 @@
     <maven.compiler.source>1.8</maven.compiler.source>
 </properties>
   <dependencies>
-  
+  		<dependency>
+		    <groupId>com.github.javafaker</groupId>
+		    <artifactId>javafaker</artifactId>
+		    <version>0.14</version>
+		</dependency>
   		 <dependency>
 		    <groupId>org.skyscreamer</groupId>
 		    <artifactId>jsonassert</artifactId>
@@ -21,6 +25,15 @@
 		   <groupId>com.googlecode.json-simple</groupId>
 		   <artifactId>json-simple</artifactId>
 		   </dependency>
+	<!-- https://mvnrepository.com/artifact/com.github.ffpojo/ffpojo-parent -->
+		<dependency>
+		    <groupId>com.github.ffpojo</groupId>
+		    <artifactId>ffpojo-parent</artifactId>
+		    <version>1.0</version>
+		    <type>pom</type>
+		</dependency>
+
+			
  		 <dependency>
 			<groupId>com.blackbear</groupId>
 		  	<artifactId>flatworm</artifactId>

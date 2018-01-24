@@ -17,7 +17,7 @@ public class NameUtils extends TypeUtils{
 	
 	public static List<HumanName> getNames(TransformMap map, String resourceName){
 		NameUtils NameUtils = new NameUtils();
-		return NameUtils.buildDataType(map, resourceName);
+		return NameUtils.buildDataType(map, resourceName.toLowerCase());
 	}
 	
 	public List<HumanName> buildDataType(TransformMap map, String resourceName){

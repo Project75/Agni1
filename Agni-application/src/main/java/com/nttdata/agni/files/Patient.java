@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter @Setter 
 public class Patient {
 
-	public String id,given, family, gender, dob, city,state, maritalstatus   ;
+	public String id,given, family, gender, dob, city,state,phone, maritalstatus   ;
 
 	
 

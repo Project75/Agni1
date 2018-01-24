@@ -182,10 +182,6 @@ public class AppointmentImpl extends AbstractResource{
 	}
 	
 
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return this.identifier +" "+this.status+" "+this.description +" "+this.participantActor+" "+this.start+" "+this.end;
-	}
+
 	
 }

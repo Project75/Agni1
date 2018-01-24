@@ -11,6 +11,7 @@ import com.nttdata.agni.resources.utils.TransformMap;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import org.hl7.fhir.dstu3.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.Enumerations;
@@ -25,7 +26,7 @@ import ca.uhn.fhir.model.primitive.IdDt;
  * Copyright NTT Data
  * @author Neha 
  */
-
+@Setter @Getter @ToString
 public class PractitionerImpl extends AbstractResource{
 	/**
 	 * 
@@ -41,7 +42,7 @@ public class PractitionerImpl extends AbstractResource{
 	
 	String identifier, active, name, Telecom, AddressLine, AddressCity, AddressState, AddressPostalCode, AddressCountry, Gender, DOB, photo, qualification, communication;
 	
-	String resourceName;
+	String resourceName="Practitioner";
 	
 	/**
 	 * @return the patient
@@ -115,15 +116,7 @@ public class PractitionerImpl extends AbstractResource{
 		Communication.setText(getCommunication()); 
 		practitioner.addCommunication(Communication);
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.nttdata.agni.resources.core.AbstractResource#getResourcedata()
-	 */
-	@Override
-	public void getResourcedata() {
-		// TODO Auto-generated method stub
-		super.getResourcedata();
-	}
+
 
 	/* (non-Javadoc)
 	 * @see com.nttdata.agni.resources.core.AbstractResource#getResource()

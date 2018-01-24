@@ -97,14 +97,15 @@ public class GenericResourceTest extends TestUtils{
     public  String transform(String resourceName,String payload) {
     	System.out.println("***************************");
     	System.out.println("Processing for "+resourceName);
-    	TransformMap dataMap = null;
+    	TransformMap hL7Map = null, dataMap = null;
     	    	  
         try {        	        	
         	
 			Message hapiMsg = hl7Transformer.getHL7FromPayload(payload);
  
         	ListMultimap<String, String> tempMap = getMappings();
-        	dataMap = hl7Transformer.getHL7ValuesMap(hapiMsg, tempMap);
+        	hL7Map = hl7Transformer.getHL7ValuesMap(hapiMsg);
+        	dataMap = hl7Transformer.buildFHIRKeystoHL7ValuesMap(hL7Map,tempMap);
         	
 		} catch (HL7Exception e) {
 			// TODO Auto-generated catch block
@@ -112,7 +113,7 @@ public class GenericResourceTest extends TestUtils{
 		}
         AbstractResource res = createFHIRResource(dataMap,resourceName);
         //print json 
-        //System.out.println(getResourceAsJson(res));
+        System.out.println(res.toString());
         return getResourceAsJson(res);
         
     }
@@ -121,7 +122,8 @@ public class GenericResourceTest extends TestUtils{
     	AbstractResource resource =  null;
     	if (resourceName !=null){
         	resource = ResourceFactory.getResource(resourceName);
-        	if (resource !=null){	        		
+        	if (resource !=null){
+        		resource.setResourceName(resourceName);
         		resource.setResourceDataFromMap(dataMap);
         		//resourceList.add(resource);
         	}

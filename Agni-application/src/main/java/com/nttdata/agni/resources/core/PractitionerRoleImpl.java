@@ -128,15 +128,7 @@ public class PractitionerRoleImpl extends AbstractResource{
 		practitionerrole.setAvailabilityExceptions(availabilityExceptions);
 		*/
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.nttdata.agni.resources.core.AbstractResource#getResourcedata()
-	 */
-	@Override
-	public void getResourcedata() {
-		// TODO Auto-generated method stub
-		super.getResourcedata();
-	}
+
 
 	/* (non-Javadoc)
 	 * @see com.nttdata.agni.resources.core.AbstractResource#getResource()

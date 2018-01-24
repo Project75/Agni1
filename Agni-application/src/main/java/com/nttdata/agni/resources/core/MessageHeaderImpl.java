@@ -23,7 +23,8 @@ import org.hl7.fhir.dstu3.model.MessageHeader.MessageSourceComponent;
 import org.hl7.fhir.dstu3.model.Reference;
 
 import ca.uhn.fhir.model.primitive.IdDt;
-
+import org.hl7.fhir.dstu3.model.ResourceFactory;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Copyright NTT Data
  * Agni-Applicationo-
@@ -46,8 +47,15 @@ public class MessageHeaderImpl extends AbstractResource{
 	public MessageHeaderImpl() {
 		super();
 		// TODO Auto-generated constructor stub
-		this.messageheader =  new MessageHeader();
-		messageheader.setId(IdDt.newRandomUuid());
+		try {
+			this.messageheader = (MessageHeader) ResourceFactory.createResource("MessageHeader");
+		} catch (FHIRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} ;
+				//new MessageHeader();
+		messageheader.setId(ResourceFactory.createUUID());
+				//IdDt.newRandomUuid());
 	}
 
 	@Override

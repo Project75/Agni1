@@ -52,7 +52,7 @@ public class ProcedureImpl extends AbstractResource{
 	private String identifier;
 	private String code, subject, context, performed, performerRole, performerActor, bodySite;
 	
-	//String resourceName = "procedure";
+	String resourceName = "Procedure";
 	/**
 	 * Constructor to initialize the FHIR STU3 model Object
 	 */
@@ -85,7 +85,7 @@ public class ProcedureImpl extends AbstractResource{
 	@Override
 	public void setResourceData(TransformMap map) {
 		
-		procedure.setIdentifier(IdentifierUtils.getIdentifierList(map, resourceName));
+		procedure.setIdentifier(IdentifierUtils.getIdentifierList(map, this.resourceName));
 		procedure.setCode(new CodeableConcept().setText(code));
 			
 		/*try {

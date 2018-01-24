@@ -18,6 +18,7 @@ import org.hl7.fhir.dstu3.model.Patient;
 import org.hl7.fhir.dstu3.model.Reference;
 
 import com.nttdata.agni.resources.utils.AddressUtils;
+import com.nttdata.agni.resources.utils.FHIRConstants;
 import com.nttdata.agni.resources.utils.IdentifierUtils;
 import com.nttdata.agni.resources.utils.NameUtils;
 
@@ -51,7 +52,7 @@ public class PatientImpl extends AbstractResource{
 
 	Patient patient;
 	Reference reference;
-	String resourceName="patient";
+	String resourceName="Patient";
 	
 	public void setResourceDataFromMapV1(TransformMap map) {
 		setResourceDataFromMap(map);
@@ -116,7 +117,8 @@ public class PatientImpl extends AbstractResource{
 		patient.setGender(Enumerations.AdministrativeGender.valueOf(getGender().toUpperCase()));
 		
 		if (DOB != null){
-			patient.setBirthDate(DateUtils.parseDate(DOB,new String[]{"yyyyMMdd","yyyy-MM-dd"}));
+			System.out.println(DOB+"==DOB=="+DateUtils.parseDate(DOB,FHIRConstants.DATE_FORMATS));
+			patient.setBirthDate(DateUtils.parseDate(DOB,FHIRConstants.DATE_FORMATS));
 			
 		} 
 		/*
@@ -155,7 +157,7 @@ public class PatientImpl extends AbstractResource{
 		
 		this.setReference();
 		//patient.setId(IdDt.newRandomUuid());
-		System.out.println("pat id-"+patient.getId()+"   "+getId());
+		//System.out.println("pat id-"+patient.getId()+"   "+getId());
 	}
 	
 
@@ -192,9 +194,7 @@ public class PatientImpl extends AbstractResource{
 	/**
 	 * @param dOB the dOB to set
 	 */
-	public void setDOB(String DOB) {
-		this.DOB = DOB.substring(0, 4) +"-"+ DOB.substring(4, 6) +"-"+ DOB.substring(6, 8);
-	}
+	
 
 	
 }

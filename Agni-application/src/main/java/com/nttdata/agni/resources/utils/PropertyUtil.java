@@ -24,16 +24,21 @@ import lombok.Setter;
 
 
 
-@Component @Getter @Setter @NoArgsConstructor
+@Component @Getter @Setter
 public class PropertyUtil {
 	
+	
+	PropertySplitter propertySplitter;
+	
 
-	@Autowired
-	PropertySplitter PropertySplitter = new PropertySplitter();
+	
+	
+	
     //@Value("#{PropertySplitter.map('${hl7.segment.tofhir.old}')}")
     //Map<String, String> hl7SegToFhirResources;
     
     @Value("#{PropertySplitter.mapOfList('${hl7.segment.tofhir}')}")
+    //@Value("${hl7.segment.tofhir}")
     Map<String, List<String>> hl7SegToFhirResources;
 
     @Value("#{PropertySplitter.mapOfListOfProperties('${test.resources.files}')}")

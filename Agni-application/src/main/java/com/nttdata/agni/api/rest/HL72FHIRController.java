@@ -44,6 +44,19 @@ public class HL72FHIRController extends AbstractRestHandler {
         return transformer.transform(mapname,payload);
         
     }
+    
+    @RequestMapping(value = "/get",
+            method = RequestMethod.GET,
+            //consumes = {"text/plain"},
+            produces = {"application/json", "application/xml"})
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "HL7 to FHIR.", notes = "Returns FHIR resource bundle.")
+    public String hl72fhir(@RequestBody String payload,@PathVariable("mapname") String mapname,
+                                 HttpServletRequest request, HttpServletResponse response) {
+    	log.info("mapname"+mapname);
+        return "get successful";
+        
+    }
 
 }
 

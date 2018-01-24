@@ -19,12 +19,17 @@ public class HL7Parser {
 		HL7Parser HL7Parser =new HL7Parser();
 		HL7Transformer hl7Transformer = new HL7Transformer();
 		String payload = "MSH|^~\\&|HIS|RIH|||199904140038||ADT^A01|||2.2\r"
-                + "PID|||^199&200&201||JOHN^DOE&MR~HAR^PAN&MR||\r";
+                + "PID||100|^199&200&201||JOHN^DOE&MR~HAR^PAN&MR||M|\r";
 
 		Message message=null;
 		try {
 			message = hl7Transformer.getHL7FromPayload(payload);
 			//HL7Parser.extractValues(message);
+			 Terser terser = new Terser(message);
+	         
+
+	        System.out.println("B-"+terser.get("MSH-9-1"));
+	        
 			TransformMap valueList = HL7Parser.getHL7Map(  message );
 			System.out.println("=========");
 			System.out.println(valueList.getMap().toString());
@@ -79,21 +84,30 @@ public class HL7Parser {
       Segment segment = (Segment) structure; 
       //String[] names = segment.getNames(); 
  
-      for ( int n = 1; n <= segment.numFields(); n++ ) { 
-        Type[] types = segment.getField( n ); 
-        for ( int t = 0; t < types.length; t++ ) { 
-          int nrComponents = Terser.numComponents( types[t] ); 
-          for ( int c = 1; c <= nrComponents; c++ ) { 
-            int nrSub = Terser.numSubComponents( types[t], c ); 
+      for ( int fieldNum = 1; fieldNum <= segment.numFields(); fieldNum++ ) { 
+        Type[] types = segment.getField( fieldNum ); int fieldRep=types.length;
+        for ( int fieldNumCtr = 0; fieldNumCtr < types.length; fieldNumCtr++ ) { 
+          int nrComponents = Terser.numComponents( types[fieldNumCtr] ); 
+          for ( int compNum = 1; compNum <= nrComponents; compNum++ ) { 
+            int nrSub = Terser.numSubComponents( types[fieldNumCtr], compNum ); 
             for ( int sc = 1; sc <= nrSub; sc++ ) { 
-              String string = Terser.get( segment, n, t, c, sc ); 
+              String value = Terser.get( segment, fieldNum, fieldNumCtr, compNum, sc ); 
               // Primitive primitive = Terser.getPrimitive(types[t], c, sc); 
-              if (string!=null){
-            	  String key = segment.getName()+"-"+n+"-"+c;
-            	  if (sc>1)
+              if (value!=null){
+            	  String key2 =null;
+            	  String key = segment.getName()+"-"+fieldNum+"-"+compNum;
+            	  //System.out.println("seg:"+segment.getName()+",fieldNum:"+fieldNum+",fieldCtr:"+fieldRep+"-nrComponents:"+nrComponents+"-nrSub:"+nrSub);
+            	  if (fieldRep == 1 && nrSub==1){
+            		  key2 = segment.getName()+"-"+fieldNum;
+            		  hL7Map.put(key2,value);
+            		  //System.out.println("yyy"+key2+"="+value);
+            	  }
+            	  if (sc>1){
             		  key = key+"-"+sc;
-	              //System.out.println("z--"+string+"-"+segment.getName()+"-"+n+"-"+t+"-"+c+"-"+sc);
-	              hL7Map.put(key,string);
+	              
+            	  }
+            	  //System.out.println("z-value="+value+","+segment.getName()+"-"+fieldNum+"-"+fieldNumCtr+"-"+compNum+"-"+sc);
+	              hL7Map.put(key,value);
               }
               
               

@@ -123,7 +123,7 @@ public class ObservationImpl extends AbstractResource {
 		observation.setMethod(new CodeableConcept().setText(getObservationMethod()));
 		observation.setDevice(new Reference().setReference(getObservationDevice()));
 		
-		observation.setSubject(FHIRUtils.buildPatientReference(map));
+		observation.getSubject().setReference(map.getReferenceMap().get("Patient"));
 		
 		List<ObservationReferenceRangeComponent> theReferenceRange = new ArrayList<ObservationReferenceRangeComponent>();
 		ObservationReferenceRangeComponent refRange = new ObservationReferenceRangeComponent();
@@ -136,14 +136,7 @@ public class ObservationImpl extends AbstractResource {
 		observation.setReferenceRange(theReferenceRange );
 	
 	}
-	/* (non-Javadoc)
-	 * @see com.nttdata.agni.resources.core.AbstractResource#getResourcedata()
-	 */
-	@Override
-	public void getResourcedata() {
-		// TODO Auto-generated method stub
-		super.getResourcedata();
-	}
+
 	
 	@Override
 	public Resource getResource() {

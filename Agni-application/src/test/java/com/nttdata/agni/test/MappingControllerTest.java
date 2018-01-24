@@ -56,12 +56,12 @@ public class MappingControllerTest {
     }
 
     @Test
-    public void shouldCreateRetrieveDelete() throws Exception {
+    public void insertMappingsintoDB() throws Exception {
     	 mapping = GenericResourceTest.mockMappings();
         byte[] r1Json = toJson(mapping);
 
         //CREATE
-        MvcResult result = mvc.perform(post("/fhirtranslator/v1/mappings/savelist/test1")
+        MvcResult result = mvc.perform(post("/fhirtranslator/v1/mappings/create/"+ mapName)
                 .content(r1Json)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -71,7 +71,7 @@ public class MappingControllerTest {
        // long id = getResourceIdFromUrl(result.getResponse().getRedirectedUrl());
 
         //RETRIEVE
-        mvc.perform(get("/fhirtranslator/v1/mappings/" + mapName)
+        mvc.perform(get("/fhirtranslator/v1/mappings/view/" + mapName)
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$", hasSize(mapping.size())))
         .andExpect(jsonPath("$.[*].mapname", hasItems("test1")))
@@ -79,11 +79,11 @@ public class MappingControllerTest {
                 //.andExpect(jsonPath("$.mapname", is(mapName)));
                 
         //DELETE 
- /*      mvc.perform(delete("/fhirtranslator/v1/mappings/" + id))
+ /*      mvc.perform(delete("/fhirtranslator/v1/mappings/delete" + id))
                 .andExpect(status().isNoContent());
 
         //RETRIEVE should fail
-        mvc.perform(get("/fhirtranslator/v1/mappings/" + id)
+        mvc.perform(get("/fhirtranslator/v1/mappings/view" + id)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
 */
@@ -94,7 +94,7 @@ public class MappingControllerTest {
 
     
     @Test
-    public void shouldPostHL7() throws Exception {
+    public void testTranslateHL7toFHIR() throws Exception {
         //User r1 = mockUser("shouldCreateRetrieveDelete");
         TransformRequest transformRequest =  new TransformRequest("test1",GenericResourceTest.getTestPayload());
         byte[] r1Json = toJson(transformRequest);

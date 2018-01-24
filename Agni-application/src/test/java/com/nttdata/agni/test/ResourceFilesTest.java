@@ -1,7 +1,5 @@
 package com.nttdata.agni.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 
 import org.junit.Test;

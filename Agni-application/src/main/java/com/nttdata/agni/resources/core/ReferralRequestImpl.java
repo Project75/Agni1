@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.nttdata.agni.resources.utils.FHIRConstants;
 import com.nttdata.agni.resources.utils.IdentifierUtils;
 import com.nttdata.agni.resources.utils.TransformMap;
 import java.util.List;
@@ -16,7 +17,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import org.apache.commons.lang3.arch.Processor.Type;
 import org.hl7.fhir.dstu3.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.DateTimeType;
 import org.hl7.fhir.dstu3.model.HumanName;
@@ -110,7 +110,7 @@ public class ReferralRequestImpl extends AbstractResource{
 		}
 		
 		if (authoredOn !=null)
-		referralrequest.setAuthoredOn(DateUtils.parseDate(authoredOn,new String[]{"yyyyMMdd","yyyy-MM-dd"}));
+		referralrequest.setAuthoredOn(DateUtils.parseDate(authoredOn,FHIRConstants.DATE_FORMATS));
 		
 		referralrequest.setSpecialty(new CodeableConcept().setText(specialty));
 		referralrequest.addRecipient().setReference(recipient);

@@ -27,6 +27,9 @@
                 <record-element length="0" beanref="patient.state" type="char">
                     <conversion-option name="justify" value="left"/>
                 </record-element>
+                <record-element length="0" beanref="patient.phone" type="char">
+                    <conversion-option name="justify" value="left"/>
+                </record-element>
                 <record-element length="0" beanref="patient.maritalstatus" type="char">
                     <conversion-option name="justify" value="left"/>
                 </record-element>

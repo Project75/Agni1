@@ -1,26 +1,45 @@
 package com.nttdata.agni.resources.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor @Getter @Setter
-public class TransformMap {
-	ListMultimap<String, String> map = ArrayListMultimap.create();
-	ReferenceMap referenceMap = new ReferenceMap() ;
-		
+@Getter @Setter
+public class ReferenceMap {
+	//ListMultimap<String, String> map = ArrayListMultimap.create();
+	Map<String, String> map = new HashMap<String,String>();
+	
+	
+	public String get(String key) {
+		return map.get(key);
+	
+	}
+	public void put(String key, String value) {
+		 map.put(key, value);
+		 
+	}
+	/*
+	  
 	public String get(String key) {
 		//List<String> values = getRepeating(key);
 		if (getCount(key)> 0)
 			return map.get(key).get(0);
 		else 
 			return null;
+	}
+	public void put(String key, String value) {
+		 map.put(key, value);
+		 
 	}
 	public List<String> getAll(List<String> keys) {
 		List<String> outList =  new ArrayList<String>();
@@ -46,17 +65,11 @@ public class TransformMap {
 	}
 	
 	
-	public void put(String key, String value) {
-		 map.put(key, value);
-		 
-	}
+	
 	public void putAll(String key, List<String> valueList) {
 		 map.putAll(key, valueList);
 		 
 	}
-	//Not Used
-	public TransformMap switchMaps(TransformMap inputMap,TransformMap outputMap ){
-		
-		return outputMap;
-	}
+	
+	*/
 }

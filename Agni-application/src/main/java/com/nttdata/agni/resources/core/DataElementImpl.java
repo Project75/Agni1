@@ -4,7 +4,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Period;
 import java.util.Arrays;
+
+import com.nttdata.agni.resources.utils.FHIRConstants;
 import com.nttdata.agni.resources.utils.TransformMap;
+
+import ca.uhn.fhir.util.DateUtils;
 
 import org.hl7.fhir.dstu3.model.Address;
 import org.hl7.fhir.dstu3.model.Address.AddressType;
@@ -88,13 +92,8 @@ public class DataElementImpl extends AbstractResource {
 				
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 				
-				try {
-					if (this.varibleArray[5] != null){
-						dataelement.setDate(formatter.parse(this.varibleArray[5]));
-					}
-				} catch (ParseException e) {
-					e.printStackTrace();
-					//patient.setBirthDate(null);
+				if (this.varibleArray[5] != null){
+					dataelement.setDate(DateUtils.parseDate(this.varibleArray[5],FHIRConstants.DATE_FORMATS));
 				}
 				
 				dataelement.setPublisher(this.varibleArray[6]);

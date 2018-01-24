@@ -33,18 +33,12 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @RequestMapping(value = "/fhirtranslator/v1/custom2fhir")
-@Api(tags = {"hl72fhir"})
+@Api(tags = {"custom2fhir"})
 public class CustomFormatController extends AbstractRestHandler{
 	@Autowired
     private CustomTransformer transformer;
     
-    //@Autowired
-    //ServletContext context;
-    //private final StorageService storageService;
-    /*@Autowired
-    public FileUploadController(StorageService storageService) {
-        this.storageService = storageService;
-    }*/
+
     @RequestMapping(value = "/demo/{mapname}",
             method = RequestMethod.POST,
             consumes = {"text/plain"},
@@ -57,6 +51,29 @@ public class CustomFormatController extends AbstractRestHandler{
         return transformer.transform(mapname,payload);
         
     }
+ 
+    @RequestMapping(value = "/etl/{mapname}",
+            method = RequestMethod.POST,
+            consumes = {"text/plain"},
+            produces = {"application/json", "application/xml"})
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "HL7 to FHIR.", notes = "Returns FHIR resource bundle.")
+    public String custom2fhirServer(@RequestBody String payload,@PathVariable("mapname") String mapname,
+                                 HttpServletRequest request, HttpServletResponse response) {
+    	//log.info("mapname"+mapname);
+        return transformer.transform(mapname,payload);
+        
+    }
+  
+    //TODO: FILE Upload Controller
+    //@Autowired
+    //ServletContext context;
+    //private final StorageService storageService;
+    /*@Autowired
+    public FileUploadController(StorageService storageService) {
+        this.storageService = storageService;
+    }*/
+    
     /*@RequestMapping(value = "/fileupload", headers=("content-type=multipart/*"), method = RequestMethod.POST)
     public ResponseEntity<FileInfo> upload(@RequestParam("file") MultipartFile inputFile) {
      FileInfo fileInfo = new FileInfo();

@@ -33,11 +33,9 @@ public class MappingService {
     GaugeService gaugeService;
 
     public MappingService() {
+    
     }
-
-    
-
-    
+     
     public void createMapping(String mapname, List<MappingList> mappingList) {
     	// mappingItem2Repository.save(mappingList);
     	for (MappingList entity : mappingList) {

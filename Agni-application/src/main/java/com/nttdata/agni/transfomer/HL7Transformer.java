@@ -17,10 +17,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ca.uhn.fhir.model.primitive.IdDt;
 import ca.uhn.hl7v2.DefaultHapiContext;
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.HapiContext;
 import ca.uhn.hl7v2.model.Message;
+import ca.uhn.hl7v2.model.Structure;
 import ca.uhn.hl7v2.parser.EncodingNotSupportedException;
 import ca.uhn.hl7v2.parser.Parser;
 import ca.uhn.hl7v2.parser.PipeParser;
@@ -35,6 +37,7 @@ import com.nttdata.agni.domain.TransformRequest;
 import com.nttdata.agni.resources.core.AbstractResource;
 import com.nttdata.agni.resources.core.BundleImpl;
 import com.nttdata.agni.resources.core.ResourceFactory;
+import com.nttdata.agni.resources.utils.FHIRConstants;
 import com.nttdata.agni.resources.utils.HL7Parser;
 import com.nttdata.agni.resources.utils.MapConfig;
 import com.nttdata.agni.resources.utils.PropertyUtil;
@@ -53,14 +56,23 @@ import com.nttdata.agni.service.MappingService;
 @Service
 public class HL7Transformer extends AbstractTransformer {
 	
-	private static final Logger log = LoggerFactory.getLogger(HL7Transformer.class);
+	//private static final Logger log = LoggerFactory.getLogger(HL7Transformer.class);
 	String errortext;
-	@Autowired
+	TransformRequest transformRequest;
     private MappingService mappingService; 
+    
+    @Autowired
+	public void setMappingService(MappingService mappingService) {
+		this.mappingService = mappingService;
+	}
+
 	
-	@Autowired
     private PropertyUtil propertyUtil;
-	
+    @Autowired
+	public void setPropertyUtil(PropertyUtil propertyUtil) {
+		this.propertyUtil = propertyUtil;
+	}
+
 	public HL7Transformer() {
 		
 		// TODO Auto-generated constructor stub
@@ -75,19 +87,25 @@ public class HL7Transformer extends AbstractTransformer {
 	
 	@Override
     public  String transform(TransformRequest transformRequest) {
+		this.transformRequest = transformRequest;
     	String fhir=null;
-    	TransformMap dataMap = null;
-    	ArrayList<String> HL7SegmentList = null;
-    	     
+    	TransformMap hL7Map = null, dataMap = null;
+    	ArrayList<String> hL7SegmentList = null;
+    	//ArrayList<String> hl7MsgMetaData =new ArrayList<String>();    
         try {
         	        	
         	Message hapiMsg = getHL7FromPayload(transformRequest.getValue());
         	if (hapiMsg != null){
-        		HL7SegmentList = getHL7SegmentList(hapiMsg);
-        		ListMultimap<String, String> tempMap = getMappingsFromDB(mappingService, transformRequest.getMapname(),transformRequest.getMappingStrategy());
-        		dataMap = getHL7ValuesMap(hapiMsg, tempMap);
-        		fhir = createFHIRFromMap(dataMap,HL7SegmentList);
-        		}
+        		//HL7 segments as triggers for FHIR resources
+        		hL7SegmentList = getHL7SegmentList(hapiMsg);
+        		hL7Map = getHL7ValuesMap(hapiMsg);
+        		//Add HL7 Trigger event as first trigger for FHIR resource creation
+        		hL7SegmentList.add(0, getHL7Value("triggerevent",hL7Map));
+           		ListMultimap<String, String> mappingMap = getMappingsFromDB(mappingService, 
+           				transformRequest.getMapname(),transformRequest.getMappingStrategy());
+           		dataMap = buildFHIRKeystoHL7ValuesMap(hL7Map,mappingMap);
+        		fhir = createFHIRFromMap(dataMap,hL7SegmentList);
+        	}
         	
         } catch (EncodingNotSupportedException e) {
             e.printStackTrace();
@@ -120,6 +138,7 @@ public class HL7Transformer extends AbstractTransformer {
     public  ArrayList<String> getHL7SegmentList(Message hapiMsg) throws HL7Exception { 
     	//Need to get segments in HL7 message 
         String strucHL7Segments[]=hapiMsg.getNames();
+        
         ArrayList<String> segmentList = new ArrayList<String>();
         for (int i=0;i<strucHL7Segments.length;i++){
         	if (!(hapiMsg.get(strucHL7Segments[i]).isEmpty())){
@@ -129,7 +148,7 @@ public class HL7Transformer extends AbstractTransformer {
         return segmentList;
     }
     public  ListMultimap<String, String> getMappingsFromDB(MappingService mappingService, String mapname,String mappingStrategy){
-		if (mappingStrategy=="MINIMAL")
+		if (mappingStrategy==FHIRConstants.MAPPING_STRATEGY_MINIMAL)
 			return getMappingsFromDBWithMiniMal(mappingService, mapname);
 		else
 			return getMappingsFromDBWithDefault(mappingService, mapname);  
@@ -190,7 +209,7 @@ public class HL7Transformer extends AbstractTransformer {
     	return mappingMap;
     }
     
-    public  TransformMap getHL7ValuesMap(Message hapiMsg, ListMultimap<String, String> mappingMap) throws HL7Exception{ 
+    public  TransformMap getHL7ValuesMap(Message hapiMsg) throws HL7Exception{ 
     	HL7Parser HL7Parser =new HL7Parser();
     	TransformMap hL7Map =  null;
     	try{
@@ -204,8 +223,10 @@ public class HL7Transformer extends AbstractTransformer {
 			errortext = e.getMessage();
 			e.printStackTrace();
 		}
-    	
-    	
+    	return hL7Map;
+    }	
+   public  TransformMap buildFHIRKeystoHL7ValuesMap(TransformMap hL7Map, ListMultimap<String, String> mappingMap) throws HL7Exception{ 
+    		    	
     	TransformMap dataMap =new TransformMap();
     	for (String key : mappingMap.keySet()) {
             List<String> values = mappingMap.get(key);
@@ -224,21 +245,30 @@ public class HL7Transformer extends AbstractTransformer {
     	//PropertyUtil propertyUtil =new PropertyUtil();
     	AbstractResource resource =  null;
     	ArrayList<AbstractResource> resourceList = new ArrayList<AbstractResource>();
+   		Map<String,List<String>> mapResourceNames = propertyUtil.getHl7SegToFhirResources();
+   		int j =0;
     	for (int i=0;i<segmentList.size();i++){
 /*        	if (segmentList.get(i)=="PID"){
         		resource = ResourceFactory.getResource("patient");        		
         	}*/
     		//String resourceName = propertyUtil.getHl7SegToFhirResources().get(segmentList.get(i));
-    		List<String> resourceNames = propertyUtil.getHl7SegToFhirResources().get(segmentList.get(i));
+    		List<String> resourceNames = mapResourceNames.get(segmentList.get(i));
     		//log.info
+    		
     		for (String resourceName:Optional.ofNullable(resourceNames).orElse(Collections.emptyList())){
-	    		System.out.println("Creating resource from factory : "+ resourceName+" for segment "+segmentList.get(i));
+	    		System.out.println("Verify if mapping exists for resource : "+ resourceName+" from segment "+segmentList.get(i));
 	    		if (segmentList.get(i).equalsIgnoreCase("MSH")){ resourceName ="messageheader";}
 	    		if (!((resourceName == null)|| (resourceName.isEmpty())) ){
 		        	resource = ResourceFactory.getResource(resourceName);
 		        	if (resource !=null){
-		        		System.out.println("Creating resource from factory : "+ resourceName+" for segment "+segmentList.get(i));
+		        		System.out.println("Creating resource #: "+ j++ +", "+ resourceName+" for HL7 Trigger Logic: "+segmentList.get(i));
+		        		IdDt UUID = IdDt.newRandomUuid();
+		        		resource.getResource().setId(UUID);
+		        		map.getReferenceMap().put(resourceName,UUID.getValueAsString());
+		        		
 		        		resource.setResourceDataFromMap(map);
+		        		resource.setResourceName(resourceName);
+		        		
 		        		resourceList.add(resource);
 		        		//System.out.println("Haren1"+resourceName+"\n"+ TransformUtils.resourceToJson(resource));
 		        	}
@@ -246,8 +276,9 @@ public class HL7Transformer extends AbstractTransformer {
     		}
     	}
     	BundleImpl bundle = (BundleImpl)ResourceFactory.getResource("bundle");
-    	System.out.println("Creating Bundle : ");
+    	System.out.println("Total resoucres created is "+j+", now Creating Bundle : ");
     	bundle.addResourcesFromList(resourceList);
+    	bundle.setBundleType(transformRequest.getBundleType());
 		String json = bundle.toJson();//TransformUtils.resourceToJson(bundle);
 		return json;
 		
@@ -261,6 +292,14 @@ public class HL7Transformer extends AbstractTransformer {
         }
     }
         
-    
+    private String getHL7Value(String fieldName, TransformMap hL7Map){
+    	//String hL7Value = null;
+    	switch(fieldName.toLowerCase()){
+    	case "messagetype": return hL7Map.get("MSH-9-1");
+    	case "triggerevent": return hL7Map.get("MSH-9-2");
+    		default: return null;
+    	}
+    	
+    }
 
 }
