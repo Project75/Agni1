@@ -70,8 +70,21 @@ public class ResourceFactory {
 		        return new VisionPrescriptionImpl(); 
 	      case "PaymentNotice":
 		        return new PaymentNoticeImpl(); 
-	      case "Specimen":
-		        return new SpecimenImpl(); 
+	      case "Specimen" : return new SpecimenImpl();
+	      case "AllergyIntolerance":return new AllergyIntoleranceImpl();     
+	      case "AppointmentResponse" : return new AppointmentResponseImpl();
+	      case "CarePlan" : return new CarePlanImpl();
+	      case "CareTeam" : return new CareTeamImpl();
+	      case "ChargeItem" : return new ChargeItemImpl();
+	      case "Condition" : return new ConditionImpl();
+	      case "Consent" : return new ConsentImpl();
+	      case "Coverage" : return new CoverageImpl();
+	      case "Goal" : return new GoalImpl();
+	      case "Media" : return new MediaImpl();
+	      case "Person" : return new PersonImpl();
+	      case "RelatedPerson" : return new RelatedPersonImpl();
+	      case "SupplyRequest" : return new SupplyRequestImpl();
+
 	      default:
 	          // Error
 	          return null;

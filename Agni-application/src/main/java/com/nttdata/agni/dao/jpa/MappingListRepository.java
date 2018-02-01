@@ -23,6 +23,10 @@ public interface MappingListRepository extends JpaRepository<MappingList, Long> 
     List<MappingList> findByMapname(String mapname);
 
 	void deleteByMapname(String name);
+
+	void deleteById(long id);
+
+	MappingList findById(long id);
 }
 
 

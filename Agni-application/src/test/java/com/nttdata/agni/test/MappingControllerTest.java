@@ -9,8 +9,11 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -24,18 +27,24 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nttdata.agni.Application;
 import com.nttdata.agni.domain.MappingList;
-import com.nttdata.agni.domain.TransformRequest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import org.junit.FixMethodOrder;
+import org.junit.runners.MethodSorters;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = Application.class)
-@ActiveProfiles("test")
+@SpringBootTest(classes = Application.class,webEnvironment = WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test2")
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MappingControllerTest {
 
     private static final String BASE_URL = "/fhirtranslator/v1/";
@@ -46,7 +55,7 @@ public class MappingControllerTest {
     private MockMvc mvc;
     
     private String mapName;
-    
+    private int mapSize =0 ;
     List<MappingList> mapping;
 
     @Before
@@ -56,8 +65,9 @@ public class MappingControllerTest {
     }
 
     @Test
-    public void insertMappingsintoDB() throws Exception {
-    	 mapping = GenericResourceTest.mockMappings();
+    public void AcreateMapping() throws Exception {
+    	 mapping = mockMappings();
+    	 mapSize = mapping.size();
         byte[] r1Json = toJson(mapping);
 
         //CREATE
@@ -65,20 +75,91 @@ public class MappingControllerTest {
                 .content(r1Json)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
+                .andExpect(status().isCreated()).andDo(print())
                 //.andExpect(redirectedUrlPattern(RESOURCE_LOCATION_PATTERN))
                 .andReturn();
        // long id = getResourceIdFromUrl(result.getResponse().getRedirectedUrl());
 
+
+
+    }
+
+    private List<MappingList> mockMappings() {
+        	List<MappingList> mapping =  new ArrayList<MappingList>();
+        	mapping.add(new MappingList("patient.identifier.value","PID-3"));
+        	mapping.add(new MappingList("patient.name.given","PID-5-2"));
+        	return mapping;
+    	}
+
+	@Test
+    public void BgetMappings() throws Exception {
+    	// mapping = GenericResourceTest.mockMappings();
+        //byte[] r1Json = toJson(mapping);
+		System.out.print("BgetMappings called ");
         //RETRIEVE
-        mvc.perform(get("/fhirtranslator/v1/mappings/view/" + mapName)
-                .accept(MediaType.APPLICATION_JSON))
-        .andExpect(jsonPath("$", hasSize(mapping.size())))
-        .andExpect(jsonPath("$.[*].mapname", hasItems("test1")))
+    	mvc.perform(get("/fhirtranslator/v1/mappings/view/" + mapName)
+                .accept(MediaType.APPLICATION_JSON)).andDo(print())
+        .andExpect(jsonPath("$", hasSize(2)))
+       // .andExpect(jsonPath("$.[*].mapname", hasItems("test1")))
                 .andExpect(status().isOk());
                 //.andExpect(jsonPath("$.mapname", is(mapName)));
-                
-        //DELETE 
+    	//result.
+    }
+ 
+    
+    
+    public void DtestDeleteByMapName() throws Exception {
+        this.mvc.perform(MockMvcRequestBuilders
+                .delete("/fhirtranslator/v1/mappings/deleteByName/"+mapName)
+                .contentType(MediaType.APPLICATION_JSON))
+               // .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        System.out.print("DtestDeleteByMapName called ");
+        MvcResult result2 = mvc.perform(get("/fhirtranslator/v1/mappings/view/" + mapName )
+                .accept(MediaType.APPLICATION_JSON)).andDo(print())
+        .andExpect(jsonPath("$", hasSize(0)))
+       // .andExpect(jsonPath("$.[*].mapname", hasItems("test1")))
+                .andExpect(status().isOk()).andReturn();
+                //.andExpect(jsonPath("$.mapname", is(mapName)));
+    	
+    	
+    }
+    @Test
+    public void CtestGetDeleteById() throws Exception {
+    	long id = 1;
+		//RETRIEVE
+    	ResultActions result = mvc.perform(get("/fhirtranslator/v1/mappings/getById/" + id )
+                .accept(MediaType.APPLICATION_JSON)).andDo(print())
+       // .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$.[*].mapname", hasSize(0)))
+                .andExpect(status().isOk());
+                //.andExpect(jsonPath("$.mapname", is(mapName)));
+    	MvcResult res= result.andReturn();
+    	System.out.print("testGetDeleteById Called getById");
+    	
+        this.mvc.perform(MockMvcRequestBuilders
+                .delete("/fhirtranslator/v1/mappings/deleteById/"+id)
+                .contentType(MediaType.APPLICATION_JSON))
+               // .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andDo(print());
+    
+        MvcResult result2 = mvc.perform(get("/fhirtranslator/v1/mappings/getById/" + id )
+                .accept(MediaType.APPLICATION_JSON)).andDo(print())
+        //.andExpect(jsonPath("$", hasSize(0)))
+        .andExpect(jsonPath("$.[*].mapname", hasSize(0)))
+                .andExpect(status().is4xxClientError()).andReturn();
+                //.andExpect(jsonPath("$.mapname", is(mapName)));
+    	
+    	//System.out.print("testGetDeleteById2="+result2.getResponse().getContentLength());
+
+        
+    }   
+    //@Test
+    public void deleteMappings() throws Exception {
+    	 mapping = GenericResourceTest.mockMappings();
+        byte[] r1Json = toJson(mapping);
+
+         //DELETE 
  /*      mvc.perform(delete("/fhirtranslator/v1/mappings/delete" + id))
                 .andExpect(status().isNoContent());
 
@@ -91,44 +172,8 @@ public class MappingControllerTest {
 
 
     }
-
     
-    @Test
-    public void testTranslateHL7toFHIR() throws Exception {
-        //User r1 = mockUser("shouldCreateRetrieveDelete");
-        TransformRequest transformRequest =  new TransformRequest("test1",GenericResourceTest.getTestPayload());
-        byte[] r1Json = toJson(transformRequest);
-        MvcResult result=null;String resultString =null;
-        
-        	//CREATE2
-        result = mvc.perform(post("/fhirtranslator/v1/hl72fhir/test1")
-                    .content(transformRequest.getValue())
-                    .contentType(MediaType.TEXT_PLAIN_VALUE)
-                    .accept(MediaType.ALL))
-       //             .andExpect(status().is2xxSuccessful())          
-                    .andReturn();
-         resultString = result.getResponse().getContentAsString();
-            System.out.println("************Final Output");
-            	System.out.println(resultString);
-/*            	RestTemplate restTemplate = new RestTemplate();
-            	HttpEntity<String> request = new HttpEntity<>(new String(resultString));
-            	String fooResourceUrl  = "http://localhost:9001/dstu2/patient";
-				URI location = restTemplate.postForLocation(fooResourceUrl, request);
-            	assertThat(location, notNullValue());
-            	System.out.println(location.toString());*/
-            /*	
-             result = mvc.perform(post("/fhirtranslator/v1/hl72fhir/")
-                .content(GenericResourceTest.getTestPayload())
-                //.contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.ALL))
-                //.andExpect(status().is2xxSuccessful())          
-                .andReturn();
-         resultString = result.getResponse().getContentAsString();
-        	System.out.println(resultString);
-        */
-      
-    }
-    
+ 
 
 	private long getResourceIdFromUrl(String locationUrl) {
         String[] parts = locationUrl.split("/");

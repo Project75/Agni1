@@ -37,23 +37,23 @@ public class MappingList {
     String hl7Seg;
     
 
-    public MappingList() {
+    protected MappingList() {
     }
 
     public MappingList( String fhir,String hl7) {
         this.hl7 = hl7;
         this.fhir = fhir;
         this.mapname = "default";
-        this.fhirResource = fhir.split(Pattern.quote("."))[0];
-        this.hl7Seg = hl7.split(Pattern.quote("."))[0];
+        //this.fhirResource = fhir.split(Pattern.quote("."))[0];
+        //this.hl7Seg = hl7.split(Pattern.quote("."))[0];
                 
     }
     public MappingList( String fhir,String hl7,String mapname) {
         this.hl7 = hl7;
         this.fhir = fhir;
         this.mapname = mapname;
-        this.fhirResource = fhir.split(Pattern.quote("."))[0];
-        this.hl7Seg = hl7.split(Pattern.quote("."))[0];
+        //this.fhirResource = fhir.split(Pattern.quote("."))[0];
+        //this.hl7Seg = hl7.split(Pattern.quote("."))[0];
                 
     }
 

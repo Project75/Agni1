@@ -39,7 +39,13 @@ public class IdentifierUtils extends TypeUtils{
 			return null;
 		
 	}
-	
+	public static Identifier getIdentifier(TransformMap map,String resourceName){
+		//return getIdentifierList(map,resourceName).get(0);
+		 
+			return getFirstIdentifier( map,resourceName);
+				
+		}
+
 	public static Identifier getFirstIdentifier(TransformMap map,String resourceName){
 		//return getIdentifierList(map,resourceName).get(0);
 		List<Identifier> identifierList= getIdentifierList(map, resourceName);

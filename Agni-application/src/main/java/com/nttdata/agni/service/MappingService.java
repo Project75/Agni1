@@ -3,6 +3,8 @@ package com.nttdata.agni.service;
 
 import com.nttdata.agni.domain.MappingList;
 import com.nttdata.agni.dao.jpa.MappingListRepository;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +47,15 @@ public class MappingService {
         
     }
 
+    public List<MappingList> createMapping2(String mapname, List<MappingList> mappingList) {
+    	// mappingItem2Repository.save(mappingList);
+    	List<MappingList> mappingListReturn = new ArrayList<MappingList>();
+    	for (MappingList entity : mappingList) {
+    		entity.setMapname(mapname);
+    		mappingListReturn.add(mappingListRepository.save(entity));
+        }
+        return mappingListReturn;
+    }
 
     public List<MappingList> getMapping(String mapname) {
         return mappingListRepository.findByMapname(mapname);
@@ -59,7 +70,7 @@ public class MappingService {
         return mappingListRepository.save(mappingList);
     }
 
-    public void deleteMapping(String name) {
+    public void deleteByMapname(String name) {
         mappingListRepository.deleteByMapname(name);
     }
     
@@ -67,6 +78,27 @@ public class MappingService {
         mappingListRepository.delete(mappingList);
     }
 
+    public MappingList getById(long id) {
+        return mappingListRepository.findOne(id);
+    }
+
+    public void updateOne(MappingList mappingOne) {
+    	mappingListRepository.save(mappingOne);
+    }
+
+    public void deleteById(Long id) {
+    	 mappingListRepository.delete(id);
+    }
+//not working
+	public void deleteMappingByIdX(long id) {
+		// TODO Auto-generated method stub
+		mappingListRepository.deleteById(id);
+	}
+//not working
+	public MappingList getMappingByIdX(long id) {
+		// TODO Auto-generated method stub
+		return mappingListRepository.findById(id);
+	}  
     //http://goo.gl/7fxvVf
     public Page<MappingList> getAllMappings(Integer page, Integer size) {
         Page pageOfMappings = mappingListRepository.findAll(new PageRequest(page, size));
@@ -76,6 +108,8 @@ public class MappingService {
         }
         return pageOfMappings;
     }
+
+
 
 
 

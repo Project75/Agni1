@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,9 +43,15 @@ public class MappingController extends AbstractRestHandler {
                                  HttpServletRequest request, HttpServletResponse response) {
         //Mapping createdMapping = null;
         		this.mappingService.createMapping(mapname,mapping);
-        		//response.setHeader("Location","" );
-        response.setHeader("Location", request.getRequestURL().append("/mapping/").append(mapname).toString());
+ 
+        response.setHeader("Location", request.getRequestURL().toString().replaceAll("create", "view"));
         		//createdMapping.getId()).toString());
+        try {
+			response.getWriter().write("Mapping created successfully");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
     }
 
@@ -94,16 +101,60 @@ public class MappingController extends AbstractRestHandler {
     }
 
     //todo: @ApiImplicitParams, @ApiResponses
-    @RequestMapping(value = "/delete/{name}",
+    @RequestMapping(value = "/deleteByName/{name}",
             method = RequestMethod.DELETE,
             produces = {"application/json", "application/xml"})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Delete a mapping resource.", notes = "You have to provide a valid mapping ID in the URL. Once deleted the resource can not be recovered.")
     public void deleteMapping(@ApiParam(value = "The ID of the existing mapping resource.", required = true)
                                  @PathVariable("name") String name, HttpServletRequest request,
                                  HttpServletResponse response) {
         checkResourceFound(this.mappingService.getMapping(name));
-        this.mappingService.deleteMapping(name);
+        this.mappingService.deleteByMapname(name);
+    }
+ 
+    //todo: @ApiImplicitParams, @ApiResponses
+    @RequestMapping(value = "/getById/{Id}",
+            method = RequestMethod.GET,
+            produces = {"application/json", "application/xml"})
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Delete a mapping resource.", notes = "You have to provide a valid mapping ID in the URL. Once deleted the resource can not be recovered.")
+    public MappingList getMappingById(@ApiParam(value = "The ID of the existing mapping resource.", required = true)
+                                 @PathVariable("Id") long Id, HttpServletRequest request,
+                                 HttpServletResponse response) {
+        checkResourceFound(this.mappingService.getById(Id));
+        MappingList out =  this.mappingService.getById(Id);
+        if (out==null)        	
+        {
+        	try {
+    			response.getWriter().write("Resource Not Found");
+    			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        	return null;
+        }
+        return out;	
+    }
+    
+    //todo: @ApiImplicitParams, @ApiResponses
+    @RequestMapping(value = "/deleteById/{Id}",
+            method = RequestMethod.DELETE,
+            produces = {"application/json", "application/xml"})
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Delete a mapping resource.", notes = "You have to provide a valid mapping ID in the URL. Once deleted the resource can not be recovered.")
+    public void deleteMappingById(@ApiParam(value = "The ID of the existing mapping resource.", required = true)
+                                 @PathVariable("Id") long Id, HttpServletRequest request,
+                                 HttpServletResponse response) {
+        //checkResourceFound(this.mappingService.deleteById(Id));
+        this.mappingService.deleteById(Id);
+        try {
+			response.getWriter().write("Delete successful");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }
 
