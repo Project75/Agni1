@@ -19,7 +19,7 @@ public class PaymentNoticeImpl extends AbstractResource{
 	public PaymentNoticeImpl() {
 		// TODO Auto-generated constructor stub
 		
-		this.paymentnotice = new PaymentNotice ();
+		this.paymentnotice = new PaymentNotice();
 		
 	}
 	

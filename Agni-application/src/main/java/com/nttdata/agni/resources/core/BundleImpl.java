@@ -29,7 +29,7 @@ import lombok.Setter;
 public class BundleImpl extends AbstractResource {
 	Bundle bundle;
 	
-	BundleImpl(){
+	public BundleImpl(){
 		bundle = new Bundle();
 		//bundle.setType(BundleType.MESSAGE);
 				//.TRANSACTION);

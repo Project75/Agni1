@@ -157,7 +157,8 @@ public class TestUtils {
 		mapping.add(new MappingList("MedicationStatement.subject.reference","PID-3-1"));
 		mapping.add(new MappingList("MedicationStatement.subject.identifier.value","PID-3-1"));
 		mapping.add(new MappingList("MedicationStatement.subject.display","PID-5-1"));
-		   
+		mapping.add(new MappingList("DiagnosticReport.identifier.value","OBR-51-1"));
+		
 		mapping.add(new MappingList("DiagnosticReport.identifierValue","OBR-51-1"));
 		mapping.add(new MappingList("DiagnosticReport.status","OBR-25"));
 		mapping.add(new MappingList("DiagnosticReport.categoryCodingCode","OBR-24"));
@@ -179,6 +180,7 @@ public class TestUtils {
 		mapping.add(new MappingList("DiagnosticReport.performerRoleCodingDisplay","PRT-8-1"));   
 		mapping.add(new MappingList("DiagnosticReport.performerActorReference","PRT-8-3"));   
 		mapping.add(new MappingList("DiagnosticReport.PRT4","PRT-4"));   
+		mapping.add(new MappingList("DetectedIssue.identifier","IAM-7"));
 		 
 		mapping.add(new MappingList("DetectedIssue.identifierValue","IAM-7"));
 		mapping.add(new MappingList("DetectedIssue.categoryCodingCode","AL1-2-1"));
@@ -457,9 +459,23 @@ public class TestUtils {
 		mapping.add(new MappingList("DataElement.usecontextvaluequantitysystem","PID-2"));
 		mapping.add(new MappingList("DataElement.usecontextvaluequantitycode","PID-2"));
 
+		mapping.add(new MappingList("DetectedIssue.identifier","PID-3-1"));
 
-		    
-
+	    mapping.add(new MappingList("AllergyIntolerance.identifier","PID-3-1"));
+	    mapping.add(new MappingList("AppointmentResponse.identifier","PID-3-1"));
+	    mapping.add(new MappingList("CarePlan.identifier","PID-3-1"));
+	    mapping.add(new MappingList("CareTeam.identifier","PID-3-1"));
+	    mapping.add(new MappingList("ChargeItem.identifier","PID-3-1"));
+	    mapping.add(new MappingList("Condition.identifier","PID-3-1"));
+	    mapping.add(new MappingList("Consent.identifier","PID-3-1"));
+	    mapping.add(new MappingList("Coverage.identifier","PID-3-1"));
+	    mapping.add(new MappingList("Goal.identifier","PID-3-1"));
+	    mapping.add(new MappingList("Media.identifier","PID-3-1"));
+	    mapping.add(new MappingList("Person.identifier","PID-3-1"));
+	    mapping.add(new MappingList("RelatedPerson.identifier","PID-3-1"));
+	    mapping.add(new MappingList("SupplyRequest.identifier","PID-3-1"));    
+	    mapping.add(new MappingList("PaymentNotice.identifier","PID-3-1"));    
+	    mapping.add(new MappingList("PaymentNotice.paymentStatus","PID-2"));    
 
 		return mapping;
 		

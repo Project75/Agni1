@@ -16,6 +16,38 @@ public class ResourceTest extends GenericResourceTest{
     	String out=transform("patient");
     	System.out.println("patient:"+out);
      }
+	@Test
+	public void testAllergyIntolerance() throws Exception {String out=transform("AllergyIntolerance");}
+	@Test
+	public void testAppointmentResponse() throws Exception {String out=transform("AppointmentResponse");}
+	@Test
+	public void testCarePlan() throws Exception {String out=transform("CarePlan");}
+	@Test
+	public void testCareTeam() throws Exception {String out=transform("CareTeam");}
+	@Test
+	public void testChargeItem() throws Exception {String out=transform("ChargeItem");}
+	@Test
+	public void testCondition() throws Exception {String out=transform("Condition");}
+	@Test
+	public void testConsent() throws Exception {String out=transform("Consent");}
+	@Test
+	public void testCoverage() throws Exception {String out=transform("Coverage");}
+	@Test
+	public void testGoal() throws Exception {String out=transform("Goal");}
+	@Test
+	public void testMedia() throws Exception {String out=transform("Media");}
+	@Test
+	public void testPerson() throws Exception {String out=transform("Person");}
+	@Test
+	public void testRelatedPerson() throws Exception {String out=transform("RelatedPerson");}
+	@Test
+	public void testSupplyRequest() throws Exception {String out=transform("SupplyRequest");}
+	@Test
+	public void testVisionPrescription() throws Exception {String out=transform("VisionPrescription");}
+	@Test
+	public void testPaymentNotice() throws Exception {String out=transform("PaymentNotice");}
+
+	
 	/*
 	 
     @Test

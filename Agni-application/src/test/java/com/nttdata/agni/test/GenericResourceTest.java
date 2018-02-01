@@ -2,6 +2,7 @@ package com.nttdata.agni.test;
 
 
 import com.nttdata.agni.resources.utils.PropertyUtil;
+import com.nttdata.agni.resources.utils.ResourceFactory;
 import com.nttdata.agni.resources.utils.TransformMap;
 
 import java.io.File;
@@ -126,7 +127,8 @@ public class GenericResourceTest extends TestUtils{
         		resource.setResourceName(resourceName);
         		resource.setResourceDataFromMap(dataMap);
         		//resourceList.add(resource);
-        	}
+        	}else
+        		System.out.println("<ERROR>"+resourceName);
 
      	}
      		
